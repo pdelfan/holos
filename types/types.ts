@@ -16,3 +16,8 @@ interface PackSummary {
   totalCost: number;
   totalItems: number;
 }
+
+interface ChartData {
+  category: string;
+  weight: number;
+}
