@@ -9,3 +9,10 @@ interface Metadata {
   image: string;
   logo: string;
 }
+
+interface PackSummary {
+  baseWeight: number;
+  totalWeight: number;
+  totalCost: number;
+  totalItems: number;
+}

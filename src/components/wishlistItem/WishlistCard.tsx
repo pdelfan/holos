@@ -17,7 +17,7 @@ function WishlistCard(props: Props) {
     <>
       {isLoading && <Skeleton />}
       {data && (
-        <article className="flex flex-col bg-white rounded-xl border-2 p-4 max-w-xs">
+        <article className="flex flex-col bg-white rounded-2xl border-2 p-5 max-w-xs">
           <Image
             className="object-cover rounded-t-lg ml-auto mr-auto"
             src={data.image ?? PlaceholderImage}
@@ -33,11 +33,11 @@ function WishlistCard(props: Props) {
                 width={30}
                 height={30}
               />
-              <p className="break-words overflow-clip	text-sm text-gray-400">
+              <h2 className="break-words overflow-clip text-sm text-gray-400">
                 {getShortAddress(data.url)}
-              </p>
+              </h2>
             </div>
-            <h4>{data.title}</h4>
+            <h3 className="text-stone-600 font-medium">{data.title}</h3>
           </div>
         </article>
       )}
