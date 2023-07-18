@@ -17,7 +17,7 @@ function TripCard(props: Props) {
     backgroundSize: "cover",
   };
 
-  const selectedStyle = image ? "grayscale" : "bg-black";
+  const selectedStyle = image ? "grayscale hover:grayscale-0" : "bg-black";
 
   return (
     <article

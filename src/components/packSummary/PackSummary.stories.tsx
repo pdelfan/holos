@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import PackSummary from "./PackSummary";
 
 const meta: Meta<typeof PackSummary> = {
-  title: "Example/Pack Summary",
+  title: "Components/Pack Summary",
   component: PackSummary,
 };
 

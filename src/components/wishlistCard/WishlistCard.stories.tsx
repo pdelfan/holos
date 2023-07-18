@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import WishlistCard from "./WishlistCard";
 
 const meta: Meta<typeof WishlistCard> = {
-  title: "Example/Wishlist Card",
+  title: "Components/Wishlist Card",
   component: WishlistCard,
 };
 
@@ -13,7 +13,7 @@ export const Default: Story = {
   args: {
     wishlistItem: {
       title: "",
-      url: "https://houdinisportswear.com/en-ca/clothing/shorts/ws-wadi-shorts-160854",
+      url: "https://www.mec.ca/en/product/6023-723/multi-trails-shorts",
     },
   },
 };

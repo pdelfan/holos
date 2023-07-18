@@ -35,8 +35,8 @@ function WishlistCard(props: Props) {
               <Image
                 src={data.logo ?? PlaceholderIcon}
                 alt={"Website Favicon"}
-                width={30}
-                height={30}
+                width={20}
+                height={20}
               />
               <h2 className="break-words overflow-clip text-sm text-gray-400">
                 {getShortAddress(data.url)}

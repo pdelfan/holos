@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import PackCard from "./PackCard";
 
 const meta: Meta<typeof PackCard> = {
-  title: "Example/Pack Card",
+  title: "Components/Pack Card",
   component: PackCard,
 };
 

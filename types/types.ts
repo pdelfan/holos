@@ -21,3 +21,12 @@ interface ChartData {
   category: string;
   weight: number;
 }
+
+interface InventoryData {
+  title: string;
+  image?: string;
+  description?: string;
+  tag?: string;
+  price?: number;
+  weight?: number;
+}
