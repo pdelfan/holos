@@ -4,6 +4,7 @@ import PlaceholderIcon from "@/assets/images/iconPlaceholder.png";
 import { getShortAddress } from "@/utils/linkUtils";
 import useGetMetadata from "@/hooks/useGetMetadata";
 import Skeleton from "./Skeleton";
+import { useCallback } from "react";
 
 interface Props {
   wishlistItem: WishlistItem;
@@ -12,6 +13,9 @@ interface Props {
 function WishlistCard(props: Props) {
   const { wishlistItem } = props;
   const { data, isLoading } = useGetMetadata({ wishlistItem });
+  const imageLoader = useCallback(({ src }: { src: string }) => {
+    return src;
+  }, []);
 
   return (
     <>
@@ -19,7 +23,8 @@ function WishlistCard(props: Props) {
       {data && (
         <article className="flex flex-col bg-white rounded-2xl border-2 p-5 max-w-xs">
           <Image
-            className="object-cover rounded-t-lg ml-auto mr-auto"
+            className="object-cover rounded-lg ml-auto mr-auto"
+            loader={imageLoader}
             src={data.image ?? PlaceholderImage}
             alt="Item image"
             width={150}

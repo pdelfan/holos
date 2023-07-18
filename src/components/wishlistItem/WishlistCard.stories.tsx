@@ -13,7 +13,7 @@ export const Default: Story = {
   args: {
     wishlistItem: {
       title: "",
-      url: "https://www.mec.ca/en/product/6023-723/multi-trails-shorts",
+      url: "https://houdinisportswear.com/en-ca/clothing/shorts/ws-wadi-shorts-160854",
     },
   },
 };
