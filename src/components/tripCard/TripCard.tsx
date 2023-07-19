@@ -1,3 +1,6 @@
+import Image from "next/image";
+import DotsIcon from "@/assets/icons/dotsIcon.svg";
+
 interface Props {
   image?: string;
   title: string;
@@ -16,17 +19,18 @@ function TripCard(props: Props) {
     backgroundImage: `linear-gradient(to bottom, rgba(245, 246, 252, 0), rgba(0, 0, 0, 0.9)), url(${image})`,
     backgroundSize: "cover",
   };
-
   const selectedStyle = image ? "grayscale hover:grayscale-0" : "bg-black";
 
   return (
     <article
-      className={`flex flex-col justify-between rounded-2xl p-5 max-w-lg ${selectedStyle}`}
+      className={`flex flex-col justify-between rounded-2xl p-5 max-w-lg group ${selectedStyle}`}
       style={bgStyle}
     >
       <div className="flex flex-col gap-1">
-        <h2 className="text-3xl text-white font-semibold">{title}</h2>
-        <h3 className="text-xl text-white font-semibold">
+        <h2 className="text-3xl text-white font-semibold break-words overflow-clip">
+          {title}
+        </h2>
+        <h3 className="text-xl text-white font-semibold break-words overflow-clip">
           {date.getFullYear()}
         </h3>
       </div>
@@ -48,6 +52,11 @@ function TripCard(props: Props) {
           <span className="text-stone-300">Total weight</span>
         </li>
       </ul>
+      <div className="hidden group-hover:flex gap-2 absolute right-5 top-5">
+        <button className="bg-button p-1 rounded-full hover:bg-button-hover">
+          <Image src={DotsIcon} alt="Dots icon" width={20} height={20} />
+        </button>
+      </div>
     </article>
   );
 }

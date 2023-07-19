@@ -13,6 +13,19 @@ module.exports = {
         purple: { light: "#DE5AFF", DEFAULT: "#CC00FF", dark: "#A900D3" },
         green: { light: "#1C8B1C", DEFAULT: "#115511", dark: "#0A330A" },
         gray: { light: "#838383", DEFAULT: "#555555", dark: "#181818" },
+        input: {
+          DEFAULT: "#EDEDED",
+          placeholder: "#888888",
+          text: "#666666",
+        },
+        button: {
+          DEFAULT: "#EDEDED",
+          text: "#808080",
+          hover: "#E6E6E6",
+        },
+      },
+      placeholderColor: {
+        gray: "#888888",
       },
     },
   },

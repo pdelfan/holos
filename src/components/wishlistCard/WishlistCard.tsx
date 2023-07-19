@@ -5,6 +5,7 @@ import { getShortAddress } from "@/utils/linkUtils";
 import useGetMetadata from "@/hooks/useGetMetadata";
 import Skeleton from "./Skeleton";
 import { useCallback } from "react";
+import DotsIcon from "@/assets/icons/dotsIcon.svg";
 
 interface Props {
   wishlistItem: WishlistItem;
@@ -21,7 +22,7 @@ function WishlistCard(props: Props) {
     <>
       {isLoading && <Skeleton />}
       {data && (
-        <article className="flex flex-col bg-white rounded-2xl border-2 p-5 max-w-xs">
+        <article className="flex flex-col relative bg-white rounded-2xl border-2 p-5 max-w-xs group">
           <Image
             className="object-cover rounded-lg ml-auto mr-auto"
             loader={imageLoader}
@@ -43,6 +44,11 @@ function WishlistCard(props: Props) {
               </h2>
             </div>
             <h3 className="text-stone-600 font-medium">{data.title}</h3>
+          </div>
+          <div className="hidden group-hover:flex gap-2 absolute right-5 top-5">
+            <button className="bg-button p-1 rounded-full hover:bg-button-hover">
+              <Image src={DotsIcon} alt="Dots icon" width={20} height={20} />
+            </button>
           </div>
         </article>
       )}
