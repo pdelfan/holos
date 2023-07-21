@@ -15,7 +15,7 @@ function InventoryCard(props: Props) {
   }, []);
 
   return (
-    <article className="flex bg-white rounded-2xl border-2 p-5 gap-5 max-w-md items-center">
+    <article className="flex bg-white rounded-2xl border-2 p-5 gap-5 max-w-md items-center cursor-pointer hover:border-neutral-300">
       {image && (
         <Image
           className="object-cover rounded-lg ml-auto mr-auto"

@@ -30,3 +30,19 @@ interface InventoryData {
   price?: number;
   weight?: number;
 }
+
+type ItemType = "General" | "Consumable" | "Wearable";
+
+interface PackItem {
+  position: number;
+  image?: string;
+  title?: string;
+  description?: string;
+  link?: string;
+  type?: ItemType;
+  price: number;
+  weight: number;
+  weightUnit: string;
+  quantity: number;
+  groupID: string;
+}

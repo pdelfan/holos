@@ -23,9 +23,12 @@ module.exports = {
           text: "#808080",
           hover: "#E6E6E6",
         },
-      },
-      placeholderColor: {
-        gray: "#888888",
+        table: {
+          head: "#DCDCDC",
+          row: "#FAFAFA",
+          headBorder: "#B0B0B0",
+          rowBorder: "#DDDDDD",
+        },
       },
     },
   },

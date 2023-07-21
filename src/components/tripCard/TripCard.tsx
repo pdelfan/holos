@@ -5,14 +5,14 @@ interface Props {
   image?: string;
   title: string;
   date: Date;
-  baseWeight: number;
-  consumables: number;
-  worn: number;
+  elevation: number;
+  distance: number;
+  duration: number;
   totalWeight: number;
 }
 
 function TripCard(props: Props) {
-  const { image, title, date, baseWeight, consumables, worn, totalWeight } =
+  const { image, title, date, elevation, distance, duration, totalWeight } =
     props;
 
   const bgStyle = {
@@ -23,7 +23,8 @@ function TripCard(props: Props) {
 
   return (
     <article
-      className={`flex flex-col justify-between rounded-2xl p-5 max-w-lg group ${selectedStyle}`}
+      className={`flex flex-col relative justify-between rounded-2xl p-5 max-w-lg group 
+      ${selectedStyle}`}
       style={bgStyle}
     >
       <div className="flex flex-col gap-1">
@@ -36,16 +37,16 @@ function TripCard(props: Props) {
       </div>
       <ul className="flex flex-wrap justify-between gap-3 mt-20">
         <li className="flex flex-col">
-          <span className="text-white text-lg font-medium">{baseWeight}</span>
-          <span className="text-stone-300">Base weight</span>
+          <span className="text-white text-lg font-medium">{elevation}</span>
+          <span className="text-stone-300">Elevation</span>
         </li>
         <li className="flex flex-col">
-          <span className="text-white text-lg font-medium">{consumables}</span>
-          <span className="text-stone-300">Consumables</span>
+          <span className="text-white text-lg font-medium">{distance}</span>
+          <span className="text-stone-300">Distance</span>
         </li>
         <li className="flex flex-col">
-          <span className="text-white text-lg font-medium">{worn}</span>
-          <span className="text-stone-300">Worn</span>
+          <span className="text-white text-lg font-medium">{duration}</span>
+          <span className="text-stone-300">Duration</span>
         </li>
         <li className="flex flex-col">
           <span className="text-white text-lg font-medium">{totalWeight}</span>

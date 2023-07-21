@@ -5,14 +5,15 @@ import { getShortAddress } from "@/utils/linkUtils";
 import useGetMetadata from "@/hooks/useGetMetadata";
 import Skeleton from "./Skeleton";
 import { useCallback } from "react";
-import DotsIcon from "@/assets/icons/dotsIcon.svg";
+import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 
 interface Props {
   wishlistItem: WishlistItem;
+  onDelete: () => void;
 }
 
 function WishlistCard(props: Props) {
-  const { wishlistItem } = props;
+  const { wishlistItem, onDelete } = props;
   const { data, isLoading } = useGetMetadata({ wishlistItem });
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
@@ -22,7 +23,12 @@ function WishlistCard(props: Props) {
     <>
       {isLoading && <Skeleton />}
       {data && (
-        <article className="flex flex-col relative bg-white rounded-2xl border-2 p-5 max-w-xs group">
+        <article
+          className="flex flex-col relative bg-white rounded-2xl border-2 p-5 max-w-xs cursor-pointer group hover:border-neutral-300"
+          onClick={() => {
+            window.open(data.url, "_self");
+          }}
+        >
           <Image
             className="object-cover rounded-lg ml-auto mr-auto"
             loader={imageLoader}
@@ -46,8 +52,14 @@ function WishlistCard(props: Props) {
             <h3 className="text-stone-600 font-medium">{data.title}</h3>
           </div>
           <div className="hidden group-hover:flex gap-2 absolute right-5 top-5">
-            <button className="bg-button p-1 rounded-full hover:bg-button-hover">
-              <Image src={DotsIcon} alt="Dots icon" width={20} height={20} />
+            <button
+              className="bg-button p-2 rounded-full hover:bg-button-hover"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete();
+              }}
+            >
+              <Image src={DeleteIcon} alt="Dots icon" width={20} height={20} />
             </button>
           </div>
         </article>

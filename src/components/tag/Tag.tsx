@@ -6,7 +6,7 @@ function Tag(props: Props) {
   const { title } = props;
 
   return (
-    <div className="px-2.5 py-1 text-xs text-stone-600 font-medium bg-lime-300 border-lime-500 border rounded-full">
+    <div className="px-2.5 py-1.5 text-xs text-center text-stone-600 font-medium bg-lime-300 border-lime-500 border rounded-full">
       {title}
     </div>
   );
