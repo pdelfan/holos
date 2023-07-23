@@ -58,7 +58,7 @@ function TableRow(props: Props) {
         )}
       </td>
       <td className="text-center p-3">
-        {title && <span className="text-sm">{title}</span>}
+        {title && <textarea className="text-sm">{title}</textarea>}
       </td>
       <td className="text-center p-3">
         {description && <span className="text-sm">{description}</span>}
