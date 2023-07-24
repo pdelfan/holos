@@ -10,8 +10,7 @@ export default function Home() {
         className=" object-cover animate-fade animate-duration-200"
         src={LandingBackground}
         alt="Wide shot of a mountain covered in snow"
-        fill={true}
-        objectFit="cover"
+        fill={true}        
       />
       <section className="relative flex flex-col place-items-center justify-center text-center p-3 animate-fade animate-duration-200">
         <Image

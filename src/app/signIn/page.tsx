@@ -2,19 +2,38 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Logo from "@/assets/logo.svg";
 import LoadingIcon from "@/assets/icons/loadingIcon.svg";
 import Link from "next/link";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.types";
 
 export default function SignIn() {
+  const supabase = createClientComponentClient<Database>();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState("");  
 
-  const signIn = async () => {};
+  const handleSignIn = async () => {
+    setLoading(true);
+    try {
+      // if it's called for an alraedy confirmed user, it will return 'User already registered'
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,        
+      });
 
+      if (error) {
+        setError(error.message);
+      } else {
+        setSuccess(true);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <section className="bg-white border rounded-2xl max-w-xs p-5">
       <Link
@@ -33,7 +52,7 @@ export default function SignIn() {
         className="text-sm font-medium text-gray-400 mt-5"
         onSubmit={(e) => {
           e.preventDefault();
-          // signIn(email);
+          handleSignIn();
         }}
       >
         <label htmlFor="email" className="text-gray-light">
@@ -57,7 +76,6 @@ export default function SignIn() {
           Password
         </label>
         <input
-          autoFocus
           required
           type="password"
           name="password"
@@ -95,8 +113,8 @@ export default function SignIn() {
               src={LoadingIcon}
               alt="Loading icon"
               className="animate-spin"
-              width={25}
-              height={25}
+              width={20}
+              height={20}
             />
           )}
           {loading && "Signing In..."}
