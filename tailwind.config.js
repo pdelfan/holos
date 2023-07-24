@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  plugins: [require("tailwindcss-animated")],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,7 +10,7 @@ module.exports = {
     extend: {
       colors: {
         background: "#FFFFFF",
-        orange: { light: "#FF7D29", DEFAULT: "#FF6400", dark: "#E45A00" },
+        orange: { light: "#FF7D29", DEFAULT: "#FF6D0E", dark: "#E5620C" },
         purple: { light: "#DE5AFF", DEFAULT: "#CC00FF", dark: "#A900D3" },
         green: { light: "#1C8B1C", DEFAULT: "#115511", dark: "#0A330A" },
         gray: { light: "#838383", DEFAULT: "#555555", dark: "#181818" },
@@ -32,5 +33,4 @@ module.exports = {
       },
     },
   },
-  plugins: [],
 };
