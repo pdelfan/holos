@@ -5,7 +5,7 @@ import Navbar from "../navbar/Navbar";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between bg-white p-2">
+    <header className="flex items-center justify-between bg-white p-3">
       <Image src={Logo} alt="HOLOS logo" width={40} height={40} />
       <Navbar />
       <Avatar name="Pouria" />

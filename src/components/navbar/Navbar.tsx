@@ -1,31 +1,33 @@
+"use client";
+
 import NavItem from "./NavItem";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 function Navbar() {
-  const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <nav>
       <ul className="flex gap-3 items-center">
         <NavItem
-          href="/packs"
+          href="/dashboard/packs"
           title="PACKS"
-          active={router.pathname === "packs"}
+          active={pathname.includes("packs")}
         />
         <NavItem
-          href="/trips"
+          href="/dashboard/trips"
           title="TRIPS"
-          active={router.pathname === "trips"}
+          active={pathname.includes("trips")}
         />
         <NavItem
-          href="/inventory"
+          href="/dashboard/inventory"
           title="INVENTORY"
-          active={router.pathname === "inventory"}
+          active={pathname.includes("inventory")}
         />
         <NavItem
-          href="/wishlist"
+          href="/dashboard/wishlist"
           title="WISHLIST"
-          active={router.pathname === "wishlist"}
+          active={pathname.includes("wishlist")}
         />
       </ul>
     </nav>
