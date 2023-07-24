@@ -6,15 +6,16 @@ import LoadingIcon from "@/assets/icons/loadingIcon.svg";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
+import { useRouter } from 'next/navigation'
 
 export default function SignIn() {
   const supabase = createClientComponentClient<Database>();
+  const router = useRouter()
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");  
+  const [error, setError] = useState("");
 
   const handleSignIn = async () => {
     setLoading(true);
@@ -22,13 +23,14 @@ export default function SignIn() {
       // if it's called for an alraedy confirmed user, it will return 'User already registered'
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password,        
+        password,
       });
 
       if (error) {
+        console.log(error)
         setError(error.message);
       } else {
-        setSuccess(true);
+        router.push("/dashboard/packs");
       }
     } finally {
       setLoading(false);
@@ -68,7 +70,6 @@ export default function SignIn() {
           value={email}
           onChange={(e) => {
             setError("");
-            setSuccess(false);
             setEmail(e.target.value);
           }}
         />
@@ -84,29 +85,19 @@ export default function SignIn() {
           value={password}
           onChange={(e) => {
             setError("");
-            setSuccess(false);
             setPassword(e.target.value);
           }}
         />
-        {!success && error && (
+        {error && (
           <small className="block text-red-500 font-medium mt-1 animate-fade">
             {error}
           </small>
         )}
-        {success && (
-          <small className="block text-green-600 font-medium mt-1 animate-fade">
-            Signed In!
-          </small>
-        )}
         <button
           type="submit"
-          className={`flex items-center gap-2 justify-center ${
-            !success && "bg-orange hover:bg-orange-dark"
-          } ${
-            success && "bg-green-600"
-          } text-white font-semibold rounded-lg px-3 py-3 mt-5 w-full disabled:cursor-not-allowed`}
-          disabled={loading || success}
-          aria-disabled={loading || success}
+          className="flex items-center gap-2 justify-center bg-orange hover:bg-orange-dark text-white font-semibold rounded-lg px-3 py-3 mt-5 w-full disabled:cursor-not-allowed"
+          disabled={loading}
+          aria-disabled={loading}
         >
           {loading && (
             <Image
@@ -118,8 +109,7 @@ export default function SignIn() {
             />
           )}
           {loading && "Signing In..."}
-          {!loading && !success && "Sign In"}
-          {!loading && success && "Signed In!"}
+          {!loading && "Sign In"}
         </button>
       </form>
     </section>

@@ -34,7 +34,7 @@ export default function Home() {
           >
             Get Started {""}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              {"->"}
+              
             </span>
           </Link>
           <Link
