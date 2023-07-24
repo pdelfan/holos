@@ -37,24 +37,27 @@ export interface Database {
       group: {
         Row: {
           id: number
-          pack_id: number | null
-          title: string
+          pack_id: number
+          title: string | null
+          total_quantity: number | null
           total_weight: number | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           id?: number
-          pack_id?: number | null
-          title: string
+          pack_id: number
+          title?: string | null
+          total_quantity?: number | null
           total_weight?: number | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           id?: number
-          pack_id?: number | null
-          title?: string
+          pack_id?: number
+          title?: string | null
+          total_quantity?: number | null
           total_weight?: number | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -73,41 +76,44 @@ export interface Database {
       }
       inventory: {
         Row: {
-          created_at: string | null
+          created_at: string
           description: string | null
           id: number
-          image: string | null
+          image_url: string | null
           price: number | null
+          season: string | null
           title: string | null
           type: string | null
           url: string | null
-          user_id: string | null
+          user_id: string
           weight: number | null
           weight_unit: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           id?: number
-          image?: string | null
+          image_url?: string | null
           price?: number | null
+          season?: string | null
           title?: string | null
           type?: string | null
           url?: string | null
-          user_id?: string | null
+          user_id: string
           weight?: number | null
           weight_unit?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           description?: string | null
           id?: number
-          image?: string | null
+          image_url?: string | null
           price?: number | null
+          season?: string | null
           title?: string | null
           type?: string | null
           url?: string | null
-          user_id?: string | null
+          user_id?: string
           weight?: number | null
           weight_unit?: string | null
         }
@@ -123,41 +129,38 @@ export interface Database {
       pack: {
         Row: {
           base_weight: number | null
-          created_at: string | null
-          currency: string | null
+          created_at: string
           description: string | null
           id: number
-          title: string
+          title: string | null
           total_cost: number | null
           total_items: number | null
           total_weight: number | null
-          user_id: string | null
+          user_id: string
           weight_unit: string | null
         }
         Insert: {
           base_weight?: number | null
-          created_at?: string | null
-          currency?: string | null
+          created_at?: string
           description?: string | null
           id?: number
-          title: string
+          title?: string | null
           total_cost?: number | null
           total_items?: number | null
           total_weight?: number | null
-          user_id?: string | null
+          user_id: string
           weight_unit?: string | null
         }
         Update: {
           base_weight?: number | null
-          created_at?: string | null
-          currency?: string | null
+          created_at?: string
           description?: string | null
           id?: number
-          title?: string
+          title?: string | null
           total_cost?: number | null
           total_items?: number | null
           total_weight?: number | null
-          user_id?: string | null
+          user_id?: string
           weight_unit?: string | null
         }
         Relationships: [
@@ -171,23 +174,23 @@ export interface Database {
       }
       pack_item: {
         Row: {
-          group_id: number | null
+          group_id: number
           id: number
-          inventory_item: number | null
+          inventory_id: number
           position: number | null
           quantity: number | null
         }
         Insert: {
-          group_id?: number | null
+          group_id: number
           id?: number
-          inventory_item?: number | null
+          inventory_id: number
           position?: number | null
           quantity?: number | null
         }
         Update: {
-          group_id?: number | null
+          group_id?: number
           id?: number
-          inventory_item?: number | null
+          inventory_id?: number
           position?: number | null
           quantity?: number | null
         }
@@ -199,8 +202,8 @@ export interface Database {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "pack_item_inventory_item_fkey"
-            columns: ["inventory_item"]
+            foreignKeyName: "pack_item_inventory_id_fkey"
+            columns: ["inventory_id"]
             referencedRelation: "inventory"
             referencedColumns: ["id"]
           }
@@ -209,38 +212,44 @@ export interface Database {
       trip: {
         Row: {
           base_weight: number | null
-          created_at: string | null
+          created_at: string
           date: string | null
+          distance: number | null
+          distance_unit: string | null
           elevation: number | null
           elevation_unit: string | null
           id: number
-          title: string
+          title: string | null
           total_weight: number | null
-          user_id: string | null
+          user_id: string
           weight_unit: string | null
         }
         Insert: {
           base_weight?: number | null
-          created_at?: string | null
+          created_at?: string
           date?: string | null
+          distance?: number | null
+          distance_unit?: string | null
           elevation?: number | null
           elevation_unit?: string | null
           id?: number
-          title: string
+          title?: string | null
           total_weight?: number | null
-          user_id?: string | null
+          user_id: string
           weight_unit?: string | null
         }
         Update: {
           base_weight?: number | null
-          created_at?: string | null
+          created_at?: string
           date?: string | null
+          distance?: number | null
+          distance_unit?: string | null
           elevation?: number | null
           elevation_unit?: string | null
           id?: number
-          title?: string
+          title?: string | null
           total_weight?: number | null
-          user_id?: string | null
+          user_id?: string
           weight_unit?: string | null
         }
         Relationships: [
@@ -255,15 +264,21 @@ export interface Database {
       user: {
         Row: {
           avatar_url: string | null
+          email: string | null
           id: string
+          preferred_currency: string | null
         }
         Insert: {
           avatar_url?: string | null
+          email?: string | null
           id: string
+          preferred_currency?: string | null
         }
         Update: {
           avatar_url?: string | null
+          email?: string | null
           id?: string
+          preferred_currency?: string | null
         }
         Relationships: [
           {
@@ -279,22 +294,22 @@ export interface Database {
           created_at: string
           id: number
           title: string | null
-          url: string
-          user_id: string | null
+          url: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           title?: string | null
-          url: string
-          user_id?: string | null
+          url?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: number
           title?: string | null
-          url?: string
-          user_id?: string | null
+          url?: string | null
+          user_id?: string
         }
         Relationships: [
           {

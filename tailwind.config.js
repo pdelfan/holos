@@ -30,6 +30,9 @@ module.exports = {
           headBorder: "#B0B0B0",
           rowBorder: "#DDDDDD",
         },
+        header: {
+          1: "#333333",
+        },
       },
     },
   },

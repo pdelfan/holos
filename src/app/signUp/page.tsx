@@ -29,6 +29,7 @@ export default function SignUp() {
       });
 
       if (error) {
+        console.log(error)
         setError(error.message);
       } else {
         setSuccess(true);
@@ -95,7 +96,7 @@ export default function SignUp() {
         />
         {!success && error && (
           <small className="block text-red-500 font-medium mt-1 animate-fade">
-            {error}
+            {error}            
           </small>
         )}
         {success && (

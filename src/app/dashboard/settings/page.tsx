@@ -1,3 +1,3 @@
 export default function Settings() {
-  return <div>Settings</div>;
+  return <h1 className="text-3xl font-semibold text-header-1">Settings</h1>;
 }

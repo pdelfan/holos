@@ -8,7 +8,7 @@ function Navbar() {
 
   return (
     <nav>
-      <ul className="flex gap-3 items-center">
+      <ul className="flex gap-5 items-center">
         <NavItem
           href="/dashboard/packs"
           title="PACKS"
