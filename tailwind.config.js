@@ -18,6 +18,7 @@ module.exports = {
           DEFAULT: "#EDEDED",
           placeholder: "#888888",
           text: "#666666",
+          focus: "#E3E3E3"
         },
         button: {
           DEFAULT: "#EDEDED",

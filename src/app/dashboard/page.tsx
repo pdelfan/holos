@@ -1,14 +1,10 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 import type { Database } from "@/lib/database.types";
 
-export default async function Dashoard({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
+export default async function Dashoard() {
   const supabase = createServerComponentClient<Database>({
     cookies,
   });

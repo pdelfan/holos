@@ -5,17 +5,16 @@ import { formatUsername } from "@/utils/textUtils";
 interface Props {
   name: string | null;
   image?: string;
-  onClick?: () => void;
 }
 
 function Avatar(props: Props) {
-  const { name, image, onClick } = props;
+  const { name, image } = props;
 
   return (
     <>
       {!name && <AvatarSkeleton />}
       {name && (
-        <button onClick={onClick}>
+        <>
           {image && (
             <Image
               className="rounded-full"
@@ -26,13 +25,13 @@ function Avatar(props: Props) {
             />
           )}
           {!image && (
-            <div className="flex items-center justify-center rounded-full bg-red-500 hover:bg-red-600 h-8 w-8">
+            <div className="flex items-center justify-center rounded-full bg-red-500 h-8 w-8">
               <span className="text-sm text-amber-50">
                 {formatUsername(name)}
               </span>
             </div>
           )}
-        </button>
+        </>
       )}
     </>
   );
