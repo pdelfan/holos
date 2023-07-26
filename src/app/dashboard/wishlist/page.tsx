@@ -29,13 +29,13 @@ export default function Wishlist() {
   return (
     <>
       <h1 className="text-3xl font-semibold text-header-1">Wishlist</h1>
-      <section className="flex flex-wrap justify-between items-center mt-6">
+      <section className="flex flex-wrap justify-between items-center mt-3">
         <div className="flex-1 max-w-lg">
           <SearchBar placeholder="Search for an item" onChange={() => {}} />
         </div>
         <div className="flex-1"></div>
       </section>
-      <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-6 animate-fade">
+      <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
         {!isLoading &&
           wishlist &&
           wishlist.map((item) => (
@@ -48,11 +48,9 @@ export default function Wishlist() {
       </section>
       <div className="fixed bottom-0 right-0">
         <div className="relative">
-          <WishlistForm
-            userID={""}
-            isOpen={showAddModal}
-            onClose={() => setShowAddModal(false)}
-          />
+          {showAddModal && (
+            <WishlistForm onClose={() => setShowAddModal(false)} />
+          )}
           <AddButton onClick={() => setShowAddModal(!showAddModal)} />
         </div>
       </div>
