@@ -43,7 +43,7 @@ export default function WishlistForm(props: Props) {
             autoFocus
             required
             type="url"
-            placeholder="URL"
+            placeholder="https://"
             aria-label="Website address"
             className="w-full mb-5 rounded-xl px-4 py-2 mt-2 outline-none placeholder-input-placeholder text-input-text text-sm bg-input font-medium"
             value={url}

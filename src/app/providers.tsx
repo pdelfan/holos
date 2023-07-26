@@ -1,20 +1,19 @@
 "use client";
 
 import { Toaster } from "react-hot-toast";
+import { Provider } from "jotai";
 
 interface Props {
   children: React.ReactNode;
 }
 
-function providers(props: Props) {
+export default function Providers(props: Props) {
   const { children } = props;
 
   return (
     <>
       <Toaster />
-      {children}
+      <Provider>{children}</Provider>
     </>
   );
 }
-
-export default providers;

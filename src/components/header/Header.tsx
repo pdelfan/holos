@@ -8,7 +8,8 @@ import Dropdown from "../dropdown/Dropdown";
 import DropdownItem from "../dropdown/DropdownItem";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function Header() {
   const supabase = createClientComponentClient<Database>();
@@ -25,9 +26,15 @@ function Header() {
     router.push("/dashboard/settings");
   };
 
+  const navigateToHome = () => {
+    router.push("/dashboard");
+  };
+
   return (
     <header className="flex items-center justify-between bg-white p-3">
-      <Image src={Logo} alt="HOLOS logo" width={40} height={40} />
+      <Link href="/dashboard">
+        <Image src={Logo} alt="HOLOS logo" width={40} height={40} />
+      </Link>
       <Navbar />
       <Dropdown button={<Avatar name="Pouria" />}>
         <DropdownItem onClick={navigateToSettings}>Settings</DropdownItem>

@@ -11,9 +11,6 @@ type Story = StoryObj<typeof WishlistCard>;
 
 export const Default: Story = {
   args: {
-    wishlistItem: {
-      title: "",
-      url: "https://www.mec.ca/en/product/6023-723/multi-trails-shorts",
-    },
+    url: "https://www.mec.ca/en/product/6023-723/multi-trails-shorts",
   },
 };

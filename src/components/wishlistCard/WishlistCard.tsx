@@ -8,13 +8,13 @@ import { useCallback } from "react";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 
 interface Props {
-  wishlistItem: WishlistItem;
+  url: string;
   onDelete: () => void;
 }
 
 function WishlistCard(props: Props) {
-  const { wishlistItem, onDelete } = props;
-  const { data, isLoading } = useGetMetadata({ wishlistItem });
+  const { url, onDelete } = props;
+  const { data, isLoading } = useGetMetadata({ url });
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
   }, []);
@@ -24,7 +24,7 @@ function WishlistCard(props: Props) {
       {isLoading && <Skeleton />}
       {data && (
         <article
-          className="flex flex-col relative bg-white rounded-2xl border-2 p-5 max-w-xs cursor-pointer group hover:border-neutral-300"
+          className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer group hover:border-neutral-300"
           onClick={() => {
             window.open(data.url, "_self");
           }}
@@ -33,7 +33,7 @@ function WishlistCard(props: Props) {
             className="object-cover rounded-lg ml-auto mr-auto"
             loader={imageLoader}
             src={data.image ?? PlaceholderImage}
-            alt="Item image"
+            alt="Wishlist item"
             width={150}
             height={150}
           />
