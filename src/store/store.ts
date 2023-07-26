@@ -8,3 +8,5 @@ interface WishlistItem {
 }
 
 export const wishlistAtom = atom<WishlistItem[] | []>([]);
+
+export const wishlistSearchAtom = atom<string>("");
