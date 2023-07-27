@@ -9,11 +9,12 @@ import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 
 interface Props {
   url: string;
+  viewMode: string;
   onDelete: () => void;
 }
 
 function WishlistCard(props: Props) {
-  const { url, onDelete } = props;
+  const { url, viewMode, onDelete } = props;
   const { data, isLoading } = useGetMetadata({ url });
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
@@ -29,15 +30,17 @@ function WishlistCard(props: Props) {
             window.open(data.url, "_blank");
           }}
         >
-          <Image
-            className="object-cover rounded-lg ml-auto mr-auto"
-            loader={imageLoader}
-            src={data.image ?? PlaceholderImage}
-            alt="Wishlist item"
-            width={150}
-            height={150}
-          />
-          <div className="flex flex-col gap-1 mt-6">
+          {viewMode !== "Compact" && (
+            <Image
+              className="object-cover rounded-lg ml-auto mr-auto mb-6"
+              loader={imageLoader}
+              src={data.image ?? PlaceholderImage}
+              alt="Wishlist item"
+              width={viewMode === "Large" ? 150: 80}
+              height={viewMode === "Large" ? 150: 80}
+            />
+          )}
+          <div className="flex flex-col gap-1">
             <div className="flex gap-1 flex-wrap items-center">
               <Image
                 src={data.logo ?? PlaceholderIcon}
@@ -49,7 +52,9 @@ function WishlistCard(props: Props) {
                 {getShortAddress(data.url)}
               </h2>
             </div>
-            <h3 className="text-stone-600 font-medium">{data.title}</h3>
+            {viewMode !== "Medium" && (
+              <h3 className="text-stone-600 font-medium">{data.title}</h3>
+            )}
           </div>
           <div className="hidden group-hover:flex gap-2 absolute right-5 top-5">
             <button

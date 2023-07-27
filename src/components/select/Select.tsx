@@ -6,22 +6,23 @@ import useOutsideSelect from "@/hooks/useOutsideSelect";
 import { useState } from "react";
 
 interface Props {
+  selected: SelectOption;
   options: SelectOption[];
   direction?: "left" | "right";
   onChange: (option: SelectOption) => void;
 }
 
 export default function Select(props: Props) {
-  const { options, direction = "right", onChange } = props;
+  const { selected, options, direction = "right", onChange } = props;
   const [isOpen, setIsOpen] = useState(false);
   const ref = useOutsideSelect({ callback: () => setIsOpen(false) });
-  const [selected, setSelected] = useState<SelectOption>(options[0]);
+
   const handleSelect = (option: SelectOption) => {
     if (option === selected) {
       setIsOpen(false);
       return;
     }
-    setSelected(option);
+    onChange(option);
     setIsOpen(false);
   };
 

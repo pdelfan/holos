@@ -12,14 +12,14 @@ import {
   viewFilterAtom,
   sortFilterAtom,
 } from "@/store/store";
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useState } from "react";
 
 export default function Wishlist() {
   const [showAddModal, setShowAddModal] = useState(false);
   const setWishlistSearch = useSetAtom(wishlistSearchAtom);
-  const setViewFilter = useSetAtom(viewFilterAtom);
-  const setSortFilter = useSetAtom(sortFilterAtom);
+  const [viewFilter, setViewFilter] = useAtom(viewFilterAtom);
+  const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
     setWishlistSearch(searchTerm);
   };
@@ -36,11 +36,13 @@ export default function Wishlist() {
         </div>
         <div className="flex gap-4">
           <Select
+            selected={viewFilter}
             options={viewFilterOptions}
             direction="left"
             onChange={(option: SelectOption) => setViewFilter(option)}
           />
           <Select
+            selected={sortFilter}
             options={sortFilterOptions}
             direction="right"
             onChange={(option: SelectOption) => setSortFilter(option)}
