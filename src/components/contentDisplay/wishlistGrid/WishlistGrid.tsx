@@ -6,14 +6,14 @@ import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import WishlistGridSkeleton from "./WishListGridSkeleton";
+import { useAtomValue } from "jotai";
+import { sortFilterAtom, wishlistSearchAtom } from "@/store/store";
+import { sortWishlist } from "@/utils/filterUtils";
 
-interface Props {
-  filter: string;
-}
-
-export default function WishlistGrid(props: Props) {
-  const { filter } = props;
+export default function WishlistGrid() {
   const supabase = createClientComponentClient<Database>();
+  const wishlistSearch = useAtomValue(wishlistSearchAtom);
+  const sortFilter = useAtomValue(sortFilterAtom);
   const { wishlist, setWishlist, error, isLoading, isValidating } =
     useGetWishlist();
 
@@ -26,6 +26,7 @@ export default function WishlistGrid(props: Props) {
     setWishlist(wishlist.filter((item) => item.id !== id));
     toast.success("Deleted item from wishlist.");
   };
+
   return (
     <>
       {isLoading && <WishlistGridSkeleton />}
@@ -33,8 +34,8 @@ export default function WishlistGrid(props: Props) {
         <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
           {!isLoading &&
             wishlist &&
-            wishlist
-              .filter((item) => item.url.includes(filter))
+            sortWishlist(wishlist, sortFilter.text)
+              .filter((item) => item.url.includes(wishlistSearch))
               .map((item) => (
                 <WishlistCard
                   key={item.id}
@@ -44,7 +45,7 @@ export default function WishlistGrid(props: Props) {
               ))}
         </section>
       )}
-      {!isLoading && wishlist.length === 0 && (
+      {!isLoading && !isValidating && wishlist && wishlist.length === 0 && (
         <div className="flex h-full items-center">
           <h3 className="text-gray text-lg text-center basis-full">
             No items found

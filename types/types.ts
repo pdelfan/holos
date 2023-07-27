@@ -41,3 +41,15 @@ interface PackItem {
   quantity: number;
   groupID: string;
 }
+
+interface SelectOption {
+  text: string;
+  icon?: string;
+}
+
+interface WishlistItem {
+  created_at: string;
+  id: number;
+  url: string;
+  user_id: string;
+}

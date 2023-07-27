@@ -26,7 +26,7 @@ function WishlistCard(props: Props) {
         <article
           className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer group hover:border-neutral-300"
           onClick={() => {
-            window.open(data.url, "_self");
+            window.open(data.url, "_blank");
           }}
         >
           <Image
@@ -37,7 +37,7 @@ function WishlistCard(props: Props) {
             width={150}
             height={150}
           />
-          <div className="mt-6">
+          <div className="flex flex-col gap-1 mt-6">
             <div className="flex gap-1 flex-wrap items-center">
               <Image
                 src={data.logo ?? PlaceholderIcon}
