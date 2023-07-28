@@ -36,8 +36,8 @@ function WishlistCard(props: Props) {
               loader={imageLoader}
               src={data.image ?? PlaceholderImage}
               alt="Wishlist item"
-              width={viewMode === "Large" ? 150: 80}
-              height={viewMode === "Large" ? 150: 80}
+              width={viewMode === "Large" ? 120 : 80}
+              height={130}
             />
           )}
           <div className="flex flex-col gap-1">

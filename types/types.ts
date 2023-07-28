@@ -53,3 +53,22 @@ interface WishlistItem {
   url: string;
   user_id: string;
 }
+
+type ElevationUnit = "m" | "ft";
+type DistanceUnit = "km" | "mi";
+type WeightUnit = "kg" | "g" | "lb" | "oz";
+
+interface TripItem {
+  created_at: string;
+  id: number;
+  title: string;
+  date: string;
+  elevation: number;
+  elevation_unit: string;
+  distance: number;
+  distance_unit: string;
+  base_weight: number;
+  total_weight: number;
+  weight_unit: string;
+  user_id: string;
+}

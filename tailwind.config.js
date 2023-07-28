@@ -14,11 +14,12 @@ module.exports = {
         purple: { light: "#DE5AFF", DEFAULT: "#CC00FF", dark: "#A900D3" },
         green: { light: "#1C8B1C", DEFAULT: "#115511", dark: "#0A330A" },
         gray: { light: "#838383", DEFAULT: "#555555", dark: "#181818" },
+        nandor: { light: "#E3FFF5", DEFAULT: "#A3B3AD", dark: "#4B5A54" },
         input: {
           DEFAULT: "#EDEDED",
           placeholder: "#888888",
           text: "#666666",
-          focus: "#E3E3E3"
+          focus: "#E3E3E3",
         },
         button: {
           DEFAULT: "#EDEDED",

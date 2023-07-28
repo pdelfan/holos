@@ -211,46 +211,46 @@ export interface Database {
       }
       trip: {
         Row: {
-          base_weight: number | null
+          base_weight: number
           created_at: string
-          date: string | null
-          distance: number | null
-          distance_unit: string | null
-          elevation: number | null
-          elevation_unit: string | null
+          date: string
+          distance: number
+          distance_unit: string
+          elevation: number
+          elevation_unit: string
           id: number
-          title: string | null
-          total_weight: number | null
+          title: string
+          total_weight: number
           user_id: string
-          weight_unit: string | null
+          weight_unit: string
         }
         Insert: {
-          base_weight?: number | null
+          base_weight: number
           created_at?: string
-          date?: string | null
-          distance?: number | null
-          distance_unit?: string | null
-          elevation?: number | null
-          elevation_unit?: string | null
+          date: string
+          distance: number
+          distance_unit: string
+          elevation: number
+          elevation_unit: string
           id?: number
-          title?: string | null
-          total_weight?: number | null
+          title: string
+          total_weight: number
           user_id: string
-          weight_unit?: string | null
+          weight_unit: string
         }
         Update: {
-          base_weight?: number | null
+          base_weight?: number
           created_at?: string
-          date?: string | null
-          distance?: number | null
-          distance_unit?: string | null
-          elevation?: number | null
-          elevation_unit?: string | null
+          date?: string
+          distance?: number
+          distance_unit?: string
+          elevation?: number
+          elevation_unit?: string
           id?: number
-          title?: string | null
-          total_weight?: number | null
+          title?: string
+          total_weight?: number
           user_id?: string
-          weight_unit?: string | null
+          weight_unit?: string
         }
         Relationships: [
           {
