@@ -46,12 +46,12 @@ export const sortTrips = (wishlist: TripItem[], sortMode: string) =>
   [...wishlist].sort((a, b) => {
     if (sortMode === "By Date ↓") {
       return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        new Date(b.date).getTime() - new Date(a.date).getTime()
       );
     }
     if (sortMode === "By Date ↑") {
       return (
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        new Date(a.date).getTime() - new Date(b.date).getTime()
       );
     }
 

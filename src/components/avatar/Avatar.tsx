@@ -27,7 +27,7 @@ function Avatar(props: Props) {
           )}
           {!image && (
             <div
-              className={`flex items-center justify-center bg-red-500 
+              className={`flex items-center justify-center bg-purple 
             ${
               size === "small" ? "h-8 w-8 rounded-lg" : "h-24 w-24 rounded-3xl"
             } `}
