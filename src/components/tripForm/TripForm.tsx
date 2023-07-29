@@ -4,7 +4,7 @@ import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
-import { mutate } from "swr";
+import { updateTripData } from "@/utils/fetchUtils";
 
 interface Props {
   onClose: () => void;
@@ -56,7 +56,7 @@ export default function TripForm(props: Props) {
 
     toast.success("Added trip.");
     onClose();
-    mutate("getTrips");
+    updateTripData();
   };
 
   return (

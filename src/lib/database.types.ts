@@ -80,42 +80,42 @@ export interface Database {
           description: string | null
           id: number
           image_url: string | null
-          price: number | null
-          season: string | null
-          title: string | null
-          type: string | null
+          price: number
+          season: string
+          title: string
+          type: string
           url: string | null
           user_id: string
-          weight: number | null
-          weight_unit: string | null
+          weight: number
+          weight_unit: string
         }
         Insert: {
           created_at?: string
           description?: string | null
           id?: number
           image_url?: string | null
-          price?: number | null
-          season?: string | null
-          title?: string | null
-          type?: string | null
+          price: number
+          season: string
+          title: string
+          type: string
           url?: string | null
           user_id: string
-          weight?: number | null
-          weight_unit?: string | null
+          weight: number
+          weight_unit: string
         }
         Update: {
           created_at?: string
           description?: string | null
           id?: number
           image_url?: string | null
-          price?: number | null
-          season?: string | null
-          title?: string | null
-          type?: string | null
+          price?: number
+          season?: string
+          title?: string
+          type?: string
           url?: string | null
           user_id?: string
-          weight?: number | null
-          weight_unit?: string | null
+          weight?: number
+          weight_unit?: string
         }
         Relationships: [
           {
@@ -266,19 +266,19 @@ export interface Database {
           avatar_url: string | null
           email: string | null
           id: string
-          preferred_currency: string | null
+          preferred_currency: string
         }
         Insert: {
           avatar_url?: string | null
           email?: string | null
           id: string
-          preferred_currency?: string | null
+          preferred_currency?: string
         }
         Update: {
           avatar_url?: string | null
           email?: string | null
           id?: string
-          preferred_currency?: string | null
+          preferred_currency?: string
         }
         Relationships: [
           {

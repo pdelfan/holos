@@ -17,13 +17,18 @@ interface ChartData {
   weight: number;
 }
 
-interface InventoryData {
+interface InventoryItem {
+  id: number;
+  created_at: string;
   title: string;
-  image?: string;
-  description?: string;
-  tag?: string;
+  image_url: string | null;
+  url: string | null;
+  description: string | null;
+  type: string;
   price?: number;
   weight?: number;
+  weight_unit: string;
+  season: string;
 }
 
 type ItemType = "General" | "Consumable" | "Wearable";
@@ -72,3 +77,5 @@ interface TripItem {
   weight_unit: string;
   user_id: string;
 }
+
+type Season = "Winter" | "Spring" | "Summer" | "Fall" | "3-Season";

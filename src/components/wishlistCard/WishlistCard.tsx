@@ -32,11 +32,13 @@ function WishlistCard(props: Props) {
         >
           {viewMode !== "Compact" && (
             <Image
-              className="object-cover rounded-lg ml-auto mr-auto mb-6"
+              className={`rounded-lg ml-auto mr-auto mb-6 ${
+                viewMode === "Large" ? "h-44 w-48" : "h-28 w-28"
+              } object-contain`}
               loader={imageLoader}
               src={data.image ?? PlaceholderImage}
               alt="Wishlist item"
-              width={viewMode === "Large" ? 120 : 80}
+              width={120}
               height={130}
             />
           )}

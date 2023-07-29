@@ -2,6 +2,7 @@
 
 import AddButton from "@/components/addButton/AddButton";
 import WishlistGrid from "@/components/contentDisplay/wishlistGrid/WishlistGrid";
+import ModalContainer from "@/components/modalContainer/ModalContainer";
 import SearchBar from "@/components/searchBar/SearchBar";
 import Select from "@/components/select/Select";
 import WishlistForm from "@/components/wishlistForm/WishlistForm";
@@ -53,7 +54,9 @@ export default function Wishlist() {
       <div className="fixed bottom-0 right-0">
         <div className="relative">
           {showAddModal && (
-            <WishlistForm onClose={() => setShowAddModal(false)} />
+            <ModalContainer>
+              <WishlistForm onClose={() => setShowAddModal(false)} />
+            </ModalContainer>
           )}
           <AddButton onClick={() => setShowAddModal(!showAddModal)} />
         </div>

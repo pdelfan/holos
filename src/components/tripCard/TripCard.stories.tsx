@@ -11,13 +11,12 @@ type Story = StoryObj<typeof TripCard>;
 
 export const Default: Story = {
   args: {
-    image:
-      "https://images.unsplash.com/photo-1606285055154-8ab1f4f4eb6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2080&q=80",
     title: "Panorama Ridge",
-    date: new Date(),
+    date: new Date().toDateString(),
     elevation: 800,
-    distance: 6.2,
-    duration: 2,
+    distance: 6.2,    
+    baseWeight: 5.3,
     totalWeight: 8.7,
+    weightUnit: "kg",
   },
 };

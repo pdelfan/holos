@@ -4,34 +4,34 @@ import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
-import { updateTripData } from "@/utils/fetchUtils";
+import { updateIventoryData } from "@/utils/fetchUtils";
 
 interface Props {
-  tripItem: TripItem;
+  inventoryItem: InventoryItem;
   onClose: () => void;
 }
 
-export default function EditTripForm(props: Props) {
-  const { tripItem, onClose } = props;
+export default function EditInventoryForm(props: Props) {
+  const { onClose, inventoryItem } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
-  const [title, setTitle] = useState(tripItem.title);
-  const [date, setDate] = useState(tripItem.date);
-  const [elevation, setElevation] = useState<number>(tripItem.elevation);
-  const [elevationUnit, setElevationUnit] = useState<ElevationUnit | string>(
-    tripItem.elevation_unit
+  const [title, setTitle] = useState(inventoryItem.title);
+  const [description, setDescription] = useState(inventoryItem.description);
+  const [itemType, setItemType] = useState<ItemType | string>(
+    inventoryItem.type
   );
-  const [distance, setDistance] = useState<number>(tripItem.distance);
-  const [distanceUnit, setDistanceUnit] = useState<DistanceUnit | string>(
-    tripItem.distance_unit
-  );
-  const [baseWeight, setBaseWeight] = useState<number>(tripItem.base_weight);
-  const [totalWeight, setTotalWeight] = useState<number>(tripItem.total_weight);
+  const [price, setPrice] = useState<number>(inventoryItem.price ?? 0);
+  const [weight, setWeight] = useState<number>(inventoryItem.weight ?? 0);
   const [weightUnit, setWeightUnit] = useState<WeightUnit | string>(
-    tripItem.weight_unit
+    inventoryItem.weight_unit
   );
+  const [season, setSeason] = useState<Season | string>(inventoryItem.season);
+  const [imageURL, setImageURL] = useState<string | null>(
+    inventoryItem.image_url
+  );
+  const [url, setURL] = useState<string | null>(inventoryItem.url);
 
-  const onUpdateTrip = async (e: FormEvent) => {
+  const onUpdateInventoryItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
     if (!user.session) {
@@ -40,28 +40,27 @@ export default function EditTripForm(props: Props) {
     }
 
     const { error } = await supabase
-      .from("trip")
+      .from("inventory")
       .update({
         title: title,
-        date: date,
-        elevation: elevation ?? 0,
-        elevation_unit: elevationUnit,
-        distance: distance ?? 0,
-        distance_unit: distanceUnit,
-        base_weight: baseWeight ?? 0,
-        total_weight: totalWeight ?? 0,
+        description: description ?? "",
+        image_url: imageURL === "" ? null : imageURL,
+        url: url === "" ? null : url,
+        type: itemType,
+        price: price,
+        weight: weight ?? 0,
         weight_unit: weightUnit,
+        season: season,
       })
-      .match({ id: tripItem.id, user_id: user.session.user.id });
-
+      .match({ id: inventoryItem.id, user_id: user.session.user.id });
     if (error) {
-      toast.error("Couldn't update trip.");
+      toast.error("Couldn't update item.");
       return;
     }
 
-    toast.success("Updated trip.");
+    toast.success("Updated item.");
     onClose();
-    updateTripData();
+    updateIventoryData();
   };
 
   return (
@@ -69,7 +68,7 @@ export default function EditTripForm(props: Props) {
       ref={ref}
       className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
     >
-      <form onSubmit={onUpdateTrip} className="gap-y-8 flex flex-col">
+      <form onSubmit={onUpdateInventoryItem} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <label className="text-md font-medium text-gray-900 dark:text-white">
@@ -88,15 +87,14 @@ export default function EditTripForm(props: Props) {
           </div>
           <div className="flex-auto">
             <label className="text-md font-medium text-gray-900 dark:text-white">
-              Date
+              Description
             </label>
-            <input
-              required
-              type="date"
-              aria-label="Date of the trip"
+            <textarea
+              placeholder="Description"
+              aria-label="Description"
               className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={description ?? ""}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
         </div>
@@ -104,50 +102,54 @@ export default function EditTripForm(props: Props) {
         <div className="flex gap-8">
           <div className="flex flex-wrap gap-3">
             <div className="flex-1">
-              <label className="text-md font-medium text-gray-900 dark:text-white">
-                Elevation
-              </label>
-              <input
-                required
-                type="number"
-                step="0.01"
-                aria-label="Elevation of the trip"
-                className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
-                value={elevation}
-                onChange={(e) => setElevation(parseFloat(e.target.value))}
-              />
-            </div>
-            <div className="flex-auto">
               <FormSelect
-                label="Unit"
-                initialValue={elevationUnit}
-                options={["m", "ft"]}
-                onChange={setElevationUnit}
+                label="Type"
+                options={["General", "Wearable", "Consumable"]}
+                onChange={setItemType}
               />
             </div>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
             <div className="flex-1">
               <label className="text-md font-medium text-gray-900 dark:text-white">
-                Distance
+                Price
               </label>
               <input
                 required
                 type="number"
                 step="0.01"
-                aria-label="Elevation of the trip"
+                placeholder="0"
+                aria-label="Price of the item"
                 className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
-                value={distance}
-                onChange={(e) => setDistance(parseFloat(e.target.value))}
+                value={price}
+                onChange={(e) => setPrice(parseFloat(e.target.value))}
               />
             </div>
-            <div className="flex-auto">
+            <div className="1">
+              <FormSelect
+                label="Season"
+                options={["3-Season", "Winter", "Summer", "Spring", "Fall"]}
+                onChange={setSeason}
+              />
+            </div>
+            <div className="flex-1">
+              <label className="text-md font-medium text-gray-900 dark:text-white">
+                Weight
+              </label>
+              <input
+                required
+                type="number"
+                step="0.01"
+                placeholder="0"
+                aria-label="Weight of the item"
+                className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+                value={weight}
+                onChange={(e) => setWeight(parseFloat(e.target.value))}
+              />
+            </div>
+            <div className="flex-2">
               <FormSelect
                 label="Unit"
-                initialValue={distanceUnit}
-                options={["km", "mi"]}
-                onChange={setDistanceUnit}
+                options={["kg", "g", "lb", "oz"]}
+                onChange={setWeightUnit}
               />
             </div>
           </div>
@@ -156,44 +158,32 @@ export default function EditTripForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-3">
           <div className="flex-1">
             <label className="text-md font-medium text-gray-900 dark:text-white">
-              Base Weight
+              Item URL
             </label>
             <input
-              required
-              type="number"
-              step="0.01"
-              placeholder="0"
-              aria-label="Base Weight"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
-              value={baseWeight}
+              type="url"
+              placeholder="https://"
+              aria-label="Image URL"
+              className="w-full mb-5 border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              value={url ?? ""}
               onChange={(e) => {
-                setBaseWeight(parseFloat(e.target.value));
+                setURL(e.target.value);
               }}
             />
           </div>
           <div className="flex-1">
             <label className="text-md font-medium text-gray-900 dark:text-white">
-              Total Weight
+              Image URL
             </label>
             <input
-              required
-              type="number"
-              step="0.01"
-              placeholder="0"
-              aria-label="Total Weight"
+              type="url"
+              placeholder="https://"
+              aria-label="Image URL"
               className="w-full mb-5 border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
-              value={totalWeight}
+              value={imageURL ?? ""}
               onChange={(e) => {
-                setTotalWeight(parseFloat(e.target.value));
+                setImageURL(e.target.value);
               }}
-            />
-          </div>
-          <div className="flex-1">
-            <FormSelect
-              label="Unit"
-              initialValue={weightUnit}
-              options={["kg", "g", "lb", "oz"]}
-              onChange={setWeightUnit}
             />
           </div>
         </div>
@@ -209,7 +199,7 @@ export default function EditTripForm(props: Props) {
             type="submit"
             className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
           >
-            Update Trip
+            Update Item
           </button>
         </div>
       </form>
