@@ -5,28 +5,38 @@ import { formatUsername } from "@/utils/textUtils";
 interface Props {
   name: string | null;
   image?: string;
+  size?: "small" | "large";
 }
 
 function Avatar(props: Props) {
-  const { name, image } = props;
+  const { name, image, size = "small" } = props;
 
   return (
     <>
-      {!name && <AvatarSkeleton />}
+      {!name && <AvatarSkeleton size={size} />}
       {name && (
         <>
           {image && (
             <Image
-              className="rounded-full"
+              className="rounded-full h-52 w-52"
               src={image}
               alt="Avatar image"
-              width={35}
-              height={35}
+              width={size === "small" ? 35 : 50}
+              height={size === "small" ? 35 : 50}
             />
           )}
           {!image && (
-            <div className="flex items-center justify-center rounded-full bg-red-500 h-8 w-8">
-              <span className="text-sm text-amber-50">
+            <div
+              className={`flex items-center justify-center bg-red-500 
+            ${
+              size === "small" ? "h-8 w-8 rounded-lg" : "h-24 w-24 rounded-3xl"
+            } `}
+            >
+              <span
+                className={`${
+                  size === "small" ? "text-sm" : "text-3xl"
+                } text-amber-50`}
+              >
                 {formatUsername(name)}
               </span>
             </div>
