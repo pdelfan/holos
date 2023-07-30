@@ -43,7 +43,7 @@ function TripCard(props: Props) {
       style={gradient}
       tabIndex={0}
     >
-      <div className="flex gap-2 justify-between items-center">
+      <div className="flex flex-wrap gap-3 justify-between items-center">
         <span className="flex items-center gap-1">
           <Image src={TripIcon} alt="Hiking icon" width={40} height={40} />
           <h2 className="text-3xl text-white font-semibold break-words overflow-clip">
