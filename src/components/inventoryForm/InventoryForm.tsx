@@ -60,7 +60,7 @@ export default function InventoryForm(props: Props) {
   return (
     <div
       ref={ref}
-      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
+      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[70vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
     >
       <form onSubmit={onAddItem} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
@@ -120,7 +120,7 @@ export default function InventoryForm(props: Props) {
             <div className="1">
               <FormSelect
                 label="Season"
-                options={["3-Season", "Winter", "Summer", "Spring", "Fall"]}
+                options={["3-Season", "Winter"]}
                 onChange={setSeason}
               />
             </div>
@@ -154,7 +154,7 @@ export default function InventoryForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Item URL
             </label>
-            <input              
+            <input
               type="url"
               placeholder="https://"
               aria-label="Image URL"
@@ -169,7 +169,7 @@ export default function InventoryForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Image URL
             </label>
-            <input              
+            <input
               type="url"
               placeholder="https://"
               aria-label="Image URL"

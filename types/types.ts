@@ -78,4 +78,4 @@ interface TripItem {
   user_id: string;
 }
 
-type Season = "Winter" | "Spring" | "Summer" | "Fall" | "3-Season";
+type Season = "Winter" | "3-Season";

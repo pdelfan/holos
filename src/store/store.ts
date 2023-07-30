@@ -5,9 +5,6 @@ import compactIcon from "@/assets/icons/compactIcon.svg";
 import TimeIcon from "@/assets/icons/timeIcon.svg";
 import ALphabetIcon from "@/assets/icons/alphabetIcon.svg";
 import WinterIcon from "@/assets/icons/winterIcon.svg";
-import SpringIcon from "@/assets/icons/springIcon.svg";
-import SummerIcon from "@/assets/icons/summerIcon.svg";
-import FallIcon from "@/assets/icons/fallIcon.svg";
 import AllIcon from "@/assets/icons/allIcon.svg";
 
 export const currencyAtom = atom<string>("");
@@ -35,9 +32,6 @@ export const viewFilterAtom = atom<SelectOption>(viewFilterOptions[0]);
 export const seasonFilterOptions: SelectOption[] = [
   { text: "Show All" },
   { text: "Winter", icon: WinterIcon },
-  { text: "Spring", icon: SpringIcon },
-  { text: "Summer", icon: SummerIcon },
-  { text: "Fall", icon: FallIcon },
   { text: "3-Season", icon: AllIcon },
 ];
 
