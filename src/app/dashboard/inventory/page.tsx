@@ -1,11 +1,11 @@
 "use client";
 
-import AddButton from "@/components/addButton/AddButton";
+import AddButton from "@/components/actions/addButton/AddButton";
 import InventoryGrid from "@/components/contentDisplay/inventoryGrid/InventoryGrid";
-import InventoryForm from "@/components/inventoryForm/InventoryForm";
-import ModalContainer from "@/components/modalContainer/ModalContainer";
-import SearchBar from "@/components/searchBar/SearchBar";
-import Select from "@/components/select/Select";
+import InventoryForm from "@/components/forms/inventoryForm/InventoryForm";
+import Modal from "@/components/feedback/modal/Modal";
+import SearchBar from "@/components/search/searchBar/SearchBar";
+import Select from "@/components/forms/select/Select";
 import {
   inventorySearchAtom,
   seasonFilterAtom,
@@ -51,9 +51,9 @@ export default function Inventory() {
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (
-            <ModalContainer>
+            <Modal>
               <InventoryForm onClose={() => setShowAddModal(false)} />
-            </ModalContainer>
+            </Modal>
           )}
           <AddButton onClick={() => setShowAddModal(!showAddModal)} />
         </div>

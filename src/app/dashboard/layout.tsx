@@ -1,5 +1,5 @@
-import AppBar from "@/components/appBar/AppBar";
-import Header from "@/components/header/Header";
+import AppBar from "@/components/navigational/appBar/AppBar";
+import Header from "@/components/navigational/header/Header";
 
 export default function DashboardLayout({
   children,

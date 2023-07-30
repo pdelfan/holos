@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import Logo from "@/assets/logo.svg";
-import Avatar from "../avatar/Avatar";
+import Avatar from "../../dataDisplay/avatar/Avatar";
 import Navbar from "../navbar/Navbar";
-import Dropdown from "../dropdown/Dropdown";
-import DropdownItem from "../dropdown/DropdownItem";
+import Dropdown from "../../actions/dropdown/Dropdown";
+import DropdownItem from "../../actions/dropdown/DropdownItem";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import { useRouter } from "next/navigation";

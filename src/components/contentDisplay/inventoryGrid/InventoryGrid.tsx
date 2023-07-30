@@ -12,11 +12,11 @@ import {
 } from "@/store/store";
 import { sortInventory } from "@/utils/filterUtils";
 import useGetInventory from "@/hooks/useGetInventory";
-import InventoryCard from "@/components/inventoryCard/InventoryCard";
+import InventoryCard from "@/components/contentDisplay/inventoryCard/InventoryCard";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { useState } from "react";
-import ModalContainer from "@/components/modalContainer/ModalContainer";
-import EditInventoryForm from "@/components/editInventoryForm/EditInventoryForm";
+import Modal from "@/components/feedback/modal/Modal";
+import EditInventoryForm from "@/components/forms/editInventoryForm/EditInventoryForm";
 
 export default function InventoryGrid() {
   const supabase = createClientComponentClient<Database>();
@@ -77,12 +77,12 @@ export default function InventoryGrid() {
         </div>
       )}
       {showModal && currentIventoryItem && (
-        <ModalContainer>
+        <Modal>
           <EditInventoryForm
             inventoryItem={currentIventoryItem}
             onClose={() => setShowModal(false)}
           />
-        </ModalContainer>
+        </Modal>
       )}
     </>
   );

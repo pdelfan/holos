@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useCallback } from "react";
-import Tag from "@/components/tag/Tag";
+import Tag from "@/components/contentDisplay/tag/Tag";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
 

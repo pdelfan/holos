@@ -1,4 +1,4 @@
-import TripCardSkeleton from "@/components/tripCard/TripCardSkeleton";
+import TripCardSkeleton from "@/components/contentDisplay/tripCard/TripCardSkeleton";
 
 export default function TripGridSkeleton() {
   return (

@@ -1,11 +1,11 @@
 "use client";
 
-import AddButton from "@/components/addButton/AddButton";
+import AddButton from "@/components/actions/addButton/AddButton";
 import WishlistGrid from "@/components/contentDisplay/wishlistGrid/WishlistGrid";
-import ModalContainer from "@/components/modalContainer/ModalContainer";
-import SearchBar from "@/components/searchBar/SearchBar";
-import Select from "@/components/select/Select";
-import WishlistForm from "@/components/wishlistForm/WishlistForm";
+import Modal from "@/components/feedback/modal/Modal";
+import SearchBar from "@/components/search/searchBar/SearchBar";
+import Select from "@/components/forms/select/Select";
+import WishlistForm from "@/components/forms/wishlistForm/WishlistForm";
 import {
   wishlistSearchAtom,
   viewFilterOptions,
@@ -54,9 +54,9 @@ export default function Wishlist() {
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (
-            <ModalContainer>
+            <Modal>
               <WishlistForm onClose={() => setShowAddModal(false)} />
-            </ModalContainer>
+            </Modal>
           )}
           <AddButton onClick={() => setShowAddModal(!showAddModal)} />
         </div>

@@ -4,7 +4,7 @@ interface Props {
     children: ReactNode;
   }
   
-  export default function ModalContainer(props: Props) {
+  export default function Modal(props: Props) {
     const { children } = props;
   
     return (

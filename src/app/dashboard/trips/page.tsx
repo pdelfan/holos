@@ -1,11 +1,11 @@
 "use client";
 
-import AddButton from "@/components/addButton/AddButton";
+import AddButton from "@/components/actions/addButton/AddButton";
 import TripGrid from "@/components/contentDisplay/TripGrid/TripGrid";
-import ModalContainer from "@/components/modalContainer/ModalContainer";
-import SearchBar from "@/components/searchBar/SearchBar";
-import Select from "@/components/select/Select";
-import TripForm from "@/components/tripForm/TripForm";
+import Modal from "@/components/feedback/modal/Modal";
+import SearchBar from "@/components/search/searchBar/SearchBar";
+import Select from "@/components/forms/select/Select";
+import TripForm from "@/components/forms/tripForm/TripForm";
 import {
   sortFilterAtom,
   sortFilterOptions,
@@ -41,9 +41,9 @@ export default function Trips() {
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (
-            <ModalContainer>
+            <Modal>
               <TripForm onClose={() => setShowAddModal(false)} />
-            </ModalContainer>
+            </Modal>
           )}
           <AddButton onClick={() => setShowAddModal(!showAddModal)} />
         </div>

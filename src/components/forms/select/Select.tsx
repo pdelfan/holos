@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Button from "@/components/button/Button";
+import Button from "@/components/actions/button/Button";
 import useOutsideSelect from "@/hooks/useOutsideSelect";
 import { useState } from "react";
 

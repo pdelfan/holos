@@ -1,4 +1,4 @@
-import InventoryCardSkeleton from "@/components/inventoryCard/InventoryCardSkeleton";
+import InventoryCardSkeleton from "@/components/contentDisplay/inventoryCard/InventoryCardSkeleton";
 
 export default function InventoryGridSkeleton() {
   return (

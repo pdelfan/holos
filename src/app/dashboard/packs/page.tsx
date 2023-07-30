@@ -1,6 +1,6 @@
 "use client";
 
-import SearchBar from "@/components/searchBar/SearchBar";
+import SearchBar from "@/components/search/searchBar/SearchBar";
 
 export default function Packs() {
   return (

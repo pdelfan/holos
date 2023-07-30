@@ -7,11 +7,11 @@ import { useAtomValue } from "jotai";
 import { sortFilterAtom, tripSearchAtom } from "@/store/store";
 import { sortTrips } from "@/utils/filterUtils";
 import useGetTrips from "@/hooks/useGetTrips";
-import TripCard from "@/components/tripCard/TripCard";
+import TripCard from "@/components/contentDisplay/tripCard/TripCard";
 import TripGridSkeleton from "./TripGridSkeleton";
 import { useState } from "react";
-import EditTripForm from "@/components/editTripForm/EditTripForm";
-import ModalContainer from "@/components/modalContainer/ModalContainer";
+import EditTripForm from "@/components/forms/editTripForm/EditTripForm";
+import Modal from "@/components/feedback/modal/Modal";
 
 export default function TripGrid() {
   const supabase = createClientComponentClient<Database>();
@@ -73,12 +73,12 @@ export default function TripGrid() {
         </div>
       )}
       {showModal && currentTrip && (
-        <ModalContainer>
+        <Modal>
           <EditTripForm
             tripItem={currentTrip}
             onClose={() => setShowModal(false)}
           />
-        </ModalContainer>
+        </Modal>
       )}
     </>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import WishlistCard from "@/components/wishlistCard/WishlistCard";
+import WishlistCard from "@/components/contentDisplay/wishlistCard/WishlistCard";
 import useGetWishlist from "@/hooks/useGetWishlist";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";

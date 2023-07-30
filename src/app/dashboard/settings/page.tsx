@@ -1,7 +1,7 @@
 "use client";
 
-import Avatar from "@/components/avatar/Avatar";
-import Button from "@/components/button/Button";
+import Avatar from "@/components/dataDisplay/avatar/Avatar";
+import Button from "@/components/actions/button/Button";
 import useGetUser from "@/hooks/useGetUser";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
