@@ -37,7 +37,7 @@ export default function PackGrid() {
     <>
       {isLoading && <PackGridSkeleton />}
       {!isLoading && !isValidating && (
-        <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4 mt-10 animate-fade">
+        <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] gap-4 mt-10 animate-fade">
           {!isLoading &&
             packs &&
             sortPacks(packs, sortFilter.text)
