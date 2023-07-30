@@ -3,7 +3,7 @@ import useOutsideSelect from "@/hooks/useOutsideSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
-import { updateWishlistData } from "@/utils/fetchUtils";
+import { updatePackData } from "@/utils/fetchUtils";
 import FormSelect from "../formSelect/FormSelect";
 
 interface Props {
@@ -46,7 +46,7 @@ export default function PackForm(props: Props) {
 
     toast.success("Added pack.");
     onClose();
-    updateWishlistData();
+    updatePackData();
   };
 
   return (
