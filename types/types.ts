@@ -5,11 +5,26 @@ interface Metadata {
   logo: string;
 }
 
+interface Pack {
+  id: number;
+  base_weight: number;
+  created_at: string;
+  description: string;
+  title: string;
+  total_cost: number;
+  total_items: number;
+  total_weight: number;
+  weight_unit: string;
+  user_id: string;
+}
+
 interface PackSummary {
-  baseWeight: number;
-  totalWeight: number;
-  totalCost: number;
-  totalItems: number;
+  weight_unit: string;
+  base_weight: number;
+  total_weight: number;
+  currency: string;
+  total_cost: number;
+  total_items: number;
 }
 
 interface ChartData {

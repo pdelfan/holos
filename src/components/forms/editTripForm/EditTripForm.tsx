@@ -18,16 +18,16 @@ export default function EditTripForm(props: Props) {
   const [title, setTitle] = useState(tripItem.title);
   const [date, setDate] = useState(tripItem.date);
   const [elevation, setElevation] = useState<number>(tripItem.elevation);
-  const [elevationUnit, setElevationUnit] = useState<ElevationUnit | string>(
+  const [elevationUnit, setElevationUnit] = useState<string>(
     tripItem.elevation_unit
   );
   const [distance, setDistance] = useState<number>(tripItem.distance);
-  const [distanceUnit, setDistanceUnit] = useState<DistanceUnit | string>(
+  const [distanceUnit, setDistanceUnit] = useState<string>(
     tripItem.distance_unit
   );
   const [baseWeight, setBaseWeight] = useState<number>(tripItem.base_weight);
   const [totalWeight, setTotalWeight] = useState<number>(tripItem.total_weight);
-  const [weightUnit, setWeightUnit] = useState<WeightUnit | string>(
+  const [weightUnit, setWeightUnit] = useState<string>(
     tripItem.weight_unit
   );
 

@@ -1,5 +1,9 @@
 "use client";
 
+import AddButton from "@/components/actions/addButton/AddButton";
+import PackGrid from "@/components/contentDisplay/packGrid/PackGrid";
+import Modal from "@/components/feedback/modal/Modal";
+import PackForm from "@/components/forms/packForm/PackForm";
 import Select from "@/components/forms/select/Select";
 import SearchBar from "@/components/search/searchBar/SearchBar";
 import {
@@ -33,6 +37,17 @@ export default function Packs() {
           />
         </div>
       </section>
+      <PackGrid />
+      <div className="fixed bottom-12 right-0 sm:bottom-0">
+        <div className="relative">
+          {showAddModal && (
+            <Modal>
+              <PackForm onClose={() => setShowAddModal(false)} />
+            </Modal>
+          )}
+          <AddButton onClick={() => setShowAddModal(!showAddModal)} />
+        </div>
+      </div>
     </>
   );
 }

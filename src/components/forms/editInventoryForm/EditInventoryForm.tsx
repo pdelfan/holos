@@ -22,7 +22,7 @@ export default function EditInventoryForm(props: Props) {
   );
   const [price, setPrice] = useState<number>(inventoryItem.price ?? 0);
   const [weight, setWeight] = useState<number>(inventoryItem.weight ?? 0);
-  const [weightUnit, setWeightUnit] = useState<WeightUnit | string>(
+  const [weightUnit, setWeightUnit] = useState<string>(
     inventoryItem.weight_unit
   );
   const [season, setSeason] = useState<Season | string>(inventoryItem.season);

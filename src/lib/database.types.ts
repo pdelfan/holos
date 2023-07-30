@@ -128,40 +128,40 @@ export interface Database {
       }
       pack: {
         Row: {
-          base_weight: number | null
+          base_weight: number
           created_at: string
-          description: string | null
+          description: string
           id: number
-          title: string | null
-          total_cost: number | null
-          total_items: number | null
-          total_weight: number | null
+          title: string
+          total_cost: number
+          total_items: number
+          total_weight: number
           user_id: string
-          weight_unit: string | null
+          weight_unit: string
         }
         Insert: {
-          base_weight?: number | null
+          base_weight: number
           created_at?: string
-          description?: string | null
+          description: string
           id?: number
-          title?: string | null
-          total_cost?: number | null
-          total_items?: number | null
-          total_weight?: number | null
+          title: string
+          total_cost: number
+          total_items: number
+          total_weight: number
           user_id: string
-          weight_unit?: string | null
+          weight_unit: string
         }
         Update: {
-          base_weight?: number | null
+          base_weight?: number
           created_at?: string
-          description?: string | null
+          description?: string
           id?: number
-          title?: string | null
-          total_cost?: number | null
-          total_items?: number | null
-          total_weight?: number | null
+          title?: string
+          total_cost?: number
+          total_items?: number
+          total_weight?: number
           user_id?: string
-          weight_unit?: string | null
+          weight_unit?: string
         }
         Relationships: [
           {

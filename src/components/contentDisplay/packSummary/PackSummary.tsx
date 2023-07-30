@@ -4,30 +4,69 @@ import CostIcon from "@/assets/icons/cost.svg";
 import ItemsIcon from "@/assets/icons/items.svg";
 import Image from "next/image";
 
-function PackSummary() {
+interface Props {
+  data: PackSummary;
+}
+
+function PackSummary(props: Props) {
+  const { data } = props;
+  const {
+    weight_unit,
+    base_weight,
+    total_weight,
+    currency,
+    total_cost,
+    total_items,
+  } = data;
   return (
     <div>
       <ul className="flex gap-8 flex-wrap">
         <li className="flex flex-col items-center">
-          <span className="text-gray-light font-medium">Base weight</span>
-          <Image src={BaseWeightIcon} alt="Base icon" width={20} height={20} />
+          <h4 className="text-gray-light font-medium">Base weight</h4>
+          <span className="flex flex-wrap gap-1">
+            <Image
+              src={BaseWeightIcon}
+              alt="Base icon"
+              width={20}
+              height={20}
+            />
+            <h5 className="text-gray font-medium">
+              {base_weight}
+              {weight_unit}
+            </h5>
+          </span>
         </li>
         <li className="flex flex-col items-center">
-          <span className="text-gray-light font-medium">Total weight</span>
-          <Image
-            src={TotalWeightIcon}
-            alt="Total weight icon"
-            width={20}
-            height={20}
-          />
+          <h4 className="text-gray-light font-medium">Total weight</h4>
+          <span className="flex flex-wrap gap-1">
+            <Image
+              src={TotalWeightIcon}
+              alt="Total weight icon"
+              width={20}
+              height={20}
+            />
+            <h5 className="text-gray font-medium">
+              {total_weight}
+              {weight_unit}
+            </h5>
+          </span>
         </li>
         <li className="flex flex-col items-center">
-          <span className="text-gray-light font-medium">Total cost</span>
-          <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
+          <h4 className="text-gray-light font-medium">Total cost</h4>
+          <span className="flex flex-wrap gap-1">
+            <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
+            <h5 className="text-gray font-medium">
+              {currency}
+              {total_cost}
+            </h5>
+          </span>
         </li>
         <li className="flex flex-col items-center">
-          <span className="text-gray-light font-medium">Total items</span>
-          <Image src={ItemsIcon} alt="Items icon" width={20} height={20} />
+          <h4 className="text-gray-light font-medium">Total items</h4>
+          <span className="flex flex-wrap gap-1">
+            <Image src={ItemsIcon} alt="Items icon" width={20} height={20} />
+            <h5 className="text-gray font-medium">{total_items}</h5>
+          </span>
         </li>
       </ul>
     </div>

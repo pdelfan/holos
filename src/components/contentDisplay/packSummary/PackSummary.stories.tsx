@@ -9,4 +9,15 @@ const meta: Meta<typeof PackSummary> = {
 export default meta;
 type Story = StoryObj<typeof PackSummary>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    data: {
+      weight_unit: "kg",
+      base_weight: 2.2,
+      total_weight: 5,
+      currency: "$",
+      total_cost: 900,
+      total_items: 10,
+    },
+  },
+};

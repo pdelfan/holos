@@ -71,28 +71,6 @@ function InventoryCard(props: Props) {
             </span>
           )}
         </div>
-        <div className="hidden group-focus:flex group-hover:flex gap-2 absolute right-5 top-5">
-          <button
-            className="bg-button p-2 rounded-full hover:bg-button-hover"
-            tabIndex={0}
-            onClick={(e) => {
-              e.stopPropagation();
-              onDelete();
-            }}
-          >
-            <Image src={DeleteIcon} alt="Dots icon" width={20} height={20} />
-          </button>
-          <button
-            className="bg-button p-2 rounded-full hover:bg-button-hover"
-            tabIndex={0}
-            onClick={(e) => {
-              e.stopPropagation();
-              onEdit();
-            }}
-          >
-            <Image src={EditIcon} alt="Dots icon" width={20} height={20} />
-          </button>
-        </div>
       </div>
       <div className="hidden group-focus:flex group-hover:flex gap-2 absolute right-5 top-5">
         <button
