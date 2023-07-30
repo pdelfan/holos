@@ -1,14 +1,14 @@
 "use client";
 
-import NavItem from "./NavItem";
 import { usePathname } from "next/navigation";
+import NavItem from "../navbar/NavItem";
 
 function Navbar() {
   const pathname = usePathname();
 
   return (
     <nav>
-      <ul className="hidden gap-5 items-center sm:flex">
+      <ul className="fixed bottom-0 left-0 right-0 p-3 flex gap-5 items-center justify-center bg-white border-t overflow-x-scroll sm:hidden">
         <NavItem
           href="/dashboard/packs"
           title="PACKS"

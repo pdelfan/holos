@@ -1,3 +1,4 @@
+import AppBar from "@/components/appBar/AppBar";
 import Header from "@/components/header/Header";
 
 export default function DashboardLayout({
@@ -8,7 +9,8 @@ export default function DashboardLayout({
   return (
     <>
       <Header />
-      <main className="p-3 mt-5">{children}</main>
+      <main className="px-3 pt-3 pb-14 mt-5 sm:p-3">{children}</main>
+      <AppBar />
     </>
   );
 }

@@ -48,7 +48,7 @@ export default function Inventory() {
         </div>
       </section>
       <InventoryGrid />
-      <div className="fixed bottom-0 right-0">
+      <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (
             <ModalContainer>

@@ -15,16 +15,14 @@ export default function TripForm(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
   const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<string>("");
   const [elevation, setElevation] = useState<number>(0);
-  const [elevationUnit, setElevationUnit] = useState<ElevationUnit | string>(
-    "m"
-  );
+  const [elevationUnit, setElevationUnit] = useState<string>("m");
   const [distance, setDistance] = useState<number>(0);
-  const [distanceUnit, setDistanceUnit] = useState<DistanceUnit | string>("km");
+  const [distanceUnit, setDistanceUnit] = useState<string>("km");
   const [baseWeight, setBaseWeight] = useState<number>(0);
   const [totalWeight, setTotalWeight] = useState<number>(0);
-  const [weightUnit, setWeightUnit] = useState<WeightUnit | string>("kg");
+  const [weightUnit, setWeightUnit] = useState<string>("kg");
 
   const onAddTrip = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh

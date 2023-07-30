@@ -24,8 +24,8 @@ export default function Trips() {
   return (
     <>
       <h1 className="text-3xl font-semibold text-header-1">Trips</h1>
-      <section className="flex flex-wrap justify-between items-center mt-3">
-        <div className="flex-1 max-w-lg">
+      <section className="flex flex-wrap gap-3 justify-between items-center mt-3">
+        <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for a trip" onChange={handleSearch} />
         </div>
         <div className="flex">
@@ -38,7 +38,7 @@ export default function Trips() {
         </div>
       </section>
       <TripGrid />
-      <div className="fixed bottom-0 right-0">
+      <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (
             <ModalContainer>
