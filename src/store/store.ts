@@ -21,6 +21,8 @@ export const tripSearchAtom = atom<string>("");
 
 export const inventorySearchAtom = atom<string>("");
 
+export const packSearchAtom = atom<string>("");
+
 export const viewFilterOptions: SelectOption[] = [
   { text: "Large", icon: CardIcon },
   { text: "Medium", icon: mediumIcon },
