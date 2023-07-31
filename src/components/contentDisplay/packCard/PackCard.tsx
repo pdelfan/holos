@@ -2,6 +2,7 @@ import PackSummary from "../packSummary/PackSummary";
 import Image from "next/image";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
+import { useRouter } from "next/navigation";
 
 interface Props {
   data: Pack;
@@ -31,8 +32,15 @@ function PackCard(props: Props) {
     currency,
   };
 
+  const router = useRouter();
+
   return (
-    <article className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer group hover:border-neutral-300">
+    <article
+      className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer group hover:border-neutral-300"
+      onClick={() => {
+        router.push(`packs/${data.id}`);
+      }}
+    >
       <div className="mb-6">
         <h2 className="text-stone-600 font-medium">{title}</h2>
         <h3 className="break-words overflow-clip text-stone-400">

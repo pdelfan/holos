@@ -1,21 +1,32 @@
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 interface Props {
-  href: string;
   title: string;
-  active: boolean;
+  isActive: boolean;
+  href: string;
+  motionID: string;
+  onClick: () => void;
 }
 
 function NavItem(props: Props) {
-  const { href, title, active } = props;
+  const { title, href, isActive, motionID, onClick } = props;
   const selectedClass =
-    active === true
-      ? " font-semibold text-sm bg-orange text-white px-4 py-2 rounded-full"
-      : " font-semibold text-sm text-orange hover:text-orange-dark";
+    isActive === true
+      ? " relative text-white"
+      : " relative text-orange hover:text-orange-dark";
 
   return (
-    <li>
-      <Link className={selectedClass} href={href}>
+    <li className="relative px-3 py-2 font-semibold text-sm" onClick={onClick}>
+      {isActive && (
+        <motion.div
+          layoutId={motionID}
+          className="absolute inset-0 bg-orange"
+          style={{ borderRadius: 999 }}
+          transition={{ duration: 0.2 }}
+        />
+      )}
+      <Link href={href} className={selectedClass}>
         {title}
       </Link>
     </li>

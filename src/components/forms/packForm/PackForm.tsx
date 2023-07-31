@@ -78,6 +78,7 @@ export default function PackForm(props: Props) {
             <textarea
               placeholder="Description"
               aria-label="Description"
+              maxLength={120}
               className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={description ?? ""}
               onChange={(e) => setDescription(e.target.value)}

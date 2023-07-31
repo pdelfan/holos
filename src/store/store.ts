@@ -61,3 +61,12 @@ export const sortFilterOptions: SelectOption[] = [
 ];
 
 export const sortFilterAtom = atom<SelectOption>(sortFilterOptions[0]);
+
+export const tabs = [
+  { id: "packs", title: "PACKS", href: "/dashboard/packs" },
+  { id: "trips", title: "TRIPS", href: "/dashboard/trips" },
+  { id: "inventory", title: "INVENTORY", href: "/dashboard/inventory" },
+  { id: "wishlist", title: "WISHLIST", href: "/dashboard/wishlist" },
+];
+
+export const navAtom = atom(tabs[0]);

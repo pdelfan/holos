@@ -1,6 +1,6 @@
 import BaseWeightIcon from "@/assets/icons/baseWeight.svg";
 import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
-import CostIcon from "@/assets/icons/cost.svg";
+import CostIcon from "@/assets/icons/costIcon.svg";
 import ItemsIcon from "@/assets/icons/items.svg";
 import Image from "next/image";
 
