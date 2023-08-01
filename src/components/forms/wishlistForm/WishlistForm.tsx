@@ -52,7 +52,7 @@ export default function WishlistForm(props: Props) {
           type="url"
           placeholder="https://"
           aria-label="Website address"
-          className="w-full mb-5 rounded-xl px-4 py-2 mt-2 outline-none placeholder-input-placeholder text-input-text text-sm bg-input font-medium"
+          className="w-full rounded-xl px-4 py-2 mt-2 outline-none placeholder-input-placeholder text-input-text text-sm bg-input font-medium"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />

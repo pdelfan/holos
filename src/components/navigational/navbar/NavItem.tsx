@@ -21,9 +21,8 @@ function NavItem(props: Props) {
       {isActive && (
         <motion.div
           layoutId={motionID}
-          className="absolute inset-0 bg-orange"
-          style={{ borderRadius: 999 }}
-          transition={{ duration: 0.2 }}
+          className="absolute inset-0 bg-orange rounded-full"
+          transition={{ duration: 0.25 }}
         />
       )}
       <Link href={href} className={selectedClass}>

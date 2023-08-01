@@ -41,8 +41,8 @@ function PackCard(props: Props) {
         router.push(`packs/${data.id}`);
       }}
     >
-      <div className="mb-6">
-        <h2 className="text-stone-600 font-medium">{title}</h2>
+      <div className="flex  flex-col gap-1 mb-6">
+        <h2 className="text-stone-600 font-medium leading-5">{title}</h2>
         <h3 className="break-words overflow-clip text-stone-400">
           {description}
         </h3>

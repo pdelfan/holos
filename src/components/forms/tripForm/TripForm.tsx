@@ -72,6 +72,7 @@ export default function TripForm(props: Props) {
               autoFocus
               required
               type="text"
+              maxLength={60}
               placeholder="Title"
               aria-label="Title"
               className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
@@ -172,7 +173,7 @@ export default function TripForm(props: Props) {
               step="0.01"
               placeholder="0"
               aria-label="Total Weight"
-              className="w-full mb-5 border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={totalWeight}
               onChange={(e) => {
                 setTotalWeight(parseFloat(e.target.value));

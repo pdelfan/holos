@@ -60,6 +60,7 @@ export default function EditPackForm(props: Props) {
               autoFocus
               required
               type="text"
+              maxLength={80}
               placeholder="Title"
               aria-label="Pack title"
               className="w-full rounded-xl px-4 py-2 mt-2 outline-none placeholder-input-placeholder text-input-text text-sm bg-input font-medium"
@@ -80,7 +81,7 @@ export default function EditPackForm(props: Props) {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
-          <div className="flex-auto mb-5">
+          <div className="flex-auto">
             <FormSelect
               label="Unit"
               initialValue={weightUnit}

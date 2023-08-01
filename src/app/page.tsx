@@ -10,7 +10,7 @@ export default function Home() {
         className=" object-cover animate-fade animate-duration-200"
         src={LandingBackground}
         alt="Wide shot of a mountain covered in snow"
-        fill={true}        
+        fill={true}
       />
       <section className="relative flex flex-col place-items-center justify-center text-center p-3 animate-fade animate-duration-200">
         <Image
@@ -34,7 +34,7 @@ export default function Home() {
           >
             Get Started {""}
             <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              
+              -&gt;
             </span>
           </Link>
           <Link

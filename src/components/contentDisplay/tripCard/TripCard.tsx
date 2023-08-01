@@ -37,24 +37,29 @@ function TripCard(props: Props) {
       "radial-gradient(50% 50.00% at 50% 50.00%, #4B5A54 0%, #A3B3AD 100%)",
   };
 
+  const formattedDate = new Date(date).toLocaleString("default", {
+    month: "short",
+    year: "numeric",
+    day: "numeric",
+  });
+
   return (
     <article
-      className="flex flex-col relative justify-between rounded-2xl p-5 bg-gradient-trip-radial group hover:saturate-50 focus-visible"
+      className="relative flex flex-col justify-between gap-8 rounded-2xl p-5 bg-gradient-trip-radial group hover:saturate-50 focus-visible"
       style={gradient}
       tabIndex={0}
     >
-      <div className="flex flex-wrap gap-3 justify-between items-center">
+      <div className="flex flex-wrap gap-1 justify-between items-center">
         <span className="flex items-center gap-1">
-          <Image src={TripIcon} alt="Hiking icon" width={40} height={40} />
-          <h2 className="text-3xl text-white font-semibold break-words overflow-clip">
+          <h2 className="text-lg text-white font-medium break-words overflow-clip leading-5">
             {title}
           </h2>
         </span>
-        <h3 className="text-xl text-white font-semibold break-words overflow-clip">
-          {new Date(date).getFullYear()}
+        <h3 className="text-md text-white font-medium break-words overflow-clip">
+          {formattedDate}
         </h3>
       </div>
-      <ul className="flex flex-wrap justify-between gap-3 mt-10">
+      <ul className="flex flex-wrap justify-between gap-2">
         <li className="flex flex-col">
           <span className="text-sm font-semibold text-nandor-light">
             Elevation

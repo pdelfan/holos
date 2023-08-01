@@ -78,6 +78,7 @@ export default function EditInventoryForm(props: Props) {
               autoFocus
               required
               type="text"
+              maxLength={80}
               placeholder="Title"
               aria-label="Title"
               className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
@@ -166,7 +167,7 @@ export default function EditInventoryForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Image URL"
-              className="w-full mb-5 border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={url ?? ""}
               onChange={(e) => {
                 setURL(e.target.value);
@@ -181,7 +182,7 @@ export default function EditInventoryForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Image URL"
-              className="w-full mb-5 border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={imageURL ?? ""}
               onChange={(e) => {
                 setImageURL(e.target.value);

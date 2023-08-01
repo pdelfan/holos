@@ -48,8 +48,8 @@ function InventoryCard(props: Props) {
       )}
 
       <div className="flex flex-col items-start">
-        <div>
-          <h2 className="text-stone-600 font-medium">{title}</h2>
+        <div className="flex flex-col gap-1">
+          <h2 className="text-stone-600 font-medium leading-5">{title}</h2>
           {description && (
             <h3 className="break-words overflow-clip text-sm text-stone-400">
               {description}
