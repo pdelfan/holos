@@ -16,11 +16,10 @@ export default function InventoryForm(props: Props) {
   const ref = useOutsideSelect({ callback: () => onClose() });
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [itemType, setItemType] = useState<ItemType | string>("General");
   const [price, setPrice] = useState<number>(0);
   const [weight, setWeight] = useState<number>(0);
-  const [weightUnit, setWeightUnit] = useState<WeightUnit | string>("kg");
-  const [season, setSeason] = useState<Season | string>("3-Season");
+  const [weightUnit, setWeightUnit] = useState<string>("kg");
+  const [season, setSeason] = useState<string>("3-Season");
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [url, setURL] = useState<string | null>(null);
 
@@ -38,7 +37,6 @@ export default function InventoryForm(props: Props) {
         description: description ?? "",
         image_url: imageURL === "" ? null : imageURL,
         url: url === "" ? null : url,
-        type: itemType,
         price: price,
         weight: weight ?? 0,
         weight_unit: weightUnit,
@@ -97,13 +95,6 @@ export default function InventoryForm(props: Props) {
 
         <div className="flex gap-8">
           <div className="flex flex-wrap gap-3">
-            <div className="flex-1">
-              <FormSelect
-                label="Type"
-                options={["General", "Wearable", "Consumable"]}
-                onChange={setItemType}
-              />
-            </div>
             <div className="flex-1">
               <label className="text-md font-medium text-gray-900 dark:text-white">
                 Price

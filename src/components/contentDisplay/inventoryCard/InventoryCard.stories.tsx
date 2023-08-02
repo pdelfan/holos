@@ -14,8 +14,7 @@ export const Default: Story = {
     priceUnit: "CAD$",
     data: {
       title: "Baltoro 75L Pack",
-      description: "SWD Movement 40L (no frame, hip, belt, foam pad)",
-      type: "General",
+      description: "SWD Movement 40L (no frame, hip, belt, foam pad)",      
       price: 320,      
       weight: 420,
       weightUnit: "g",

@@ -38,8 +38,7 @@ interface InventoryItem {
   title: string;
   image_url: string | null;
   url: string | null;
-  description: string | null;
-  type: string;
+  description: string | null;  
   price?: number;
   weight?: number;
   weight_unit: string;

@@ -83,7 +83,6 @@ export interface Database {
           price: number
           season: string
           title: string
-          type: string
           url: string | null
           user_id: string
           weight: number
@@ -97,7 +96,6 @@ export interface Database {
           price: number
           season: string
           title: string
-          type: string
           url?: string | null
           user_id: string
           weight: number
@@ -111,7 +109,6 @@ export interface Database {
           price?: number
           season?: string
           title?: string
-          type?: string
           url?: string | null
           user_id?: string
           weight?: number
@@ -179,6 +176,7 @@ export interface Database {
           inventory_id: number
           position: number | null
           quantity: number | null
+          type: string
         }
         Insert: {
           group_id: number
@@ -186,6 +184,7 @@ export interface Database {
           inventory_id: number
           position?: number | null
           quantity?: number | null
+          type: string
         }
         Update: {
           group_id?: number
@@ -193,6 +192,7 @@ export interface Database {
           inventory_id?: number
           position?: number | null
           quantity?: number | null
+          type?: string
         }
         Relationships: [
           {

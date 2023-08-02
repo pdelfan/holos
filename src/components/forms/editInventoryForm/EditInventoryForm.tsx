@@ -17,9 +17,6 @@ export default function EditInventoryForm(props: Props) {
   const ref = useOutsideSelect({ callback: () => onClose() });
   const [title, setTitle] = useState(inventoryItem.title);
   const [description, setDescription] = useState(inventoryItem.description);
-  const [itemType, setItemType] = useState<ItemType | string>(
-    inventoryItem.type
-  );
   const [price, setPrice] = useState<number>(inventoryItem.price ?? 0);
   const [weight, setWeight] = useState<number>(inventoryItem.weight ?? 0);
   const [weightUnit, setWeightUnit] = useState<string>(
@@ -46,7 +43,6 @@ export default function EditInventoryForm(props: Props) {
         description: description ?? "",
         image_url: imageURL === "" ? null : imageURL,
         url: url === "" ? null : url,
-        type: itemType,
         price: price,
         weight: weight ?? 0,
         weight_unit: weightUnit,
@@ -103,13 +99,6 @@ export default function EditInventoryForm(props: Props) {
 
         <div className="flex gap-8">
           <div className="flex flex-wrap gap-3">
-            <div className="flex-1">
-              <FormSelect
-                label="Type"
-                options={["General", "Wearable", "Consumable"]}
-                onChange={setItemType}
-              />
-            </div>
             <div className="flex-1">
               <label className="text-md font-medium text-gray-900 dark:text-white">
                 Price
