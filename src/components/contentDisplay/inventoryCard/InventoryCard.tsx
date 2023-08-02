@@ -13,16 +13,8 @@ interface Props {
 
 function InventoryCard(props: Props) {
   const { data, currency, onDelete, onEdit } = props;
-  const {
-    title,
-    image_url,
-    url,
-    description,
-    type,
-    price,
-    weight,
-    weight_unit,
-  } = data;
+  const { title, image_url, url, description, price, weight, weight_unit } =
+    data;
 
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
@@ -57,7 +49,6 @@ function InventoryCard(props: Props) {
           )}
         </div>
         <div className="flex justify-between gap-5 mt-4 items-center">
-          {type && <Tag title={type} />}
           {price && (
             <span className="text-sm font-medium text-stone-600">
               {currency}
