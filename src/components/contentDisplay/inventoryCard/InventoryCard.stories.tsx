@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import InventoryCard from "./InventoryCard";
 
 const meta: Meta<typeof InventoryCard> = {
-  title: "Components/Inventory Card",
+  title: "Content Display/Inventory Card",
   component: InventoryCard,
 };
 

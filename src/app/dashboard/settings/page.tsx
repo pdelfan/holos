@@ -97,7 +97,7 @@ export default function Settings() {
             You will receive a link to reset your password in your email:
             yours@gmail.com
           </p>
-          <Button text="Reset Password" />
+          <Button>Reset Password</Button>
         </div>
 
         <div className="max-w-xs">
@@ -106,7 +106,7 @@ export default function Settings() {
             Delete your account and all the data connected to it. This is not
             reversible.
           </p>
-          <Button text="Delete Profile" />
+          <Button>Delete Profile</Button>
         </div>
       </section>
     </>

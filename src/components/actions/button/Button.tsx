@@ -2,14 +2,14 @@ import Image from "next/image";
 import { ReactNode } from "react";
 
 interface Props {
-  text: string;
+  children: ReactNode;
   icon?: string;
   disabled?: boolean;
   onClick?: () => void;
 }
 
 export default function Button(props: Props) {
-  const { text, icon, disabled = false, onClick } = props;
+  const { children, icon, disabled = false, onClick } = props;
 
   return (
     <button
@@ -18,7 +18,7 @@ export default function Button(props: Props) {
       onClick={onClick}
     >
       {icon && <Image src={icon} alt="Icon" width={20} height={20} />}
-      {text}
+      {children}
     </button>
   );
 }

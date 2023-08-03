@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import WishlistCard from "./WishlistCard";
 
 const meta: Meta<typeof WishlistCard> = {
-  title: "Components/Wishlist Card",
+  title: "Content Display/Wishlist Card",
   component: WishlistCard,
 };
 

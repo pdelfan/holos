@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import TableRow from "./TableRow";
 
 const meta: Meta<typeof TableRow> = {
-  title: "Components/Table Row",
+  title: "Data Display/Table Row",
   component: TableRow,
 };
 

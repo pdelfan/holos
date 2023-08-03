@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import TripCard from "./TripCard";
 
 const meta: Meta<typeof TripCard> = {
-  title: "Components/Trip Card",
+  title: "Content Display/Trip Card",
   component: TripCard,
 };
 

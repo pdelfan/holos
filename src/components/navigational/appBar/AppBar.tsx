@@ -2,11 +2,11 @@
 
 import NavItem from "../navbar/NavItem";
 import { navAtom, tabs } from "@/store/store";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { usePathname } from "next/navigation";
 
 function AppBar() {
-  const [activeTab, setActiveTab] = useAtom(navAtom);
+  const setActiveTab = useSetAtom(navAtom);
   const pathname = usePathname();
 
   return (

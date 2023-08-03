@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import TripForm from "./TripForm";
 
 const meta: Meta<typeof TripForm> = {
-  title: "Components/Trip Form",
+  title: "Forms/Trip Form",
   component: TripForm,
 };
 

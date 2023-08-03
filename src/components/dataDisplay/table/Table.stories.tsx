@@ -3,7 +3,7 @@ import Table from "./Table";
 import TableRow from "../tableRow/TableRow";
 
 const meta: Meta<typeof Table> = {
-  title: "Components/Table",
+  title: "Data Display/Table",
   component: Table,
 };
 

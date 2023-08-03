@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import ChartSummary from "./ChartSummary";
 
 const meta: Meta<typeof ChartSummary> = {
-  title: "Components/Chart Summary",
+  title: "Data Display/Chart Summary",
   component: ChartSummary,
 };
 

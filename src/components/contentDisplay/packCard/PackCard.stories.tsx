@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import PackCard from "./PackCard";
 
 const meta: Meta<typeof PackCard> = {
-  title: "Components/Pack Card",
+  title: "Content Display/Pack Card",
   component: PackCard,
 };
 
@@ -10,6 +10,11 @@ export default meta;
 type Story = StoryObj<typeof PackCard>;
 
 export const Default: Story = {
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+    },
+  },
   args: {
     data: {
       id: 0,
@@ -23,7 +28,8 @@ export const Default: Story = {
       total_cost: 900,
       total_items: 10,
     },
-    currency: "$",    
+    currency: "$",
+    onEdit: () => {},
     onDelete: () => {},
   },
 };

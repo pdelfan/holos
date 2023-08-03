@@ -28,11 +28,9 @@ export default function Select(props: Props) {
 
   return (
     <div className="relative" ref={ref}>
-      <Button
-        onClick={() => setIsOpen(!isOpen)}
-        text={selected.text}
-        icon={selected.icon}
-      />
+      <Button onClick={() => setIsOpen(!isOpen)} icon={selected.icon}>
+        {selected.text}
+      </Button>
       {isOpen && (
         <div
           className={`absolute top-10 z-10  ${

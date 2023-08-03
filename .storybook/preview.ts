@@ -5,6 +5,12 @@ import "../src/app/globals.css";
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: "^on[A-Z].*" },
+    options: {
+      storySort: {
+        method: "alphabetical",
+        order: ["Intro"],
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
