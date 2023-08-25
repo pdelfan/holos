@@ -4,12 +4,12 @@ import { useState } from "react";
 export default function AddItem() {
   const [showForm, setShowForm] = useState(false);
   return (
-    <tr className=" border border-table-rowBorder">
-      <td className="text-center pl-1" />
-      <td className="py-3" />
-      <td className="text-center p-3">        
-        <Button>Add New Item</Button>
+    <tr className="border-table-rowBorder">
+      <td className="text-center p-3">
+        <Button>Add</Button>
       </td>
+      <td className="py-3" />
+      <td className="text-center p-3" />
       <td className="text-center p-3" />
       <td className="text-center p-3" />
       <td className="text-center p-3" />{" "}

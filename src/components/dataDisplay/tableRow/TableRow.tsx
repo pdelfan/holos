@@ -32,7 +32,7 @@ function TableRow(props: Props) {
   }, []);
 
   return (
-    <tr className=" bg-table-row border border-table-rowBorder">
+    <tr className=" bg-table-row border-y-2 align-middle">
       <td className="text-center pl-1">
         <button className="p-2 hover:bg-button-hover rounded-lg">
           <Image
@@ -112,102 +112,3 @@ function TableRow(props: Props) {
 }
 
 export default TableRow;
-
-// import Image from "next/image";
-// import Tag from "../tag/Tag";
-// import { useCallback } from "react";
-// import LinkIcon from "@/assets/icons/linkIcon.svg";
-// import DeleteIcon from "@/assets/icons/deleteIcon.svg";
-// import EditIcon from "@/assets/icons/editIcon.svg";
-// import DragIcon from "@/assets/icons/dragIcon.svg";
-
-// interface Props {
-//   data: PackItem;
-// }
-
-// function TableRow(props: Props) {
-//   const { data } = props;
-//   const {
-//     position,
-//     image,
-//     title,
-//     description,
-//     link,
-//     type,
-//     price,
-//     weight,
-//     weightUnit,
-//     quantity,
-//     groupID,
-//   } = data;
-
-//   const imageLoader = useCallback(({ src }: { src: string }) => {
-//     return src;
-//   }, []);
-
-//   return (
-//     <li className=" bg-table-row border border-table-rowBorder px-2 py-3">
-//       <div className="flex justify-between items-center">
-//         <span className="basis-10 shrink-0 text-center p-3">
-//           <button>
-//             <Image src={DragIcon} alt="Drag icon" width={12} height={12} />
-//           </button>
-//         </span>
-//         <span className="basis-20 shrink-0 text-center py-3">
-//           {image && (
-//             <Image
-//               className="bg-white border p-1 rounded-lg mx-auto"
-//               src={image}
-//               alt="Item image"
-//               width={55}
-//               height={55}
-//               loader={imageLoader}
-//             />
-//           )}
-//         </span>
-//         <span className="basis-40 shrink-0 text-center">
-//           {title && <span>{title}</span>}
-//         </span>
-//         <span className="basis-72 shrink-0 text-center">
-//           {description && <span>{description}</span>}
-//         </span>
-//         <span className="basis-20 shrink-0 text-center">
-//           {link && (
-//             <button
-//               onClick={() => {
-//                 window.open(link, "_self");
-//               }}
-//             >
-//               <Image src={LinkIcon} alt="Link icon" width={20} height={20} />
-//             </button>
-//           )}
-//         </span>
-//         <span className="basis-40 shrink-0">
-//           {type && <Tag title={type} />}
-//         </span>
-//         <span className="basis-20 shrink-0 text-center">
-//           <span>${price}</span>
-//         </span>
-//         <span className="basis-20 shrink-0 text-center">
-//           <span>{weight}</span>
-//           <span>{weightUnit}</span>
-//         </span>
-//         <span className="basis-20 shrink-0 text-center">
-//           <span>{quantity}</span>
-//         </span>
-//         <span className="basis-40 shrink-0 text-center">
-//           <span className="flex gap-5 justify-center">
-//             <button>
-//               <Image src={EditIcon} alt="Link icon" width={20} height={20} />
-//             </button>
-//             <button>
-//               <Image src={DeleteIcon} alt="Link icon" width={20} height={20} />
-//             </button>
-//           </span>
-//         </span>
-//       </div>
-//     </li>
-//   );
-// }
-
-// export default TableRow;

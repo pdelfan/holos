@@ -2,15 +2,15 @@ import { ReactNode } from "react";
 import AddItem from "../addItem/AddItem";
 
 interface Props {
-  children?: ReactNode;
+  children?: ReactNode;  
 }
 
 function Table(props: Props) {
   const { children } = props;
   return (
-    <div className="relative overflow-auto rounded-xl ring-offset-0 ring-1 ring-table-headBorder bg-white">
+    <div className="relative overflow-auto rounded-xl border-2 bg-white">
       <table className="border-collapse table-auto w-full">
-        <thead className="border-b border-table-headBorder">
+        <thead className="bg-table-head">
           <tr className=" rounded-xl">
             <th className="p-2"></th>
             <th className="p-2">Image</th>
