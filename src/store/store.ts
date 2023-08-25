@@ -9,6 +9,8 @@ import AllIcon from "@/assets/icons/allIcon.svg";
 
 export const currencyAtom = atom<string>("");
 
+export const packAtom = atom<Pack | null>(null);
+
 export const packsAtom = atom<Pack[] | []>([]);
 
 export const tripsAtom = atom<TripItem[] | []>([]);

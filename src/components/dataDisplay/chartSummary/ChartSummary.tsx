@@ -10,10 +10,7 @@ interface ChartProps {
 const Chart = (props: ChartProps) => {
   const { children, width, height } = props;
   return (
-    <svg
-      viewBox={`0 0 ${width} ${height}`}
-      className="inline-block relative max-h-8"
-    >
+    <svg viewBox={`0 0 ${width} ${height}`} className="inline-block max-h-8">
       {children}
     </svg>
   );
@@ -47,40 +44,47 @@ function ChartSummary(props: Props) {
   const totalWidth = data.reduce((total, datum) => total + datum.weight, 0);
   const totalMargin = barMargin * (data.length - 1);
   const width = (totalWidth / maxValue) * 600 + totalMargin;
-  let accumulatedX = 0;    
+  let accumulatedX = 0;
 
   return (
     <>
-      <Chart height={height} width={width}>
-        {chartData.map((datum, index) => {
-          const x = accumulatedX;
-          const y = 0;
-          const barWidth = (datum.weight / maxValue) * 600;
-          accumulatedX += barWidth + barMargin;
+      {data.length === 0 && (
+        <p>Add items to see a visual breakdown of your pack.</p>
+      )}
+      {data.length > 0 && (
+        <>
+          <Chart height={height} width={width}>
+            {chartData.map((datum, index) => {
+              const x = accumulatedX;
+              const y = 0;
+              const barWidth = (datum.weight / maxValue) * 600;
+              accumulatedX += barWidth + barMargin;
 
-          return (
-            <Bar
-              key={datum.category}
-              x={x}
-              y={y}
-              width={barWidth}
-              height={barHeight}
-              colour={CHART_COLOURS[index]}
-            />
-          );
-        })}
-      </Chart>
-      <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3">
-        {chartData.map((datum, index) => (
-          <div key={index} className="flex gap-1.5 items-center">
-            <div
-              className="h-3 w-3"
-              style={{ backgroundColor: CHART_COLOURS[index] }}
-            />
-            <span className="text-sm">{datum.category}</span>
+              return (
+                <Bar
+                  key={datum.category}
+                  x={x}
+                  y={y}
+                  width={barWidth}
+                  height={barHeight}
+                  colour={CHART_COLOURS[index]}
+                />
+              );
+            })}
+          </Chart>
+          <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3">
+            {chartData.map((datum, index) => (
+              <div key={index} className="flex gap-1.5 items-center">
+                <div
+                  className="h-3 w-3"
+                  style={{ backgroundColor: CHART_COLOURS[index] }}
+                />
+                <span className="text-sm">{datum.category}</span>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </>
   );
 }
