@@ -63,10 +63,10 @@ export const sortTrips = (wishlist: TripItem[], sortMode: string) =>
 export const sortPacks = (pack: Pack[], sortMode: string) =>
   [...pack].sort((a, b) => {
     if (sortMode === "By Date ↓") {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     }
     if (sortMode === "By Date ↑") {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
     }
 
     if (sortMode === "By Name ↓") {
