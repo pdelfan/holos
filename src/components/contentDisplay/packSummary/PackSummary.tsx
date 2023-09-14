@@ -22,7 +22,7 @@ function PackSummary(props: Props) {
     <div>
       <ul className="flex flex-wrap gap-3 justify-between">
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium">Base weight</h4>
+          <h4 className="text-gray-light font-medium text-sm">Base weight</h4>
           <span className="flex flex-wrap gap-1">
             <Image
               src={BaseWeightIcon}
@@ -37,7 +37,7 @@ function PackSummary(props: Props) {
           </span>
         </li>
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium">Total weight</h4>
+          <h4 className="text-gray-light font-medium text-sm">Total weight</h4>
           <span className="flex flex-wrap gap-1">
             <Image
               src={TotalWeightIcon}
@@ -52,7 +52,7 @@ function PackSummary(props: Props) {
           </span>
         </li>
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium">Total cost</h4>
+          <h4 className="text-gray-light font-medium text-sm">Total cost</h4>
           <span className="flex flex-wrap gap-1">
             <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
             <h5 className="text-gray font-medium">
@@ -62,7 +62,7 @@ function PackSummary(props: Props) {
           </span>
         </li>
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium">Total items</h4>
+          <h4 className="text-gray-light font-medium text-sm">Total items</h4>
           <span className="flex flex-wrap gap-1">
             <Image src={ItemsIcon} alt="Items icon" width={20} height={20} />
             <h5 className="text-gray font-medium">{total_items}</h5>

@@ -1,7 +1,12 @@
 "use client";
+import Button from "@/components/actions/button/Button";
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
+import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
+import Modal from "@/components/feedback/modal/Modal";
+import GroupForm from "@/components/forms/groupForm/GroupForm";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
+import { useState } from "react";
 
 interface Props {
   params: { id: string };
@@ -13,6 +18,7 @@ export default function Pack(props: Props) {
     packID: params.id,
   });
   const { currency } = useGetPreferredCurrency();
+  const [showAddGroupModal, setShowAddGroupModal] = useState(false);
 
   return (
     <>
@@ -22,8 +28,25 @@ export default function Pack(props: Props) {
           <h2 className="font-medium text-header-2 mt-1 max-w-2xl">
             {pack.description}
           </h2>
-          <section className="mt-8 flex">
+          <section className="mt-8 flex flex-wrap justify-between gap-3">
+            <ChartSummary data={[]} />
             <PackSummary data={{ ...pack, currency }} />
+          </section>
+          <section className="mt-12">
+            <Button onClick={() => setShowAddGroupModal(!showAddGroupModal)}>
+              Add Group
+            </Button>
+            {showAddGroupModal && (
+              <Modal>
+                <GroupForm
+                  packID={Number(params.id)}
+                  onClose={() => setShowAddGroupModal(false)}
+                />
+              </Modal>
+            )}
+          </section>
+          <section>
+            
           </section>
         </>
       )}

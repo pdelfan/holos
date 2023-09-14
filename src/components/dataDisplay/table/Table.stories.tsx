@@ -41,7 +41,7 @@ const rowData2: PackItem = {
 
 export const Default: Story = {
   render: () => (
-    <Table>
+    <Table onAddItem={() => console.log("onAddItem clicked")}>
       <TableRow data={rowData} />
       <TableRow data={rowData2} />
     </Table>

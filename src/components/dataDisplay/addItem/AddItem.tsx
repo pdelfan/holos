@@ -1,12 +1,16 @@
 import Button from "@/components/actions/button/Button";
-import { useState } from "react";
 
-export default function AddItem() {
-  const [showForm, setShowForm] = useState(false);
+interface Props {
+  onClick: () => void;
+}
+
+export default function AddItem(props: Props) {
+  const { onClick } = props;
+
   return (
     <tr className="border-table-rowBorder">
       <td className="text-center p-3">
-        <Button>Add</Button>
+        <Button onClick={onClick}>Add</Button>
       </td>
       <td className="py-3" />
       <td className="text-center p-3" />
