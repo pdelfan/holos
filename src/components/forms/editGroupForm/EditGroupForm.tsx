@@ -6,17 +6,18 @@ import { Database } from "@/lib/database.types";
 import { updateGroupData } from "@/utils/fetchUtils";
 
 interface Props {
-  packID: number;
+  groupID: number;
+  title: string;
   onClose: () => void;
 }
 
-export default function GroupForm(props: Props) {
-  const { packID, onClose } = props;
-  const [title, setTitle] = useState("");
+export default function EditGroupForm(props: Props) {
+  const { groupID, title: initialTitle, onClose } = props;
+  const [title, setTitle] = useState(initialTitle);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
 
-  const onAddGroup = async (e: FormEvent) => {
+  const onUpdateGroup = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
     if (!user.session) {
@@ -24,21 +25,18 @@ export default function GroupForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase.from("group").insert({
-      title: title,
-      total_base_weight: 0,
-      total_weight: 0,
-      total_quantity: 0,
-      user_id: user.session.user.id,
-      pack_id: packID,
-    });
-
+    const { error } = await supabase
+      .from("group")
+      .update({
+        title: title,
+      })
+      .match({ id: groupID, user_id: user.session.user.id });
     if (error) {
-      toast.error("Couldn't add this group to pack.");
+      toast.error("Couldn't update title.");
       return;
     }
 
-    toast.success("Added group to pack.");
+    toast.success("Updated title.");
     onClose();
     updateGroupData();
   };
@@ -48,7 +46,7 @@ export default function GroupForm(props: Props) {
       ref={ref}
       className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
     >
-      <form onSubmit={onAddGroup}>
+      <form onSubmit={onUpdateGroup}>
         <label className="text-md font-medium text-gray-900 dark:text-white">
           Title
         </label>
@@ -74,7 +72,7 @@ export default function GroupForm(props: Props) {
             type="submit"
             className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
           >
-            Add Group
+            Update Title
           </button>
         </div>
       </form>

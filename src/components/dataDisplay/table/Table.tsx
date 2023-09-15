@@ -1,25 +1,31 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import AddItem from "../addItem/AddItem";
 import Button from "@/components/actions/button/Button";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
+import EditGroupForm from "@/components/forms/editGroupForm/EditGroupForm";
+import Modal from "@/components/feedback/modal/Modal";
 
 interface Props {
   children?: ReactNode;
   onAddItem: () => void;
+  onDeleteGroup: () => void;
+  title: string;
+  groupID: number;
 }
 
 function Table(props: Props) {
-  const { children, onAddItem } = props;
+  const { children, onAddItem, onDeleteGroup, title, groupID } = props;
+  const [showEditGroupModal, setShowEditGroupModal] = useState(false);
   return (
     <section>
       <div className="flex justify-between mb-2">
-        <h3 className="font-medium text-lg">Group name</h3>
+        <h3 className="font-medium text-lg">{title}</h3>
         <div className="flex gap-2">
-          <Button icon={EditIcon} onClick={() => {}}>
+          <Button icon={EditIcon} onClick={() => setShowEditGroupModal(!showEditGroupModal)}>
             Rename
           </Button>
-          <Button icon={DeleteIcon} onClick={() => {}}>
+          <Button icon={DeleteIcon} onClick={onDeleteGroup}>
             Delete
           </Button>
         </div>
@@ -42,9 +48,22 @@ function Table(props: Props) {
           </thead>
           <tbody>
             {children}
-            <AddItem onClick={onAddItem} />
+            <AddItem
+              onClick={onAddItem}
+              total={{ price: 0, weight: 0, quantity: 0 }}
+              weightUnit=""
+            />
           </tbody>
         </table>
+        {showEditGroupModal && (
+          <Modal>
+            <EditGroupForm
+              title={title}
+              groupID={groupID}
+              onClose={() => setShowEditGroupModal(false)}
+            />
+          </Modal>
+        )}
       </div>
     </section>
   );

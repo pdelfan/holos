@@ -2,11 +2,17 @@
 import Button from "@/components/actions/button/Button";
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
+import Table from "@/components/dataDisplay/table/Table";
+import TableRow from "@/components/dataDisplay/tableRow/TableRow";
 import Modal from "@/components/feedback/modal/Modal";
 import GroupForm from "@/components/forms/groupForm/GroupForm";
+import useGetGroups from "@/hooks/useGetGroups";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
+import { Database } from "@/lib/database.types";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   params: { id: string };
@@ -14,11 +20,29 @@ interface Props {
 
 export default function Pack(props: Props) {
   const { params } = props;
+  const supabase = createClientComponentClient<Database>();
   const { pack, setPack, error, isLoading, isValidating } = useGetPack({
     packID: params.id,
   });
   const { currency } = useGetPreferredCurrency();
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
+  const {
+    groups,
+    setGroups,
+    isLoading: isLoadingGroups,
+  } = useGetGroups({
+    packID: params.id,
+  });
+
+  const onDeleteGroup = async (id: number) => {
+    const { error } = await supabase.from("group").delete().eq("id", id);
+    if (error) {
+      toast.error("Couldn't delete this group.");
+      return;
+    }
+    setGroups(groups.filter((item) => item.id !== id));
+    toast.success("Deleted group.");
+  };
 
   return (
     <>
@@ -32,7 +56,19 @@ export default function Pack(props: Props) {
             <ChartSummary data={[]} />
             <PackSummary data={{ ...pack, currency }} />
           </section>
-          <section className="mt-12">
+          <section className="flex flex-col gap-10 mt-12">
+            {groups.length > 0 &&
+              groups.map((group) => (
+                <Table
+                  key={group.id}
+                  title={group.title}
+                  groupID={group.id}
+                  onAddItem={() => {}}
+                  onDeleteGroup={() => onDeleteGroup(group.id)}
+                />
+              ))}
+          </section>
+          <section className="mt-5">
             <Button onClick={() => setShowAddGroupModal(!showAddGroupModal)}>
               Add Group
             </Button>
@@ -45,9 +81,7 @@ export default function Pack(props: Props) {
               </Modal>
             )}
           </section>
-          <section>
-            
-          </section>
+          <section></section>
         </>
       )}
     </>

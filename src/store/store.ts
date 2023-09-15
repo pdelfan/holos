@@ -13,6 +13,8 @@ export const packAtom = atom<Pack | null>(null);
 
 export const packsAtom = atom<Pack[] | []>([]);
 
+export const groupsAtom = atom<Group[] | []>([]);
+
 export const tripsAtom = atom<TripItem[] | []>([]);
 
 export const inventoryAtom = atom<InventoryItem[] | []>([]);

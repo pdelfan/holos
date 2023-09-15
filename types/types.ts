@@ -38,7 +38,7 @@ interface InventoryItem {
   title: string;
   image_url: string | null;
   url: string | null;
-  description: string | null;  
+  description: string | null;
   price?: number;
   weight?: number;
   weight_unit: string;
@@ -48,17 +48,20 @@ interface InventoryItem {
 type ItemType = "General" | "Consumable" | "Wearable";
 
 interface PackItem {
+  id: number;
   position: number;
-  image?: string;
-  title?: string;
-  description?: string;
-  link?: string;
-  type?: ItemType;
-  price: number;
-  weight: number;
-  weightUnit: string;
   quantity: number;
-  groupID: string;
+  group_id: number;
+  inventory_id: number;
+  type: string;
+  // image?: string;
+  // title?: string;
+  // description?: string;
+  // link?: string;
+  // type?: ItemType;
+  // price: number;
+  // weight: number;
+  // weightUnit: string;
 }
 
 interface SelectOption {
@@ -93,3 +96,18 @@ interface TripItem {
 }
 
 type Season = "Winter" | "3-Season";
+
+interface TotalGroup {
+  price: number;
+  weight: number;
+  quantity: number;
+}
+
+interface Group {
+  id: number;
+  title: string;
+  pack_id: number;
+  user_id: string;
+  total_weight: number;
+  total_quantity: number;
+}

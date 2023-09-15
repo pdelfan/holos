@@ -38,28 +38,28 @@ export interface Database {
         Row: {
           id: number
           pack_id: number
-          title: string | null
-          total_base_weight: number | null
-          total_quantity: number | null
-          total_weight: number | null
+          title: string
+          total_base_weight: number
+          total_quantity: number
+          total_weight: number
           user_id: string
         }
         Insert: {
           id?: number
           pack_id: number
-          title?: string | null
-          total_base_weight?: number | null
-          total_quantity?: number | null
-          total_weight?: number | null
+          title: string
+          total_base_weight: number
+          total_quantity: number
+          total_weight: number
           user_id: string
         }
         Update: {
           id?: number
           pack_id?: number
-          title?: string | null
-          total_base_weight?: number | null
-          total_quantity?: number | null
-          total_weight?: number | null
+          title?: string
+          total_base_weight?: number
+          total_quantity?: number
+          total_weight?: number
           user_id?: string
         }
         Relationships: [
@@ -177,24 +177,24 @@ export interface Database {
           group_id: number
           id: number
           inventory_id: number
-          position: number | null
-          quantity: number | null
+          position: number
+          quantity: number
           type: string
         }
         Insert: {
           group_id: number
           id?: number
           inventory_id: number
-          position?: number | null
-          quantity?: number | null
+          position: number
+          quantity: number
           type: string
         }
         Update: {
           group_id?: number
           id?: number
           inventory_id?: number
-          position?: number | null
-          quantity?: number | null
+          position?: number
+          quantity?: number
           type?: string
         }
         Relationships: [
