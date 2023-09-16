@@ -40,6 +40,7 @@ export interface Database {
           pack_id: number
           title: string
           total_base_weight: number
+          total_price: number
           total_quantity: number
           total_weight: number
           user_id: string
@@ -49,6 +50,7 @@ export interface Database {
           pack_id: number
           title: string
           total_base_weight: number
+          total_price: number
           total_quantity: number
           total_weight: number
           user_id: string
@@ -58,6 +60,7 @@ export interface Database {
           pack_id?: number
           title?: string
           total_base_weight?: number
+          total_price?: number
           total_quantity?: number
           total_weight?: number
           user_id?: string

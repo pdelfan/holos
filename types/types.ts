@@ -110,4 +110,5 @@ interface Group {
   user_id: string;
   total_weight: number;
   total_quantity: number;
+  total_price: number;
 }

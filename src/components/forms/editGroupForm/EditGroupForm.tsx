@@ -6,21 +6,20 @@ import { Database } from "@/lib/database.types";
 import { updateGroupData } from "@/utils/fetchUtils";
 
 interface Props {
-  groupID: number;
-  title: string;
+  group: Group;
   onClose: () => void;
 }
 
 export default function EditGroupForm(props: Props) {
-  const { groupID, title: initialTitle, onClose } = props;
-  const [title, setTitle] = useState(initialTitle);
+  const { group, onClose } = props;
+  const [title, setTitle] = useState(group.title);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
 
   const onUpdateGroup = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
-    if (!user.session) {
+    if (!user.session || title === group.title) {
       onClose();
       return;
     }
@@ -30,7 +29,7 @@ export default function EditGroupForm(props: Props) {
       .update({
         title: title,
       })
-      .match({ id: groupID, user_id: user.session.user.id });
+      .match({ id: group.id, user_id: user.session.user.id });
     if (error) {
       toast.error("Couldn't update title.");
       return;

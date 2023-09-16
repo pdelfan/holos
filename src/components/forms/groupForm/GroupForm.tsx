@@ -28,6 +28,7 @@ export default function GroupForm(props: Props) {
       title: title,
       total_base_weight: 0,
       total_weight: 0,
+      total_price: 0,
       total_quantity: 0,
       user_id: user.session.user.id,
       pack_id: packID,

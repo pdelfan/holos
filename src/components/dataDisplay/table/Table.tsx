@@ -10,19 +10,26 @@ interface Props {
   children?: ReactNode;
   onAddItem: () => void;
   onDeleteGroup: () => void;
-  title: string;
-  groupID: number;
+  group: Group;
 }
 
 function Table(props: Props) {
-  const { children, onAddItem, onDeleteGroup, title, groupID } = props;
+  const { children, onAddItem, onDeleteGroup, group } = props;
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
+  const total = {
+    price: group.total_price,
+    weight: group.total_weight,
+    quantity: group.total_quantity,
+  };
   return (
     <section>
       <div className="flex justify-between mb-2">
-        <h3 className="font-medium text-lg">{title}</h3>
+        <h3 className="font-medium text-lg">{group.title}</h3>
         <div className="flex gap-2">
-          <Button icon={EditIcon} onClick={() => setShowEditGroupModal(!showEditGroupModal)}>
+          <Button
+            icon={EditIcon}
+            onClick={() => setShowEditGroupModal(!showEditGroupModal)}
+          >
             Rename
           </Button>
           <Button icon={DeleteIcon} onClick={onDeleteGroup}>
@@ -48,18 +55,13 @@ function Table(props: Props) {
           </thead>
           <tbody>
             {children}
-            <AddItem
-              onClick={onAddItem}
-              total={{ price: 0, weight: 0, quantity: 0 }}
-              weightUnit=""
-            />
+            <AddItem onClick={onAddItem} total={total} weightUnit="" />
           </tbody>
         </table>
         {showEditGroupModal && (
           <Modal>
             <EditGroupForm
-              title={title}
-              groupID={groupID}
+              group={group}
               onClose={() => setShowEditGroupModal(false)}
             />
           </Modal>

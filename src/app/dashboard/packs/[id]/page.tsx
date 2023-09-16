@@ -61,8 +61,7 @@ export default function Pack(props: Props) {
               groups.map((group) => (
                 <Table
                   key={group.id}
-                  title={group.title}
-                  groupID={group.id}
+                  group={group}
                   onAddItem={() => {}}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
                 />
