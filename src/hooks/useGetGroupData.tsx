@@ -1,30 +1,29 @@
 import { Database } from "@/lib/database.types";
-import { groupsAtom } from "@/store/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useAtom } from "jotai";
 import { useState } from "react";
 import useSWR from "swr";
 
 interface Props {
-  groupID: string;
+  groupID: number;
 }
 
 export default function useGetGroupData(props: Props) {
   const { groupID } = props;
   const supabase = createClientComponentClient<Database>();
-  const [group, setGroup] = useState<PackItem[] | []>([]);
+  const [groupData, setGroupData] = useState<PackItem[] | []>([]);
 
   const { error, isLoading, isValidating } = useSWR(
-    "getGroupData",
+    `getGroupData${groupID}`,
     async () => {
-      const { data: user } = await supabase.auth.getSession();
-      const { data: group } = await supabase
+      const { data } = await supabase
         .from("pack_item")
-        .select("*")
-        .match({ user_id: user.session?.user.id, group_id: groupID });
-      setGroup(group ?? []);
+        .select(
+          "*, inventory ( id, title, description, image_url, price, weight, weight_unit )"
+        )
+        .match({ group_id: groupID });
+      setGroupData(data as PackItem[]);      
     }
   );
 
-  return { group, setGroup, error, isLoading, isValidating };
+  return { groupData, setGroupData, error, isLoading, isValidating };
 }

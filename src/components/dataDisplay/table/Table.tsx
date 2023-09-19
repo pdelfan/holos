@@ -1,26 +1,50 @@
-import { ReactNode, useState } from "react";
+import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import AddItem from "../addItem/AddItem";
 import Button from "@/components/actions/button/Button";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditGroupForm from "@/components/forms/editGroupForm/EditGroupForm";
 import Modal from "@/components/feedback/modal/Modal";
+import useGetGroupData from "@/hooks/useGetGroupData";
+import TableRow from "../tableRow/TableRow";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/lib/database.types";
+import toast from "react-hot-toast";
 
 interface Props {
-  children?: ReactNode;
-  onAddItem: () => void;
   onDeleteGroup: () => void;
   group: Group;
+  currency: string;
+  weightUnit: string;
 }
 
 function Table(props: Props) {
-  const { children, onAddItem, onDeleteGroup, group } = props;
+  const { onDeleteGroup, group, currency, weightUnit } = props;
+  const supabase = createClientComponentClient<Database>();
+  const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
   const total = {
-    price: group.total_price,
-    weight: group.total_weight,
-    quantity: group.total_quantity,
+    price: groupData.reduce(
+      (acc, item) => acc + item.inventory.price * item.quantity,
+      0
+    ),
+    weight: groupData.reduce(
+      (acc, item) => acc + item.inventory.weight * item.quantity,
+      0
+    ),
+    quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
   };
+
+  const onDeleteItem = async (id: number) => {
+    const { error } = await supabase.from("pack_item").delete().eq("id", id);
+    if (error) {
+      toast.error("Couldn't delete this item.");
+      return;
+    }
+    setGroupData(groupData.filter((item) => item.id !== id));
+    toast.success("Deleted item from gorup.");
+  };
+
   return (
     <section>
       <div className="flex justify-between mb-2">
@@ -54,8 +78,18 @@ function Table(props: Props) {
             </tr>
           </thead>
           <tbody>
-            {children}
-            <AddItem onClick={onAddItem} total={total} weightUnit="" />
+            <>
+              {groupData.map((item) => (
+                <TableRow key={item.id} item={item} onDelete={onDeleteItem} />
+              ))}
+            </>
+            <AddItem
+              onAddItem={setGroupData}
+              total={total}
+              weightUnit={weightUnit}
+              currency={currency}
+              groupID={group.id}
+            />
           </tbody>
         </table>
         {showEditGroupModal && (

@@ -3,7 +3,6 @@ import Button from "@/components/actions/button/Button";
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
-import TableRow from "@/components/dataDisplay/tableRow/TableRow";
 import Modal from "@/components/feedback/modal/Modal";
 import GroupForm from "@/components/forms/groupForm/GroupForm";
 import useGetGroups from "@/hooks/useGetGroups";
@@ -61,9 +60,10 @@ export default function Pack(props: Props) {
               groups.map((group) => (
                 <Table
                   key={group.id}
-                  group={group}
-                  onAddItem={() => {}}
+                  group={group}                  
                   onDeleteGroup={() => onDeleteGroup(group.id)}
+                  currency={currency}
+                  weightUnit={pack.weight_unit}
                 />
               ))}
           </section>

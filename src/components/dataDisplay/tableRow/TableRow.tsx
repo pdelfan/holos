@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Tag from "../../contentDisplay/tag/Tag";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import LinkIcon from "@/assets/icons/linkIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
@@ -8,28 +8,28 @@ import DragIcon from "@/assets/icons/dragIcon.svg";
 import { useDraggable } from "@dnd-kit/core";
 
 interface Props {
-  data: PackItem;
+  item: PackItem;
+  onDelete: (id: number) => void;
 }
 
 function TableRow(props: Props) {
-  const { data } = props;
+  const { item, onDelete } = props;
+  const { id, position, quantity, group_id, type } = item;
   const {
-    position,
-    image,
     title,
+    image_url: image,
+    url,
     description,
-    link,
-    type,
     price,
     weight,
-    weightUnit,
-    quantity,
-    groupID,
-  } = data;
+    weight_unit,
+  } = item.inventory;
 
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
   }, []);
+
+  const [showEditItemModal, setShowEditItemModal] = useState(false);
 
   return (
     <tr className=" bg-table-row border-y-2 align-middle">
@@ -64,10 +64,10 @@ function TableRow(props: Props) {
         {description && <span className="text-sm">{description}</span>}
       </td>
       <td className="text-center p-3">
-        {link && (
+        {url && (
           <button
             onClick={() => {
-              window.open(link, "_self");
+              window.open(url, "_self");
             }}
           >
             <Image src={LinkIcon} alt="Link icon" width={20} height={20} />
@@ -80,14 +80,14 @@ function TableRow(props: Props) {
       </td>
       <td className="text-center p-3">
         <span className="text-sm">{weight}</span>
-        <span className="text-sm">{weightUnit}</span>
+        <span className="text-sm">{weight_unit}</span>
       </td>
       <td className="text-center p-3">
         <span className="text-sm">{quantity}</span>
       </td>
       <td>
         <span className="flex gap-5 justify-center p-3">
-          <button>
+          <button onClick={() => setShowEditItemModal(!showEditItemModal)}>
             <Image
               className="min-w-[1.3rem]"
               src={EditIcon}
@@ -96,7 +96,7 @@ function TableRow(props: Props) {
               height={20}
             />
           </button>
-          <button>
+          <button onClick={() => onDelete(item.id)}>
             <Image
               className="min-w-[1.3rem]"
               src={DeleteIcon}

@@ -39,8 +39,8 @@ interface InventoryItem {
   image_url: string | null;
   url: string | null;
   description: string | null;
-  price?: number;
-  weight?: number;
+  price: number;
+  weight: number;
   weight_unit: string;
   season: string;
 }
@@ -54,14 +54,7 @@ interface PackItem {
   group_id: number;
   inventory_id: number;
   type: string;
-  // image?: string;
-  // title?: string;
-  // description?: string;
-  // link?: string;
-  // type?: ItemType;
-  // price: number;
-  // weight: number;
-  // weightUnit: string;
+  inventory: InventoryItem;
 }
 
 interface SelectOption {
