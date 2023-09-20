@@ -10,6 +10,8 @@ import TableRow from "../tableRow/TableRow";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
+import Dropdown from "@/components/actions/dropdown/Dropdown";
+import DropdownItem from "@/components/actions/dropdown/DropdownItem";
 
 interface Props {
   onDeleteGroup: () => void;
@@ -50,15 +52,17 @@ function Table(props: Props) {
       <div className="flex justify-between mb-2">
         <h3 className="font-medium text-lg">{group.title}</h3>
         <div className="flex gap-2">
-          <Button
-            icon={EditIcon}
-            onClick={() => setShowEditGroupModal(!showEditGroupModal)}
-          >
-            Rename
-          </Button>
-          <Button icon={DeleteIcon} onClick={onDeleteGroup}>
-            Delete
-          </Button>
+          <Dropdown button={<Button>···</Button>}>
+            <DropdownItem
+              icon={EditIcon}
+              onClick={() => setShowEditGroupModal(!showEditGroupModal)}
+            >
+              Rename
+            </DropdownItem>
+            <DropdownItem icon={DeleteIcon} onClick={onDeleteGroup}>
+              Delete
+            </DropdownItem>
+          </Dropdown>
         </div>
       </div>
       <div className="relative overflow-auto rounded-xl border-2 bg-white">

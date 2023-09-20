@@ -2,3 +2,7 @@
 export function formatUsername(text: string) {
   return text.charAt(0).toUpperCase();
 }
+
+export function truncateText(text: string, limit: number) {
+  return text.length > limit ? `${text.substring(0, limit)}...` : text;
+}

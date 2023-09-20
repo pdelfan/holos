@@ -54,8 +54,8 @@ function TableRow(props: Props) {
             className="bg-white border p-1 rounded-lg mx-auto min-w-[3rem]"
             src={image}
             alt="Item image"
-            width={50}
-            height={50}
+            width={40}
+            height={40}
             loader={imageLoader}
           />
         )}
@@ -64,7 +64,9 @@ function TableRow(props: Props) {
         {title && <span className="text-sm">{title}</span>}
       </td>
       <td className="text-center p-3">
-        {description && <span className="text-sm">{description}</span>}
+        {description && (
+          <span className="inline-block text-sm max-w-xs">{description}</span>
+        )}
       </td>
       <td className="text-center p-3">
         {url && (

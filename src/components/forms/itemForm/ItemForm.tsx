@@ -98,7 +98,7 @@ export default function ItemForm(props: Props) {
         inventory: selectedItem,
       },
     ]);
-    
+
     toast.success("Added item to group.");
     onClose();
   };
@@ -140,7 +140,7 @@ export default function ItemForm(props: Props) {
               search.trim().length > 0 &&
               searchResults &&
               searchResults.length > 0 && (
-                <ul className="absolute flex flex-col gap-1 bg-white border p-1 mt-1 rounded-xl shadow-lg">
+                <ul className="absolute flex flex-col gap-1 bg-white border p-1 mt-1 rounded-xl shadow-lg max-h-40 overflow-scroll">
                   {searchResults?.map((item) => (
                     <li
                       className="rounded-lg hover:bg-button-hover  m-1"
@@ -176,7 +176,7 @@ export default function ItemForm(props: Props) {
             <p className="text-md font-medium text-gray-900 dark:text-white">
               Selected Item
             </p>
-            <div className="flex  flex-wrap items-center gap-2 mt-1">
+            <div className="flex flex-col justify-center flex-wrap items-center gap-2 mt-1">
               {selectedItem.image_url && (
                 <Image
                   className="bg-white border p-1 rounded-lg"

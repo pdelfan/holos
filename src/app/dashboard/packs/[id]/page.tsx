@@ -43,6 +43,21 @@ export default function Pack(props: Props) {
     toast.success("Deleted group.");
   };
 
+  // get total base weight, total weight, total price, total quantity
+  const total = {
+    weight_unit: pack?.weight_unit ?? "Unknown unit",
+    currency: currency,
+    base_weight: 0,
+    total_weight: groups.reduce((acc, group) => acc + group.total_weight, 0),
+    total_cost: groups.reduce((acc, group) => acc + group.total_price, 0),
+    total_items: groups.reduce((acc, group) => acc + group.total_quantity, 0),
+  };
+
+  const chartData = groups.map((group) => ({
+    category: group.title,
+    weight: group.total_weight,
+  }));  
+
   return (
     <>
       {pack && (
@@ -52,15 +67,15 @@ export default function Pack(props: Props) {
             {pack.description}
           </h2>
           <section className="mt-8 flex flex-wrap justify-between gap-3">
-            <ChartSummary data={[]} />
-            <PackSummary data={{ ...pack, currency }} />
+            <ChartSummary data={chartData} />
+            <PackSummary data={total} />
           </section>
           <section className="flex flex-col gap-10 mt-12">
             {groups.length > 0 &&
               groups.map((group) => (
                 <Table
                   key={group.id}
-                  group={group}                  
+                  group={group}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
                   currency={currency}
                   weightUnit={pack.weight_unit}
