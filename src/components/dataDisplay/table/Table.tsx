@@ -80,7 +80,12 @@ function Table(props: Props) {
           <tbody>
             <>
               {groupData.map((item) => (
-                <TableRow key={item.id} item={item} onDelete={onDeleteItem} />
+                <TableRow
+                  key={item.id}
+                  item={item}
+                  onDelete={onDeleteItem}
+                  onUpdate={setGroupData}
+                />
               ))}
             </>
             <AddItem

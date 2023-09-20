@@ -1,19 +1,22 @@
 import Image from "next/image";
 import Tag from "../../contentDisplay/tag/Tag";
-import { useCallback, useState } from "react";
+import { SetStateAction, useCallback, useState } from "react";
 import LinkIcon from "@/assets/icons/linkIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DragIcon from "@/assets/icons/dragIcon.svg";
 import { useDraggable } from "@dnd-kit/core";
+import Modal from "@/components/feedback/modal/Modal";
+import EditItemForm from "@/components/forms/editItemForm/EditItemForm";
 
 interface Props {
   item: PackItem;
   onDelete: (id: number) => void;
+  onUpdate: (item: SetStateAction<[] | PackItem[]>) => void;
 }
 
 function TableRow(props: Props) {
-  const { item, onDelete } = props;
+  const { item, onDelete, onUpdate } = props;
   const { id, position, quantity, group_id, type } = item;
   const {
     title,
@@ -107,6 +110,15 @@ function TableRow(props: Props) {
           </button>
         </span>
       </td>
+      {showEditItemModal && (
+        <Modal>
+          <EditItemForm
+            item={item}
+            onClose={() => setShowEditItemModal(false)}
+            onUpdate={onUpdate}
+          />
+        </Modal>
+      )}
     </tr>
   );
 }
