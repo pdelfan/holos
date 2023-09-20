@@ -15,6 +15,8 @@ export const packsAtom = atom<Pack[] | []>([]);
 
 export const groupsAtom = atom<Group[] | []>([]);
 
+export const packStatsAtom = atom<PackStats[] | []>([]);
+
 export const tripsAtom = atom<TripItem[] | []>([]);
 
 export const inventoryAtom = atom<InventoryItem[] | []>([]);

@@ -20,7 +20,7 @@ function PackSummary(props: Props) {
   } = data;
   return (
     <div>
-      <ul className="flex flex-wrap gap-3 justify-between">
+      <ul className="flex flex-wrap gap-6 justify-between">
         <li className="flex flex-col items-center">
           <h4 className="text-gray-light font-medium text-sm">Base weight</h4>
           <span className="flex flex-wrap gap-1">

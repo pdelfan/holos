@@ -9,8 +9,10 @@ import useGetGroups from "@/hooks/useGetGroups";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
+import { packStatsAtom } from "@/store/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useState } from "react";
+import { useAtom } from "jotai";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 interface Props {
@@ -32,6 +34,8 @@ export default function Pack(props: Props) {
   } = useGetGroups({
     packID: params.id,
   });
+  const [packStats, setPackStats] = useAtom(packStatsAtom);
+  const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
   const onDeleteGroup = async (id: number) => {
     const { error } = await supabase.from("group").delete().eq("id", id);
@@ -40,6 +44,8 @@ export default function Pack(props: Props) {
       return;
     }
     setGroups(groups.filter((item) => item.id !== id));
+    setPackStats(packStats.filter((item) => item.group_id !== id));
+ 
     toast.success("Deleted group.");
   };
 
@@ -47,16 +53,19 @@ export default function Pack(props: Props) {
   const total = {
     weight_unit: pack?.weight_unit ?? "Unknown unit",
     currency: currency,
-    base_weight: 0,
-    total_weight: groups.reduce((acc, group) => acc + group.total_weight, 0),
-    total_cost: groups.reduce((acc, group) => acc + group.total_price, 0),
-    total_items: groups.reduce((acc, group) => acc + group.total_quantity, 0),
+    base_weight: packStats.reduce((acc, group) => acc + group.base_weight, 0),
+    total_weight: packStats.reduce((acc, group) => acc + group.total_weight, 0),
+    total_cost: packStats.reduce((acc, group) => acc + group.price, 0),
+    total_items: packStats.reduce((acc, group) => acc + group.quantity, 0),
   };
 
-  const chartData = groups.map((group) => ({
-    category: group.title,
-    weight: group.total_weight,
-  }));  
+  useEffect(() => {
+    const data = packStats.map((group) => ({
+      group: group.group_title,
+      weight: group.total_weight,
+    }));
+    setChartData(data);
+  }, [packStats]);
 
   return (
     <>

@@ -12,17 +12,17 @@ type Story = StoryObj<typeof ChartSummary>;
 export const Default: Story = {
   args: {
     data: [
-      { category: "Food", weight: 3 },
-      { category: "IPO", weight: 1 },
-      { category: "Shelter", weight: 5.5 },
-      { category: "Pack", weight: 6 },
-      { category: "CAT", weight: 1.9 },
-      { category: "Clothing", weight: 4.4 },
-      { category: "Cooking", weight: 4 },
-      { category: "Sleeping", weight: 5 },
-      { category: "HOA", weight: 1.9 },
-      { category: "Water", weight: 2.5 },
-      { category: "Electronics", weight: 2.2 },
+      { group: "Food", weight: 3 },
+      { group: "IPO", weight: 1 },
+      { group: "Shelter", weight: 5.5 },
+      { group: "Pack", weight: 6 },
+      { group: "CAT", weight: 1.9 },
+      { group: "Clothing", weight: 4.4 },
+      { group: "Cooking", weight: 4 },
+      { group: "Sleeping", weight: 5 },
+      { group: "HOA", weight: 1.9 },
+      { group: "Water", weight: 2.5 },
+      { group: "Electronics", weight: 2.2 },
     ],
   },
 };

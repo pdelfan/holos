@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddItem from "../addItem/AddItem";
 import Button from "@/components/actions/button/Button";
 import EditIcon from "@/assets/icons/editIcon.svg";
@@ -13,6 +13,8 @@ import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import Dropdown from "@/components/actions/dropdown/Dropdown";
 import DropdownItem from "@/components/actions/dropdown/DropdownItem";
+import { packStatsAtom } from "@/store/store";
+import { useAtom } from "jotai";
 
 interface Props {
   onDeleteGroup: () => void;
@@ -26,6 +28,8 @@ function Table(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
+  const [packStats, setPackStats] = useAtom(packStatsAtom);
+
   const total = {
     price: groupData.reduce(
       (acc, item) => acc + item.inventory.price * item.quantity,
@@ -38,6 +42,30 @@ function Table(props: Props) {
     quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
   };
 
+  useEffect(() => {
+    const groupTotal: PackStats = {
+      group_id: group.id,
+      group_title: group.title,
+      total_weight: groupData.reduce(
+        (acc, item) => acc + item.inventory.weight * item.quantity,
+        0
+      ),
+      base_weight: groupData
+        .filter((item) => item.type === "General")
+        .reduce((acc, item) => acc + item.inventory.weight * item.quantity, 0),
+      price: groupData.reduce(
+        (acc, item) => acc + item.inventory.price * item.quantity,
+        0
+      ),
+      quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
+    };
+
+    setPackStats((prev) => [
+      ...prev.filter((item) => item.group_title !== group.title),
+      groupTotal,
+    ]);
+  }, [group.title, groupData, setPackStats]);
+
   const onDeleteItem = async (id: number) => {
     const { error } = await supabase.from("pack_item").delete().eq("id", id);
     if (error) {
@@ -45,6 +73,7 @@ function Table(props: Props) {
       return;
     }
     setGroupData(groupData.filter((item) => item.id !== id));
+
     toast.success("Deleted item from gorup.");
   };
 
