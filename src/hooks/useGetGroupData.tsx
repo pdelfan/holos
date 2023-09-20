@@ -18,7 +18,7 @@ export default function useGetGroupData(props: Props) {
       const { data } = await supabase
         .from("pack_item")
         .select(
-          "*, inventory ( id, title, description, image_url, price, weight, weight_unit )"
+          "*, inventory ( id, title, description, image_url, url, price, weight, weight_unit )"
         )
         .match({ group_id: groupID });
       setGroupData(data as PackItem[]);      

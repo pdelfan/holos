@@ -28,6 +28,8 @@ function TableRow(props: Props) {
     weight_unit,
   } = item.inventory;
 
+  console.log(item.inventory);
+
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
   }, []);
@@ -72,7 +74,7 @@ function TableRow(props: Props) {
         {url && (
           <button
             onClick={() => {
-              window.open(url, "_self");
+              window.open(url, "_blank");
             }}
           >
             <Image src={LinkIcon} alt="Link icon" width={20} height={20} />
