@@ -28,8 +28,9 @@ interface PackSummary {
 }
 
 interface ChartData {
+  weight_unit: string;
   group: string;
-  weight: number;
+  weight: number;    
 }
 
 interface InventoryItem {
@@ -111,6 +112,7 @@ interface PackStats {
   group_title: string;
   total_weight: number;
   base_weight: number;
+  weight_unit: string;
   price: number;
   quantity: number;
 }

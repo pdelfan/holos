@@ -46,6 +46,7 @@ function Table(props: Props) {
     const groupTotal: PackStats = {
       group_id: group.id,
       group_title: group.title,
+      weight_unit: weightUnit,
       total_weight: groupData.reduce(
         (acc, item) => acc + item.inventory.weight * item.quantity,
         0
@@ -64,7 +65,7 @@ function Table(props: Props) {
       ...prev.filter((item) => item.group_title !== group.title),
       groupTotal,
     ]);
-  }, [group.title, groupData, setPackStats]);
+  }, [group.id, group.title, groupData, setPackStats, weightUnit]);
 
   const onDeleteItem = async (id: number) => {
     const { error } = await supabase.from("pack_item").delete().eq("id", id);

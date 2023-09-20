@@ -63,6 +63,7 @@ export default function Pack(props: Props) {
     const data = packStats.map((group) => ({
       group: group.group_title,
       weight: group.total_weight,
+      weight_unit: group.weight_unit,
     }));
     setChartData(data);
   }, [packStats]);
@@ -75,7 +76,7 @@ export default function Pack(props: Props) {
           <h2 className="font-medium text-header-2 mt-1 max-w-2xl">
             {pack.description}
           </h2>
-          <section className="mt-8 flex flex-wrap justify-between gap-3">
+          <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
             <PackSummary data={total} />
           </section>
