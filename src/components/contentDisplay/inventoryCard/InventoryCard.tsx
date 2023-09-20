@@ -49,13 +49,13 @@ function InventoryCard(props: Props) {
           )}
         </div>
         <div className="flex justify-between gap-5 mt-4 items-center">
-          {price && (
+          {price !== 0 && (
             <span className="text-sm font-medium text-stone-600">
               {currency}
               {price}
             </span>
           )}
-          {weight && (
+          {weight !== 0 && (
             <span className="text-sm font-medium text-stone-600">
               {weight}
               {weight_unit}
