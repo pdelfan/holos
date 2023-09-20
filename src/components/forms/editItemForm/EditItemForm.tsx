@@ -9,10 +9,11 @@ interface Props {
   onClose: () => void;
   item: PackItem;
   onUpdate: (item: SetStateAction<[] | PackItem[]>) => void;
+  onDelete: (id: number) => void;
 }
 
 export default function EditItemForm(props: Props) {
-  const { onClose, onUpdate, item } = props;
+  const { onClose, onUpdate, onDelete, item } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
 
@@ -22,7 +23,7 @@ export default function EditItemForm(props: Props) {
   const onUpdateItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
-    if (!user.session) {
+    if (!user.session || (type === item.type && quantity === item.quantity)) {
       onClose();
       return;
     }
@@ -87,19 +88,29 @@ export default function EditItemForm(props: Props) {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3 justify-end">
+        <div className="flex flex-wrap gap-3 justify-between">
           <button
-            onClick={onClose}
-            className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
+            type="button"
+            onClick={() => onDelete(item.id)}
+            className="rounded-lg bg-red-600 text-white text-sm font-medium px-4 py-2 border hover:bg-red-700"
           >
-            Cancel
+            Delete
           </button>
-          <button
-            type="submit"
-            className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
-          >
-            Update Item
-          </button>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
+            >
+              Update Item
+            </button>
+          </div>
         </div>
       </form>
     </div>

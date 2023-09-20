@@ -1,8 +1,9 @@
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
+import { useState } from "react";
 import AddItem from "../addItem/AddItem";
 import Button from "@/components/actions/button/Button";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
+import ExpandIcon from "@/assets/icons/expandIcon.svg";
 import EditGroupForm from "@/components/forms/editGroupForm/EditGroupForm";
 import Modal from "@/components/feedback/modal/Modal";
 import useGetGroupData from "@/hooks/useGetGroupData";
@@ -52,7 +53,7 @@ function Table(props: Props) {
       <div className="flex justify-between mb-2">
         <h3 className="font-medium text-lg">{group.title}</h3>
         <div className="flex gap-2">
-          <Dropdown button={<Button>···</Button>}>
+          <Dropdown button={<Button icon={ExpandIcon} />}>
             <DropdownItem
               icon={EditIcon}
               onClick={() => setShowEditGroupModal(!showEditGroupModal)}
@@ -78,7 +79,7 @@ function Table(props: Props) {
               <th className="p-2 text-sm">Price</th>
               <th className="p-2 text-sm">Weight</th>
               <th className="p-2 text-sm">QTY</th>
-              <th className="p-2 text-sm">Actions</th>
+              <th className="p-2 text-sm"></th>
             </tr>
           </thead>
           <tbody>

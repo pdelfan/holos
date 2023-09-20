@@ -28,8 +28,6 @@ function TableRow(props: Props) {
     weight_unit,
   } = item.inventory;
 
-  console.log(item.inventory);
-
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
   }, []);
@@ -93,7 +91,7 @@ function TableRow(props: Props) {
         <span className="text-sm">{quantity}</span>
       </td>
       <td>
-        <span className="flex gap-5 justify-center p-3">
+        <span className="flex justify-center p-3">
           <button onClick={() => setShowEditItemModal(!showEditItemModal)}>
             <Image
               className="min-w-[1.3rem]"
@@ -102,16 +100,7 @@ function TableRow(props: Props) {
               width={20}
               height={20}
             />
-          </button>
-          <button onClick={() => onDelete(item.id)}>
-            <Image
-              className="min-w-[1.3rem]"
-              src={DeleteIcon}
-              alt="Link icon"
-              width={20}
-              height={20}
-            />
-          </button>
+          </button>    
         </span>
       </td>
       {showEditItemModal && (
@@ -120,6 +109,7 @@ function TableRow(props: Props) {
             item={item}
             onClose={() => setShowEditItemModal(false)}
             onUpdate={onUpdate}
+            onDelete={onDelete}
           />
         </Modal>
       )}

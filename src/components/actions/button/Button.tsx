@@ -2,7 +2,7 @@ import Image from "next/image";
 import { ReactNode } from "react";
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
   icon?: string;
   disabled?: boolean;
   onClick?: () => void;
