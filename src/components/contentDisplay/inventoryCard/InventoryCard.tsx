@@ -57,8 +57,7 @@ function InventoryCard(props: Props) {
           )}
           {weight !== 0 && (
             <span className="text-sm font-medium text-stone-600">
-              {weight}
-              {weight_unit}
+              {weight} {weight_unit}              
             </span>
           )}
         </div>

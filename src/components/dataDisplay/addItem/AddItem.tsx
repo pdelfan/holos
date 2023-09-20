@@ -33,8 +33,7 @@ export default function AddItem(props: Props) {
           </span>
         </td>
         <td className="text-center p-3">
-          <span className="text-sm">{total.weight}</span>
-          <span className="text-sm">{weightUnit}</span>
+          <span className="text-sm">{total.weight} {weightUnit}</span>          
         </td>
         <td className="text-center p-3">
           <span className="text-sm">{total.quantity}</span>

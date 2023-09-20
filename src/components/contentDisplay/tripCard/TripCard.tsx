@@ -65,8 +65,7 @@ function TripCard(props: Props) {
             Elevation
           </span>
           <span className="text-white text-lg font-medium">
-            {elevation}
-            {elevationUnit}
+            {elevation} {elevationUnit}
           </span>
         </li>
         <li className="flex flex-col">
@@ -74,8 +73,7 @@ function TripCard(props: Props) {
             Distance
           </span>
           <span className="text-white text-lg font-medium">
-            {distance}
-            {distanceUnit}
+            {distance} {distanceUnit}            
           </span>
         </li>
         <li className="flex flex-col">
@@ -83,8 +81,7 @@ function TripCard(props: Props) {
             Base Weight
           </span>
           <span className="text-white text-lg font-medium">
-            {baseWeight}
-            {weightUnit}
+            {baseWeight} {weightUnit}            
           </span>
         </li>
         <li className="flex flex-col">
@@ -92,8 +89,7 @@ function TripCard(props: Props) {
             Total weight
           </span>
           <span className="text-white text-lg font-medium">
-            {totalWeight}
-            {weightUnit}
+            {totalWeight} {weightUnit}            
           </span>
         </li>
       </ul>

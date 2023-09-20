@@ -85,8 +85,9 @@ function TableRow(props: Props) {
           <span className="text-sm">${price}</span>
         </td>
         <td className="text-center p-3">
-          <span className="text-sm">{weight}</span>
-          <span className="text-sm">{weight_unit}</span>
+          <span className="text-sm">
+            {weight} {weight_unit}
+          </span>
         </td>
         <td className="text-center p-3">
           <span className="text-sm">{quantity}</span>

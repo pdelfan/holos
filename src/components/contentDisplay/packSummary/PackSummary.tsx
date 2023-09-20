@@ -31,8 +31,7 @@ function PackSummary(props: Props) {
               height={20}
             />
             <h5 className="text-gray font-medium">
-              {base_weight}
-              {weight_unit}
+              {base_weight} {weight_unit}
             </h5>
           </span>
         </li>
@@ -46,8 +45,7 @@ function PackSummary(props: Props) {
               height={20}
             />
             <h5 className="text-gray font-medium">
-              {total_weight}
-              {weight_unit}
+              {total_weight} {weight_unit}
             </h5>
           </span>
         </li>
