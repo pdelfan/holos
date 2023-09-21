@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function AddItem(props: Props) {
-  const { onAddItem, total, weightUnit, currency, groupID } = props;
+  const { onAddItem, total, weightUnit, currency, groupID } = props;  
   const [showAddForm, setShowAddForm] = useState(false);
 
   return (
@@ -29,11 +29,11 @@ export default function AddItem(props: Props) {
         <td className="text-center p-3">
           <span className="text-sm">
             {currency}
-            {total.price}
+            {Number.parseFloat(total.price.toFixed(2))}
           </span>
         </td>
         <td className="text-center p-3">
-          <span className="text-sm">{total.weight} {weightUnit}</span>          
+          <span className="text-sm">{Number.parseFloat(total.weight.toFixed(2))} {weightUnit}</span>          
         </td>
         <td className="text-center p-3">
           <span className="text-sm">{total.quantity}</span>

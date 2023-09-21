@@ -43,8 +43,8 @@ export default function EditInventoryForm(props: Props) {
         description: description ?? "",
         image_url: imageURL === "" ? null : imageURL,
         url: url === "" ? null : url,
-        price: price,
-        weight: weight ?? 0,
+        price: Number.parseFloat(price.toFixed(2)),
+        weight: Number.parseFloat(weight.toFixed(2)) ?? 0,
         weight_unit: weightUnit,
         season: season,
       })
