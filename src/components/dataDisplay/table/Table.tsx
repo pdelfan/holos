@@ -15,6 +15,7 @@ import Dropdown from "@/components/actions/dropdown/Dropdown";
 import DropdownItem from "@/components/actions/dropdown/DropdownItem";
 import { packStatsAtom } from "@/store/store";
 import { useAtom } from "jotai";
+import { convertWeight } from "@/utils/numberUtils";
 
 interface Props {
   onDeleteGroup: () => void;
@@ -36,7 +37,10 @@ function Table(props: Props) {
       0
     ),
     weight: groupData.reduce(
-      (acc, item) => acc + item.inventory.weight * item.quantity,
+      (acc, item) =>
+        acc +
+        convertWeight(item.inventory.weight, item.inventory.weight_unit, "kg") *
+          item.quantity,
       0
     ),
     quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),

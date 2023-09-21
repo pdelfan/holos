@@ -24,7 +24,7 @@ function ChartSummary(props: Props) {
               return (
                 <div
                   key={datum.group}
-                  className="h-6 rounded-sm group hover:drop-shadow-2xl"
+                  className="h-6 rounded-sm group hover:drop-shadow-md"
                   style={{
                     backgroundColor: CHART_COLOURS[index],
                     width: `${barWidth}%`,

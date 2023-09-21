@@ -35,7 +35,7 @@ export default function Wishlist() {
             onChange={handleSearch}
           />
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <Select
             selected={viewFilter}
             options={viewFilterOptions}

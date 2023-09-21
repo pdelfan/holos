@@ -42,7 +42,7 @@ interface InventoryItem {
   description: string | null;
   price: number;
   weight: number;
-  weight_unit: string;
+  weight_unit: WeightUnit;
   season: string;
 }
 

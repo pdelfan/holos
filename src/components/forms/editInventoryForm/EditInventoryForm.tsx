@@ -140,6 +140,7 @@ export default function EditInventoryForm(props: Props) {
             <div className="flex-2">
               <FormSelect
                 label="Unit"
+                initialValue={weightUnit}
                 options={["kg", "g", "lb", "oz"]}
                 onChange={setWeightUnit}
               />

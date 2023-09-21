@@ -25,6 +25,7 @@ export default function Inventory() {
   const handleSearch = (searchTerm: string) => {
     setInventorySearch(searchTerm);
   };
+
   return (
     <>
       <h1 className="text-3xl font-semibold text-header-1">Inventory</h1>
@@ -32,7 +33,7 @@ export default function Inventory() {
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for an item" onChange={handleSearch} />
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <Select
             selected={seasonFilter}
             options={seasonFilterOptions}
