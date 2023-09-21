@@ -21,11 +21,11 @@ interface Props {
   onDeleteGroup: () => void;
   group: Group;
   currency: string;
-  weightUnit: string;
+  packWeightUnit: string;
 }
 
 function Table(props: Props) {
-  const { onDeleteGroup, group, currency, weightUnit } = props;
+  const { onDeleteGroup, group, currency, packWeightUnit } = props;
   const supabase = createClientComponentClient<Database>();
   const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
@@ -39,25 +39,48 @@ function Table(props: Props) {
     weight: groupData.reduce(
       (acc, item) =>
         acc +
-        convertWeight(item.inventory.weight, item.inventory.weight_unit, "kg") *
+        convertWeight(
+          item.inventory.weight,
+          item.inventory.weight_unit,
+          group.weight_unit
+        ) *
           item.quantity,
       0
     ),
     quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
   };
 
+  console.log("groupdata", groupData);
+
   useEffect(() => {
     const groupTotal: PackStats = {
       group_id: group.id,
       group_title: group.title,
-      weight_unit: weightUnit,
+      weight_unit: packWeightUnit,
       total_weight: groupData.reduce(
-        (acc, item) => acc + item.inventory.weight * item.quantity,
+        (acc, item) =>
+          acc +
+          convertWeight(
+            item.inventory.weight,
+            item.inventory.weight_unit,
+            packWeightUnit
+          ) *
+            item.quantity,
         0
       ),
       base_weight: groupData
         .filter((item) => item.type === "General")
-        .reduce((acc, item) => acc + item.inventory.weight * item.quantity, 0),
+        .reduce(
+          (acc, item) =>
+            acc +
+            convertWeight(
+              item.inventory.weight,
+              item.inventory.weight_unit,
+              packWeightUnit
+            ) *
+              item.quantity,
+          0
+        ),
       price: groupData.reduce(
         (acc, item) => acc + item.inventory.price * item.quantity,
         0
@@ -69,7 +92,7 @@ function Table(props: Props) {
       ...prev.filter((item) => item.group_title !== group.title),
       groupTotal,
     ]);
-  }, [group.id, group.title, groupData, setPackStats, weightUnit]);
+  }, [group.id, group.title, groupData, setPackStats, packWeightUnit]);
 
   const onDeleteItem = async (id: number) => {
     const { error } = await supabase.from("pack_item").delete().eq("id", id);
@@ -92,7 +115,7 @@ function Table(props: Props) {
               icon={EditIcon}
               onClick={() => setShowEditGroupModal(!showEditGroupModal)}
             >
-              Rename
+              Edit
             </DropdownItem>
             <DropdownItem icon={DeleteIcon} onClick={onDeleteGroup}>
               Delete
@@ -130,7 +153,7 @@ function Table(props: Props) {
             <AddItem
               onAddItem={setGroupData}
               total={total}
-              weightUnit={weightUnit}
+              weightUnit={group.weight_unit}
               currency={currency}
               groupID={group.id}
             />

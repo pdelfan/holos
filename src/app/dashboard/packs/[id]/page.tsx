@@ -10,6 +10,7 @@ import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
 import { packStatsAtom } from "@/store/store";
+import { convertWeight } from "@/utils/numberUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
@@ -45,27 +46,45 @@ export default function Pack(props: Props) {
     }
     setGroups(groups.filter((item) => item.id !== id));
     setPackStats(packStats.filter((item) => item.group_id !== id));
- 
+
     toast.success("Deleted group.");
   };
 
   // get total base weight, total weight, total price, total quantity
   const total = {
-    weight_unit: pack?.weight_unit ?? "Unknown unit",
+    weight_unit: pack?.weight_unit ?? "kg",
     currency: currency,
-    base_weight: packStats.reduce((acc, group) => acc + group.base_weight, 0),
-    total_weight: packStats.reduce((acc, group) => acc + group.total_weight, 0),
+    base_weight: packStats.reduce(
+      (acc, group) =>
+        acc +
+        convertWeight(
+          group.base_weight,
+          group.weight_unit,
+          pack?.weight_unit ?? "kg"
+        ),
+      0
+    ),
+    total_weight: packStats.reduce(
+      (acc, group) =>
+        acc +
+        convertWeight(
+          group.total_weight,
+          group.weight_unit,
+          pack?.weight_unit ?? "kg"
+        ),
+      0
+    ),
     total_cost: packStats.reduce((acc, group) => acc + group.price, 0),
     total_items: packStats.reduce((acc, group) => acc + group.quantity, 0),
   };
 
   useEffect(() => {
-    const data = packStats.map((group) => ({
+    const visualizationData = packStats.map((group) => ({
       group: group.group_title,
-      weight: group.total_weight,
+      weight: parseFloat(group.total_weight.toFixed(2)),
       weight_unit: group.weight_unit,
     }));
-    setChartData(data);
+    setChartData(visualizationData);
   }, [packStats]);
 
   return (
@@ -88,7 +107,7 @@ export default function Pack(props: Props) {
                   group={group}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
                   currency={currency}
-                  weightUnit={pack.weight_unit}
+                  packWeightUnit={pack.weight_unit}
                 />
               ))}
           </section>

@@ -8,15 +8,15 @@ const unitToGrams = {
 
 export function convertWeight(
   weight: number,
-  from: WeightUnit,
-  to: WeightUnit
+  from: string,
+  to: string
 ): number {
   if (from === to) {
     return weight;
   }
 
-  const toGrams = weight * unitToGrams[from];
-  const converted = toGrams / unitToGrams[to];
+  const toGrams = weight * unitToGrams[from as keyof typeof unitToGrams];
+  const converted = toGrams / unitToGrams[to as keyof typeof unitToGrams];
 
   return converted;
 }

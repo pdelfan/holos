@@ -31,7 +31,7 @@ function PackSummary(props: Props) {
               height={20}
             />
             <h5 className="text-gray font-medium">
-              {base_weight} {weight_unit}
+              {base_weight.toFixed(2)} {weight_unit}
             </h5>
           </span>
         </li>
@@ -45,7 +45,7 @@ function PackSummary(props: Props) {
               height={20}
             />
             <h5 className="text-gray font-medium">
-              {total_weight} {weight_unit}
+              {total_weight.toFixed(2)} {weight_unit}
             </h5>
           </span>
         </li>
@@ -55,7 +55,7 @@ function PackSummary(props: Props) {
             <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
             <h5 className="text-gray font-medium">
               {currency}
-              {total_cost}
+              {total_cost.toFixed(2)}
             </h5>
           </span>
         </li>

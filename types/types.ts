@@ -42,7 +42,7 @@ interface InventoryItem {
   description: string | null;
   price: number;
   weight: number;
-  weight_unit: WeightUnit;
+  weight_unit: string;
   season: string;
 }
 
@@ -103,6 +103,7 @@ interface Group {
   pack_id: number;
   user_id: string;
   total_weight: number;
+  weight_unit: string;
   total_quantity: number;
   total_price: number;
 }

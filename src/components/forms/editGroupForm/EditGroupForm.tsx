@@ -4,6 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
 import { updateGroupData } from "@/utils/fetchUtils";
+import FormSelect from "../formSelect/FormSelect";
 
 interface Props {
   group: Group;
@@ -13,13 +14,17 @@ interface Props {
 export default function EditGroupForm(props: Props) {
   const { group, onClose } = props;
   const [title, setTitle] = useState(group.title);
+  const [weightUnit, setWeightUnit] = useState(group.weight_unit);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
 
   const onUpdateGroup = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
-    if (!user.session || title === group.title) {
+    if (
+      !user.session ||
+      (title === group.title && weightUnit === group.weight_unit)
+    ) {
       onClose();
       return;
     }
@@ -28,14 +33,15 @@ export default function EditGroupForm(props: Props) {
       .from("group")
       .update({
         title: title,
+        weight_unit: weightUnit,
       })
       .match({ id: group.id, user_id: user.session.user.id });
     if (error) {
-      toast.error("Couldn't update title.");
+      toast.error("Couldn't update group.");
       return;
     }
 
-    toast.success("Updated title.");
+    toast.success("Updated group.");
     onClose();
     updateGroupData();
   };
@@ -46,19 +52,33 @@ export default function EditGroupForm(props: Props) {
       className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
     >
       <form onSubmit={onUpdateGroup}>
-        <label className="text-md font-medium text-gray-900 dark:text-white">
-          Title
-        </label>
-        <input
-          autoFocus
-          required
-          type="text"
-          placeholder="Title of this group"
-          aria-label="Website address"
-          className="w-full rounded-xl px-4 py-2 mt-2 outline-none placeholder-input-placeholder text-input-text text-sm bg-input font-medium"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <div className="flex flex-wrap gap-3">
+          <div className="flex-1">
+            <label className="text-md font-medium text-gray-900 dark:text-white">
+              Title
+            </label>
+            <input
+              autoFocus
+              required
+              type="text"
+              placeholder="Title of this group"
+              aria-label="Website address"
+              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="flex-1">
+            <div className="flex-1">
+              <FormSelect
+                label="Total Weight Unit"
+                initialValue={weightUnit}
+                options={["g", "kg", "lb", "oz"]}
+                onChange={setWeightUnit}
+              />
+            </div>
+          </div>
+        </div>
         <div className="flex flex-wrap gap-3 mt-5 justify-end">
           <button
             type="button"
@@ -71,7 +91,7 @@ export default function EditGroupForm(props: Props) {
             type="submit"
             className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
           >
-            Update Title
+            Update Group
           </button>
         </div>
       </form>

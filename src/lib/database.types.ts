@@ -44,6 +44,7 @@ export interface Database {
           total_quantity: number
           total_weight: number
           user_id: string
+          weight_unit: string
         }
         Insert: {
           id?: number
@@ -54,6 +55,7 @@ export interface Database {
           total_quantity: number
           total_weight: number
           user_id: string
+          weight_unit: string
         }
         Update: {
           id?: number
@@ -64,6 +66,7 @@ export interface Database {
           total_quantity?: number
           total_weight?: number
           user_id?: string
+          weight_unit?: string
         }
         Relationships: [
           {
