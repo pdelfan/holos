@@ -6,48 +6,36 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   data: Pack;
-  currency: string;
   onEdit: () => void;
   onDelete: () => void;
 }
 
 function PackCard(props: Props) {
-  const { data, currency, onEdit, onDelete } = props;
-  const {
-    title,
-    description,
-    base_weight,
-    total_weight,
-    total_cost,
-    total_items,
-    weight_unit,
-  } = data;
-
-  const packSummary: PackSummary = {
-    base_weight,
-    total_weight,
-    total_cost,
-    total_items,
-    weight_unit,
-    currency,
-  };
-
+  const { data, onEdit, onDelete } = props;
+  const { title, description } = data;
   const router = useRouter();
+
+  const gradient = {
+    background:
+      "radial-gradient(50% 50% at 50% 50%, #000 0%, #6A6A6A 100%)",
+  };
 
   return (
     <article
-      className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer group hover:border-neutral-300"
+      className="flex flex-col relative rounded-2xl p-5 cursor-pointer group hover:brightness-105"
+      style={gradient}
       onClick={() => {
         router.push(`packs/${data.id}`);
       }}
     >
-      <div className="flex  flex-col gap-1 mb-6">
-        <h2 className="text-stone-600 font-medium leading-5">{title}</h2>
-        <h3 className="break-words overflow-clip text-stone-400">
+      <div className="flex flex-col gap-1">
+        <h2 className="text-stone-100 font-medium text-lg leading-5">
+          {title}
+        </h2>
+        <h3 className="break-words overflow-clip text-stone-300 mt-2">
           {description}
         </h3>
       </div>
-      <PackSummary data={packSummary} />
       <div className="hidden group-focus:flex group-hover:flex gap-2 absolute right-5 top-5">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover"

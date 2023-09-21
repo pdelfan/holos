@@ -50,7 +50,6 @@ export default function PackGrid() {
                 <PackCard
                   key={item.id}
                   data={item}
-                  currency={currency}
                   onDelete={() => onDeletePack(item.id)}
                   onEdit={() => {
                     setCurrentPack(item);
