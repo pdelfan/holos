@@ -28,7 +28,7 @@ export default function Trips() {
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for a trip" onChange={handleSearch} />
         </div>
-        <div className="flex">
+        <div className="flex ml-auto">
           <Select
             selected={sortFilter}
             options={sortFilterOptions}

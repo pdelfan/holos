@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { useCallback } from "react";
-import Tag from "@/components/contentDisplay/tag/Tag";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
+import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
+import CostIcon from "@/assets/icons/costIcon.svg";
 
 interface Props {
   data: InventoryItem;
@@ -48,16 +49,23 @@ function InventoryCard(props: Props) {
             </h3>
           )}
         </div>
-        <div className="flex justify-between gap-5 mt-4 items-center">
+        <div className="flex justify-between gap-4 mt-4 items-center">
           {price !== 0 && (
-            <span className="text-sm font-medium text-stone-600">
+            <span className="flex items-center gap-1 text-sm font-medium text-stone-500 border-stone-300">
+              <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
               {currency}
               {price}
             </span>
           )}
           {weight !== 0 && (
-            <span className="text-sm font-medium text-stone-600">
-              {weight} {weight_unit}              
+            <span className="flex items-center gap-1 text-sm font-medium text-stone-500 border-stone-300">
+              <Image
+                src={TotalWeightIcon}
+                alt="Weight icon"
+                width={20}
+                height={20}
+              />
+              {weight} {weight_unit}
             </span>
           )}
         </div>

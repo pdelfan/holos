@@ -110,7 +110,7 @@ function Table(props: Props) {
       <div className="flex justify-between mb-2">
         <h3 className="font-medium text-lg">{group.title}</h3>
         <div className="flex gap-2">
-          <Dropdown button={<Button icon={ExpandIcon} />}>
+          <Dropdown button={<Button>···</Button>}>
             <DropdownItem
               icon={EditIcon}
               onClick={() => setShowEditGroupModal(!showEditGroupModal)}
