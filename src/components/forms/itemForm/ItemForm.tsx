@@ -140,7 +140,7 @@ export default function ItemForm(props: Props) {
               search.trim().length > 0 &&
               searchResults &&
               searchResults.length > 0 && (
-                <ul className="flex flex-col gap-1 bg-white border mt-1 rounded-xl shadow-lg max-h-40 overflow-auto">
+                <ul className="absolute flex flex-col gap-1 bg-white border mt-1 rounded-xl shadow-lg max-h-40 overflow-auto">
                   {searchResults?.map((item) => (
                     <li
                       className="rounded-lg hover:bg-button-hover m-1"
