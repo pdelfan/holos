@@ -18,7 +18,7 @@ export default function InventoryForm(props: Props) {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number>(0);
   const [weight, setWeight] = useState<number>(0);
-  const [weightUnit, setWeightUnit] = useState<string>("kg");
+  const [weightUnit, setWeightUnit] = useState<string>("g");
   const [season, setSeason] = useState<string>("3-Season");
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [url, setURL] = useState<string | null>(null);
@@ -135,7 +135,7 @@ export default function InventoryForm(props: Props) {
             <div className="flex-2">
               <FormSelect
                 label="Unit"
-                options={["kg", "g", "lb", "oz"]}
+                options={["g", "kg", "lb", "oz"]}
                 onChange={setWeightUnit}
               />
             </div>
