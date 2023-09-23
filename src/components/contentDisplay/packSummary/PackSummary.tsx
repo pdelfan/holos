@@ -29,6 +29,7 @@ function PackSummary(props: Props) {
               alt="Base icon"
               width={20}
               height={20}
+              style={{ width: "auto" }}
             />
             <h5 className="text-gray font-medium">
               {base_weight.toFixed(2)} {weight_unit}
@@ -43,6 +44,7 @@ function PackSummary(props: Props) {
               alt="Total weight icon"
               width={20}
               height={20}
+              style={{ width: "auto" }}
             />
             <h5 className="text-gray font-medium">
               {total_weight.toFixed(2)} {weight_unit}
@@ -52,7 +54,7 @@ function PackSummary(props: Props) {
         <li className="flex flex-col items-center">
           <h4 className="text-gray-light font-medium text-sm">Total cost</h4>
           <span className="flex flex-wrap gap-1">
-            <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
+            <Image src={CostIcon} alt="Cost icon" className="w-[20px]" />
             <h5 className="text-gray font-medium">
               {currency}
               {total_cost.toFixed(2)}
@@ -62,7 +64,13 @@ function PackSummary(props: Props) {
         <li className="flex flex-col items-center">
           <h4 className="text-gray-light font-medium text-sm">Total items</h4>
           <span className="flex flex-wrap gap-1">
-            <Image src={ItemsIcon} alt="Items icon" width={20} height={20} />
+            <Image
+              src={ItemsIcon}
+              alt="Items icon"
+              width={20}
+              height={20}
+              style={{ width: "auto" }}
+            />
             <h5 className="text-gray font-medium">{total_items}</h5>
           </span>
         </li>

@@ -21,7 +21,7 @@ export default function useGetGroupData(props: Props) {
           "*, inventory ( id, title, description, image_url, url, price, weight, weight_unit )"
         )
         .match({ group_id: groupID });
-      setGroupData(data as PackItem[]);      
+      setGroupData(data as PackItem[]);
     }
   );
 

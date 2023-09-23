@@ -29,7 +29,11 @@ function Header() {
   return (
     <header className="sticky z-50 top-0 left-0 right-0 flex items-center justify-between bg-white px-3 py-2 border-b">
       <Link href="/dashboard">
-        <Image src={Logo} alt="HOLOS logo" width={40} height={40} />
+        <Image
+          src={Logo}
+          alt="HOLOS logo"
+          width={40}          
+        />
       </Link>
       <Navbar />
       <Dropdown button={<Avatar name="Pouria" />}>

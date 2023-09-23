@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Tag from "../../contentDisplay/tag/Tag";
-import { SetStateAction, useCallback, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import LinkIcon from "@/assets/icons/linkIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DragIcon from "@/assets/icons/dragIcon.svg";
-
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   item: PackItem;
@@ -14,7 +15,7 @@ interface Props {
 
 function TableRow(props: Props) {
   const { item, onEdit, onSelect } = props;
-  const { id, position, quantity, group_id, type } = item;
+  const { id, quantity, type } = item;
   const {
     title,
     image_url: image,
@@ -25,18 +26,38 @@ function TableRow(props: Props) {
     weight_unit,
   } = item.inventory;
 
-  const imageLoader = useCallback(({ src }: { src: string }) => {
-    return src;
-  }, []);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    filter: isDragging ? "contrast(0.9)" : "contrast(1)",
+  };
 
   return (
     <>
-      <tr className=" bg-table-row border-y-2 align-middle">
+      <tr
+        className="bg-table-row border-y-2 align-middle"
+        ref={setNodeRef}
+        style={style}
+      >
         <td className="text-center pl-1">
-          <button className="p-2 hover:bg-button-hover rounded-lg">
+          <button
+            className="p-2 hover:bg-button-hover rounded-lg"
+            style={{ cursor: isDragging ? "grabbing" : "grab" }}
+            {...listeners}
+            {...attributes}
+          >
             <Image
               draggable={false}
-              className="min-w-[0.6rem]"
+              className="w-auto h-auto"
               src={DragIcon}
               alt="Drag icon"
               width={10}
@@ -47,12 +68,11 @@ function TableRow(props: Props) {
         <td className="py-3">
           {image && (
             <Image
-              className="bg-white border p-1 rounded-lg mx-auto min-w-[3rem]"
+              className="bg-white border p-1 rounded-lg mx-auto min-w-[3rem] w-[3rem] h-[3.2rem] object-contain"
               src={image}
               alt="Item image"
-              width={40}
               height={40}
-              loader={imageLoader}
+              width={40}
             />
           )}
         </td>

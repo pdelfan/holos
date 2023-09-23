@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import AddItem from "../addItem/AddItem";
-import Button from "@/components/actions/button/Button";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
-import ExpandIcon from "@/assets/icons/expandIcon.svg";
 import EditGroupForm from "@/components/forms/editGroupForm/EditGroupForm";
 import Modal from "@/components/feedback/modal/Modal";
 import useGetGroupData from "@/hooks/useGetGroupData";
@@ -18,6 +16,21 @@ import { useSetAtom } from "jotai";
 import { convertWeight } from "@/utils/numberUtils";
 import EditItemForm from "@/components/forms/editItemForm/EditItemForm";
 import ItemForm from "@/components/forms/itemForm/ItemForm";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
   onDeleteGroup: () => void;
@@ -35,6 +48,52 @@ function Table(props: Props) {
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
   const setPackStats = useSetAtom(packStatsAtom);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const onSort = async (changedItems: PackItemWithoutInventory[]) => {
+    const { error } = await supabase.from("pack_item").upsert(changedItems);
+
+    if (error) {
+      toast.error("Couldn't update new positions.");
+      return;
+    }
+
+    toast.success("Updated new positions");
+  };
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const oldIndex = groupData.findIndex(
+        (item: PackItem) => item.id === active.id
+      );
+      const newIndex = groupData.findIndex(
+        (item: PackItem) => item.id === over.id
+      );
+
+      const reorderedData = arrayMove(groupData, oldIndex, newIndex);
+      setGroupData([...reorderedData].sort((a, b) => a.position - b.position));
+
+      const changedItems = calculateChangedItems(groupData, oldIndex, newIndex);
+
+      if (changedItems.length === 0) return;
+
+      // remove invnetory from changed items
+      const changedItemsWithoutInventory = changedItems.map((item) => {
+        const { inventory, ...rest } = item;
+        return rest;
+      });
+
+      onSort(changedItemsWithoutInventory);
+    }
+  };
 
   const total = {
     price: groupData.reduce(
@@ -133,40 +192,54 @@ function Table(props: Props) {
         </div>
       </div>
       <div className="relative overflow-auto rounded-xl border-2 bg-white">
-        <table className="border-collapse table-auto w-full">
-          <thead className="bg-table-head">
-            <tr className=" rounded-xl">
-              <th className="p-2" />
-              <th className="p-2 text-sm">Image</th>
-              <th className="p-2 text-sm">Item</th>
-              <th className="p-2 text-sm">Description</th>
-              <th className="p-2 text-sm">Link</th>
-              <th className="p-2 text-sm">Type</th>
-              <th className="p-2 text-sm">Price</th>
-              <th className="p-2 text-sm">Weight</th>
-              <th className="p-2 text-sm">QTY</th>
-              <th className="p-2 text-sm"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <>
-              {groupData.map((item) => (
-                <TableRow
-                  key={item.id}
-                  item={item}
-                  onSelect={() => setSelectedItem(item)}
-                  onEdit={setShowEditItemModal}
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+          id="DndContext"
+        >
+          <SortableContext
+            items={groupData}
+            strategy={verticalListSortingStrategy}
+          >
+            <table className="border-collapse table-auto w-full">
+              <thead className="bg-table-head">
+                <tr className=" rounded-xl">
+                  <th className="p-2" />
+                  <th className="p-2 text-sm">Image</th>
+                  <th className="p-2 text-sm">Item</th>
+                  <th className="p-2 text-sm">Description</th>
+                  <th className="p-2 text-sm">Link</th>
+                  <th className="p-2 text-sm">Type</th>
+                  <th className="p-2 text-sm">Price</th>
+                  <th className="p-2 text-sm">Weight</th>
+                  <th className="p-2 text-sm">QTY</th>
+                  <th className="p-2 text-sm"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <>
+                  {groupData
+                    .sort((a, b) => a.position - b.position)
+                    .map((item) => (
+                      <TableRow
+                        key={item.id}
+                        item={item}
+                        onSelect={() => setSelectedItem(item)}
+                        onEdit={setShowEditItemModal}
+                      />
+                    ))}
+                </>
+                <AddItem
+                  onAdd={setShowAddItemModal}
+                  total={total}
+                  weightUnit={group.weight_unit}
+                  currency={currency}
                 />
-              ))}
-            </>
-            <AddItem
-              onAdd={setShowAddItemModal}
-              total={total}
-              weightUnit={group.weight_unit}
-              currency={currency}
-            />
-          </tbody>
-        </table>
+              </tbody>
+            </table>
+          </SortableContext>
+        </DndContext>
       </div>
       {showAddItemModal && (
         <Modal>

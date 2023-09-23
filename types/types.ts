@@ -30,7 +30,7 @@ interface PackSummary {
 interface ChartData {
   weight_unit: string;
   group: string;
-  weight: number;    
+  weight: number;
 }
 
 interface InventoryItem {
@@ -47,6 +47,15 @@ interface InventoryItem {
 }
 
 type ItemType = "General" | "Consumable" | "Wearable";
+
+interface PackItemWithoutInventory {
+  id: number;
+  position: number;
+  quantity: number;
+  group_id: number;
+  inventory_id: number;
+  type: string;
+}
 
 interface PackItem {
   id: number;
