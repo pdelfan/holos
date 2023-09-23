@@ -79,6 +79,7 @@ function Table(props: Props) {
       );
 
       const reorderedData = arrayMove(groupData, oldIndex, newIndex);
+
       setGroupData([...reorderedData].sort((a, b) => a.position - b.position));
 
       const changedItems = calculateChangedItems(groupData, oldIndex, newIndex);
@@ -241,11 +242,12 @@ function Table(props: Props) {
           </SortableContext>
         </DndContext>
       </div>
-      {showAddItemModal && (
+      {showAddItemModal && groupData && (
         <Modal>
           <ItemForm
             groupID={group.id}
             onAddItem={setGroupData}
+            newPosition = {groupData.length}
             onClose={() => setShowAddItemModal(false)}
           />
         </Modal>

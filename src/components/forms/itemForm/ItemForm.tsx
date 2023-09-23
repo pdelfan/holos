@@ -17,10 +17,11 @@ interface Props {
   onClose: () => void;
   groupID: number;
   onAddItem: (item: SetStateAction<[] | PackItem[]>) => void;
+  newPosition: number;
 }
 
 export default function ItemForm(props: Props) {
-  const { onClose, onAddItem, groupID } = props;
+  const { onClose, onAddItem, groupID, newPosition } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
 
@@ -77,7 +78,7 @@ export default function ItemForm(props: Props) {
       .from("pack_item")
       .insert([
         {
-          position: 0,
+          position: newPosition,
           quantity: quantity,
           group_id: groupID,
           inventory_id: selectedItem?.id,

@@ -91,7 +91,10 @@ export default function EditItemForm(props: Props) {
         <div className="flex flex-wrap gap-3 justify-between">
           <button
             type="button"
-            onClick={() => onDelete(item.id)}
+            onClick={() => {
+              onDelete(item.id);
+              onClose();
+            }}
             className="rounded-lg bg-red-600 text-white text-sm font-medium px-4 py-2 border hover:bg-red-700"
           >
             Delete
