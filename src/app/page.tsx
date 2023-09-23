@@ -1,6 +1,8 @@
 import Image from "next/image";
 import LandingImage from "@/assets/images/landingImage.png";
 import Logo from "@/assets/logo.svg";
+import TripsImage from "@/assets/images/tripsExample.png";
+import InventoryImage from "@/assets/images/inventoryExample.png";
 import Link from "next/link";
 
 export default function Home() {
@@ -54,19 +56,31 @@ export default function Home() {
           </p>
         </div>
         <div className="flex flex-wrap gap-5">
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
             <h3 className="font-semibold text-2xl text-header-1">Inventory</h3>
             <p className="font-medium  text-md text-header-2 mt-3">
               Collect all your items in one place so you’ll know what you can
               bring with you.
             </p>
+            <Image
+              className="mt-6 m-auto"
+              src={InventoryImage}
+              alt="Two inventory cards showing jackets along with their price and weight"
+              width={350}
+            />
           </div>
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
             <h3 className="font-semibold text-2xl text-header-1">Trips</h3>
             <p className="font-medium  text-md text-header-2 mt-3">
               Look back on your journeys to find out how much you should be
               packing for your next trip.
             </p>
+            <Image
+              className="mt-6 m-auto"
+              src={TripsImage}
+              alt="Two trip cards showing title of the trip"
+              width={350}
+            />
           </div>
         </div>
         <div className="flex flex-wrap gap-5">

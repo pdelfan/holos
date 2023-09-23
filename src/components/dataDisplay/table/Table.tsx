@@ -14,8 +14,10 @@ import toast from "react-hot-toast";
 import Dropdown from "@/components/actions/dropdown/Dropdown";
 import DropdownItem from "@/components/actions/dropdown/DropdownItem";
 import { packStatsAtom } from "@/store/store";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { convertWeight } from "@/utils/numberUtils";
+import EditItemForm from "@/components/forms/editItemForm/EditItemForm";
+import ItemForm from "@/components/forms/itemForm/ItemForm";
 
 interface Props {
   onDeleteGroup: () => void;
@@ -29,7 +31,10 @@ function Table(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
-  const [packStats, setPackStats] = useAtom(packStatsAtom);
+  const [showAddItemModal, setShowAddItemModal] = useState(false);
+  const [showEditItemModal, setShowEditItemModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
+  const setPackStats = useSetAtom(packStatsAtom);
 
   const total = {
     price: groupData.reduce(
@@ -49,8 +54,6 @@ function Table(props: Props) {
     ),
     quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
   };
-
-  console.log("groupdata", groupData);
 
   useEffect(() => {
     const groupTotal: PackStats = {
@@ -110,7 +113,13 @@ function Table(props: Props) {
       <div className="flex justify-between mb-2">
         <h3 className="font-medium text-lg">{group.title}</h3>
         <div className="flex gap-2">
-          <Dropdown button={<Button>···</Button>}>
+          <Dropdown
+            button={
+              <span className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover">
+                ···
+              </span>
+            }
+          >
             <DropdownItem
               icon={EditIcon}
               onClick={() => setShowEditGroupModal(!showEditGroupModal)}
@@ -145,29 +154,47 @@ function Table(props: Props) {
                 <TableRow
                   key={item.id}
                   item={item}
-                  onDelete={onDeleteItem}
-                  onUpdate={setGroupData}
+                  onSelect={() => setSelectedItem(item)}
+                  onEdit={setShowEditItemModal}
                 />
               ))}
             </>
             <AddItem
-              onAddItem={setGroupData}
+              onAdd={setShowAddItemModal}
               total={total}
               weightUnit={group.weight_unit}
               currency={currency}
-              groupID={group.id}
             />
           </tbody>
         </table>
-        {showEditGroupModal && (
-          <Modal>
-            <EditGroupForm
-              group={group}
-              onClose={() => setShowEditGroupModal(false)}
-            />
-          </Modal>
-        )}
       </div>
+      {showAddItemModal && (
+        <Modal>
+          <ItemForm
+            groupID={group.id}
+            onAddItem={setGroupData}
+            onClose={() => setShowAddItemModal(false)}
+          />
+        </Modal>
+      )}
+      {showEditGroupModal && (
+        <Modal>
+          <EditGroupForm
+            group={group}
+            onClose={() => setShowEditGroupModal(false)}
+          />
+        </Modal>
+      )}
+      {showEditItemModal && selectedItem && (
+        <Modal>
+          <EditItemForm
+            item={selectedItem}
+            onClose={() => setShowEditItemModal(false)}
+            onUpdate={setGroupData}
+            onDelete={onDeleteItem}
+          />
+        </Modal>
+      )}
     </section>
   );
 }

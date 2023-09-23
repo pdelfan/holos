@@ -2,21 +2,18 @@ import Image from "next/image";
 import Tag from "../../contentDisplay/tag/Tag";
 import { SetStateAction, useCallback, useState } from "react";
 import LinkIcon from "@/assets/icons/linkIcon.svg";
-import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DragIcon from "@/assets/icons/dragIcon.svg";
-import { useDraggable } from "@dnd-kit/core";
-import Modal from "@/components/feedback/modal/Modal";
-import EditItemForm from "@/components/forms/editItemForm/EditItemForm";
+
 
 interface Props {
   item: PackItem;
-  onDelete: (id: number) => void;
-  onUpdate: (item: SetStateAction<[] | PackItem[]>) => void;
+  onEdit: (showEditItemModal: SetStateAction<boolean>) => void;
+  onSelect: (item: SetStateAction<[] | PackItem>) => void;
 }
 
 function TableRow(props: Props) {
-  const { item, onDelete, onUpdate } = props;
+  const { item, onEdit, onSelect } = props;
   const { id, position, quantity, group_id, type } = item;
   const {
     title,
@@ -31,8 +28,6 @@ function TableRow(props: Props) {
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
   }, []);
-
-  const [showEditItemModal, setShowEditItemModal] = useState(false);
 
   return (
     <>
@@ -94,7 +89,12 @@ function TableRow(props: Props) {
         </td>
         <td>
           <span className="flex justify-center p-3">
-            <button onClick={() => setShowEditItemModal(!showEditItemModal)}>
+            <button
+              onClick={() => {
+                onSelect(item);
+                onEdit(true);
+              }}
+            >
               <Image
                 className="min-w-[1.3rem]"
                 src={EditIcon}
@@ -106,16 +106,6 @@ function TableRow(props: Props) {
           </span>
         </td>
       </tr>
-      {showEditItemModal && (
-        <Modal>
-          <EditItemForm
-            item={item}
-            onClose={() => setShowEditItemModal(false)}
-            onUpdate={onUpdate}
-            onDelete={onDelete}
-          />
-        </Modal>
-      )}
     </>
   );
 }
