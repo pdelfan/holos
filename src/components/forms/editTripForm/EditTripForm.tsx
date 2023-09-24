@@ -27,14 +27,23 @@ export default function EditTripForm(props: Props) {
   );
   const [baseWeight, setBaseWeight] = useState<number>(tripItem.base_weight);
   const [totalWeight, setTotalWeight] = useState<number>(tripItem.total_weight);
-  const [weightUnit, setWeightUnit] = useState<string>(
-    tripItem.weight_unit
-  );
+  const [weightUnit, setWeightUnit] = useState<string>(tripItem.weight_unit);
 
   const onUpdateTrip = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
-    if (!user.session) {
+    if (
+      !user.session ||
+      (title === tripItem.title &&
+        date === tripItem.date &&
+        elevation === tripItem.elevation &&
+        elevationUnit === tripItem.elevation_unit &&
+        distance === tripItem.distance &&
+        distanceUnit === tripItem.distance_unit &&
+        baseWeight === tripItem.base_weight &&
+        totalWeight === tripItem.total_weight &&
+        weightUnit === tripItem.weight_unit)
+    ) {
       onClose();
       return;
     }
@@ -201,6 +210,7 @@ export default function EditTripForm(props: Props) {
 
         <div className="flex flex-wrap gap-3 justify-end">
           <button
+            type="button"
             onClick={onClose}
             className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
           >
