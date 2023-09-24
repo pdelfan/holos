@@ -177,6 +177,7 @@ export default function InventoryForm(props: Props) {
 
         <div className="flex flex-wrap gap-3 justify-end">
           <button
+            type="button"
             onClick={onClose}
             className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
           >

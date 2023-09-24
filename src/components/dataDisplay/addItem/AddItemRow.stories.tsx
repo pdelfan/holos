@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import AddItem from "./AddItem";
+import AddItemRow from "./AddItemRow";
 
-const meta: Meta<typeof AddItem> = {
+const meta: Meta<typeof AddItemRow> = {
   title: "Data Display/Add Item",
-  component: AddItem,
+  component: AddItemRow,
 };
 
 export default meta;
-type Story = StoryObj<typeof AddItem>;
+type Story = StoryObj<typeof AddItemRow>;
 
 export const Default: Story = {};

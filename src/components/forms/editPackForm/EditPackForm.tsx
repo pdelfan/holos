@@ -22,7 +22,12 @@ export default function EditPackForm(props: Props) {
   const onUpdatePack = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
-    if (!user.session) {
+    if (
+      !user.session ||
+      (title === pack.title &&
+        description === pack.description &&
+        weightUnit === pack.weight_unit)
+    ) {
       onClose();
       return;
     }

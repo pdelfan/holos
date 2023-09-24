@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AddItem from "../addItem/AddItem";
+import AddItemRow from "../addItem/AddItemRow";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditGroupForm from "@/components/forms/editGroupForm/EditGroupForm";
@@ -16,6 +16,8 @@ import { useSetAtom } from "jotai";
 import { convertWeight } from "@/utils/numberUtils";
 import EditItemForm from "@/components/forms/editItemForm/EditItemForm";
 import ItemForm from "@/components/forms/itemForm/ItemForm";
+import ExpandMoreIcon from "@/assets/icons/expandMoreIcon.svg";
+import ExpandLessIcon from "@/assets/icons/expandLessIcon.svg";
 import {
   DndContext,
   closestCenter,
@@ -47,6 +49,7 @@ function Table(props: Props) {
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
+  const [isExpanded, setIsExpanded] = useState(true);
   const setPackStats = useSetAtom(packStatsAtom);
 
   const sensors = useSensors(
@@ -189,6 +192,12 @@ function Table(props: Props) {
             <DropdownItem icon={DeleteIcon} onClick={onDeleteGroup}>
               Delete
             </DropdownItem>
+            <DropdownItem
+              icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? "Fold" : "expand"}
+            </DropdownItem>
           </Dropdown>
         </div>
       </div>
@@ -203,42 +212,44 @@ function Table(props: Props) {
             items={groupData}
             strategy={verticalListSortingStrategy}
           >
-            <table className="border-collapse table-auto w-full">
-              <thead className="bg-table-head">
-                <tr className=" rounded-xl">
-                  <th className="p-2" />
-                  <th className="p-2 text-sm">Image</th>
-                  <th className="p-2 text-sm">Item</th>
-                  <th className="p-2 text-sm">Description</th>
-                  <th className="p-2 text-sm">Link</th>
-                  <th className="p-2 text-sm">Type</th>
-                  <th className="p-2 text-sm">Price</th>
-                  <th className="p-2 text-sm">Weight</th>
-                  <th className="p-2 text-sm">QTY</th>
-                  <th className="p-2 text-sm"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <>
-                  {groupData
-                    .sort((a, b) => a.position - b.position)
-                    .map((item) => (
-                      <TableRow
-                        key={item.id}
-                        item={item}
-                        onSelect={() => setSelectedItem(item)}
-                        onEdit={setShowEditItemModal}
-                      />
-                    ))}
-                </>
-                <AddItem
-                  onAdd={setShowAddItemModal}
-                  total={total}
-                  weightUnit={group.weight_unit}
-                  currency={currency}
-                />
-              </tbody>
-            </table>
+            {isExpanded && (
+              <table className="border-collapse table-auto w-full">
+                <thead className="bg-table-head">
+                  <tr className=" rounded-xl">
+                    <th className="p-2" />
+                    <th className="p-2 text-sm">Image</th>
+                    <th className="p-2 text-sm">Item</th>
+                    <th className="p-2 text-sm">Description</th>
+                    <th className="p-2 text-sm">Link</th>
+                    <th className="p-2 text-sm">Type</th>
+                    <th className="p-2 text-sm">Price</th>
+                    <th className="p-2 text-sm">Weight</th>
+                    <th className="p-2 text-sm">QTY</th>
+                    <th className="p-2 text-sm"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <>
+                    {groupData
+                      .sort((a, b) => a.position - b.position)
+                      .map((item) => (
+                        <TableRow
+                          key={item.id}
+                          item={item}
+                          onSelect={() => setSelectedItem(item)}
+                          onEdit={setShowEditItemModal}
+                        />
+                      ))}
+                  </>
+                  <AddItemRow
+                    onAdd={setShowAddItemModal}
+                    total={total}
+                    weightUnit={group.weight_unit}
+                    currency={currency}
+                  />
+                </tbody>
+              </table>
+            )}
           </SortableContext>
         </DndContext>
       </div>
@@ -247,7 +258,7 @@ function Table(props: Props) {
           <ItemForm
             groupID={group.id}
             onAddItem={setGroupData}
-            newPosition = {groupData.length}
+            newPosition={groupData.length}
             onClose={() => setShowAddItemModal(false)}
           />
         </Modal>

@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import { updateIventoryData } from "@/utils/fetchUtils";
+import { deepEqual } from "assert";
 
 interface Props {
   inventoryItem: InventoryItem;
@@ -31,7 +32,17 @@ export default function EditInventoryForm(props: Props) {
   const onUpdateInventoryItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
-    if (!user.session) {
+    if (
+      !user.session ||
+      (title === inventoryItem.title &&
+        description === inventoryItem.description &&
+        price === inventoryItem.price &&
+        season === inventoryItem.season &&
+        weight === inventoryItem.weight &&
+        weightUnit === inventoryItem.weight_unit &&
+        url === inventoryItem.url &&
+        imageURL === inventoryItem.image_url)
+    ) {
       onClose();
       return;
     }
@@ -183,6 +194,7 @@ export default function EditInventoryForm(props: Props) {
 
         <div className="flex flex-wrap gap-3 justify-end">
           <button
+            type="button"
             onClick={onClose}
             className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
           >

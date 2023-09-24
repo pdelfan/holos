@@ -8,7 +8,7 @@ interface Props {
   currency: string;  
 }
 
-export default function AddItem(props: Props) {
+export default function AddItemRow(props: Props) {
   const { onAdd, total, weightUnit, currency } = props;
 
   return (
