@@ -11,7 +11,8 @@
     "build-storybook": "storybook build",
     "gentypes": "npx supabase gen types typescript --local > ./src/lib/database.types.ts",
     "startDB": "npx supabase start",
-    "stopDB": "npx supabase stop --backup"
+    "stopDB": "npx supabase stop --backup",
+    "resetDB": "npx supabase db reset"
   },
   "dependencies": {
     "@dnd-kit/sortable": "^7.0.2",
@@ -46,7 +47,7 @@
     "@swc-jotai/react-refresh": "^0.0.8",
     "eslint-plugin-storybook": "^0.6.12",
     "storybook": "^7.0.27",
-    "supabase": "^1.77.9",
+    "supabase": "^1.99.5",
     "tailwindcss-animated": "^1.0.1"
   }
 }
