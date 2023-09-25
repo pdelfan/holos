@@ -3,6 +3,7 @@ import LandingImage from "@/assets/images/landingImage.png";
 import Logo from "@/assets/logo.svg";
 import TripsImage from "@/assets/images/tripsExample.png";
 import InventoryImage from "@/assets/images/inventoryExample.png";
+import PrivacyIcon from "@/assets/icons/lockIcon.svg";
 import Link from "next/link";
 
 export default function Home() {
@@ -101,6 +102,12 @@ export default function Home() {
               contribution will help us maintain and run the servers, work on
               new features, and improve your experience.{" "}
             </p>
+            <Image
+              className="animate-fade-up mt-12 mx-auto"
+              src={PrivacyIcon}
+              alt="Illustration of hikers on a path that is made up of the letters H-O-L-O-S"
+              width={120}
+            />
           </div>
         </div>
       </section>
