@@ -26,7 +26,7 @@ export default function Packs() {
       <h1 className="text-3xl font-semibold text-header-1">Packs</h1>
       <section className="flex flex-wrap gap-3 justify-between items-center mt-3">
         <div className="flex-1 max-w-lg basis-auto">
-          <SearchBar placeholder="Search for a trip" onChange={handleSearch} />
+          <SearchBar placeholder="Search for a pack" onChange={handleSearch} />
         </div>
         <div className="flex ml-auto">
           <Select
