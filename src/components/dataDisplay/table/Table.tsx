@@ -158,7 +158,7 @@ function Table(props: Props) {
       ...prev.filter((item) => item.group_title !== group.title),
       groupTotal,
     ]);
-  }, [group.id, group.title, groupData, setPackStats, packWeightUnit]);
+  }, [group.id, group.title, groupData, packWeightUnit, setPackStats]);
 
   const onDeleteItem = async (id: number) => {
     const { error } = await supabase.from("pack_item").delete().eq("id", id);

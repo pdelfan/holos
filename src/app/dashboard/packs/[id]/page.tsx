@@ -23,7 +23,7 @@ interface Props {
 export default function Pack(props: Props) {
   const { params } = props;
   const supabase = createClientComponentClient<Database>();
-  const { pack, setPack, error, isLoading, isValidating } = useGetPack({
+  const { pack, setPack } = useGetPack({
     packID: params.id,
   });
   const { currency } = useGetPreferredCurrency();

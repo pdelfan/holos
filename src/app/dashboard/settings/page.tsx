@@ -12,7 +12,7 @@ export default function Settings() {
   const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
   const [newEmail, setNewEmail] = useState("");
-  const { user, isLoading } = useGetUser();
+  const { user } = useGetUser();
 
   const onUpdateEmail = async () => {
     if (newEmail === user) {
@@ -45,9 +45,6 @@ export default function Settings() {
       <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
         <div className="flex flex-col items-center gap-2">
           <Avatar name={user} size="large" />
-          {isLoading && (
-            <div className="mt-1 h-4 w-32 bg-gray-300 rounded-xl col-span-2"></div>
-          )}
           {user && <h2 className="font-medium text-md text-gray">{user}</h2>}
         </div>
 
@@ -94,7 +91,7 @@ export default function Settings() {
         <div className="max-w-xs">
           <h2 className="font-medium">Reset Password</h2>
           <p className="mt-1 mb-4">
-            You will receive a link to reset your password in your email.            
+            You will receive a link to reset your password in your email.
           </p>
           <Button>Reset Password</Button>
         </div>
