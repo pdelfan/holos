@@ -94,8 +94,7 @@ export default function Settings() {
         <div className="max-w-xs">
           <h2 className="font-medium">Reset Password</h2>
           <p className="mt-1 mb-4">
-            You will receive a link to reset your password in your email:
-            yours@gmail.com
+            You will receive a link to reset your password in your email.            
           </p>
           <Button>Reset Password</Button>
         </div>
