@@ -12,6 +12,7 @@ export default function Settings() {
   const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
   const [newEmail, setNewEmail] = useState("");
+  const [resetSuccess, setResetSuccess] = useState(false);
   const { user } = useGetUser();
 
   const onUpdateEmail = async () => {
@@ -34,6 +35,25 @@ export default function Settings() {
       if (user) {
         toast.success("Updated email. Please confirm your new email.");
       }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onResetPassword = async () => {
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(user, {
+        redirectTo: `${location.origin}/updatePassword`,
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      setResetSuccess(true);
     } finally {
       setLoading(false);
     }
@@ -93,7 +113,18 @@ export default function Settings() {
           <p className="mt-1 mb-4">
             You will receive a link to reset your password in your email.
           </p>
-          <Button>Reset Password</Button>
+          <Button
+            disabled={loading || resetSuccess}
+            aria-disabled={loading || resetSuccess}
+            onClick={onResetPassword}
+          >
+            Reset Password
+          </Button>
+          {resetSuccess && (
+            <small className="block text-green-600 font-medium mt-1 animate-fade">
+              We sent you an email with instructions to reset your password.
+            </small>
+          )}
         </div>
 
         <div className="max-w-xs">

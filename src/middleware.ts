@@ -12,6 +12,14 @@ export async function middleware(req: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  // retrieve authorization code from the query parameter
+  const nextQueryParam = new URL(req.url).searchParams.get("code");
+
+  // If the user is not in the update password flow and is trying to access /updatePassword, redirect them to /
+  if (!nextQueryParam && req.nextUrl.pathname === "/updatePassword") {
+    return NextResponse.redirect(new URL("/", req.url)); // Redirect to the home page
+  }
+
   // If user is signed in and the current path is not /signUp or /signIn, redirect to /dashboard
   if (user && req.nextUrl.pathname.includes("sign" || "dashboard")) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
@@ -26,5 +34,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/signIn", "/signUp", "/dashboard/:path*"],
+  matcher: ["/signIn", "/signUp", "/updatePassword", "/dashboard/:path*"],
 };

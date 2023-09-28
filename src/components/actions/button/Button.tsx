@@ -13,7 +13,7 @@ export default function Button(props: Props) {
 
   return (
     <button
-      className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover"
+      className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover disabled:cursor-not-allowed"
       disabled={disabled}
       onClick={onClick}
     >
