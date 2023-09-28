@@ -34,7 +34,7 @@ function Header() {
         <Image src={Logo} alt="HOLOS logo" width={40} />
       </Link>
       <Navbar />
-      <Dropdown button={<Avatar name={user} />}>
+      <Dropdown button={<Avatar name={user?.email ?? null} />}>
         <DropdownItem onClick={navigateToSettings}>Settings</DropdownItem>
         <DropdownItem onClick={onSignOut}>Sign Out</DropdownItem>
       </Dropdown>

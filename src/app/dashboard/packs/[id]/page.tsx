@@ -45,7 +45,7 @@ export default function Pack(props: Props) {
   };
 
   // get total base weight, total weight, total price, total quantity
-  const total = {
+  const total: PackSummary = {
     weight_unit: pack?.weight_unit ?? "kg",
     currency: currency,
     base_weight: packStats.reduce(

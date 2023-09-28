@@ -5,18 +5,22 @@ import Button from "@/components/actions/button/Button";
 import useGetUser from "@/hooks/useGetUser";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import useOutsideSelect from "@/hooks/useOutsideSelect";
 
 export default function Settings() {
   const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [resetSuccess, setResetSuccess] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const { user } = useGetUser();
+  const router = useRouter();
 
   const onUpdateEmail = async () => {
-    if (newEmail === user) {
+    if (newEmail === user?.email) {
       toast.error("New email cannot be the same as your current email.");
       return;
     }
@@ -41,10 +45,12 @@ export default function Settings() {
   };
 
   const onResetPassword = async () => {
+    if (!user?.email) return;
+
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(user, {
+      const { error } = await supabase.auth.resetPasswordForEmail(user?.email, {
         redirectTo: `${location.origin}/updatePassword`,
       });
 
@@ -64,8 +70,10 @@ export default function Settings() {
       <h1 className="text-3xl font-semibold text-header-1">Settings</h1>
       <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
         <div className="flex flex-col items-center gap-2">
-          <Avatar name={user} size="large" />
-          {user && <h2 className="font-medium text-md text-gray">{user}</h2>}
+          <Avatar name={user?.email ?? null} size="large" />
+          {user && (
+            <h2 className="font-medium text-md text-gray">{user.email}</h2>
+          )}
         </div>
 
         <div className="max-w-xs">
@@ -97,14 +105,9 @@ export default function Settings() {
                 setNewEmail(e.target.value);
               }}
             />
-            <button
-              type="submit"
-              className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
-              disabled={loading}
-              aria-disabled={loading}
-            >
+            <Button disabled={loading} aria-disabled={loading}>
               Update Email
-            </button>
+            </Button>
           </form>
         </div>
 
@@ -130,10 +133,35 @@ export default function Settings() {
         <div className="max-w-xs">
           <h2 className="font-medium">Delete Profile</h2>
           <p className="mt-1 mb-4">
-            Delete your account and all the data connected to it. This is not
+            Delete your profile and all the data connected to it. This is not
             reversible.
           </p>
-          <Button>Delete Profile</Button>
+          <Button
+            onClick={() => setShowDeleteConfirmation(!showDeleteConfirmation)}
+          >
+            Delete Profile
+          </Button>
+          {showDeleteConfirmation && (
+            <div className="mt-5">
+              <small className="block text-red-500 font-medium mt-1">
+                Are you sure you want to delete your profile?
+              </small>
+              <div className="flex flex-wrap gap-3 mt-2">
+                <Button onClick={() => setShowDeleteConfirmation(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => {
+                    router.push(
+                      `${location.origin}/auth/deleteUser?user=${user?.id}`
+                    );
+                  }}
+                >
+                  Yes, delete my profile
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </>
