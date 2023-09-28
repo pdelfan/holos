@@ -102,9 +102,9 @@ export default function UpdatePassword() {
               height={20}
             />
           )}
-          {loading && "Sending instructions..."}
-          {!loading && !success && "Send password reset email"}
-          {!loading && success && "Email sent!"}
+          {loading && "Sending Instructions..."}
+          {!loading && !success && "Send Instructions Email"}
+          {!loading && success && "Email Sent!"}
         </button>
       </form>
     </section>
