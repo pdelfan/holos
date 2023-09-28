@@ -36,13 +36,14 @@ import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
   onDeleteGroup: () => void;
+  setPackStats: React.Dispatch<React.SetStateAction<PackStats[]>>;
   group: Group;
   currency: string;
   packWeightUnit: string;
 }
 
 function Table(props: Props) {
-  const { onDeleteGroup, group, currency, packWeightUnit } = props;
+  const { onDeleteGroup, setPackStats, group, currency, packWeightUnit } = props;
   const supabase = createClientComponentClient<Database>();
   const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
@@ -50,7 +51,7 @@ function Table(props: Props) {
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
-  const setPackStats = useSetAtom(packStatsAtom);
+
 
   const sensors = useSensors(
     useSensor(PointerSensor),

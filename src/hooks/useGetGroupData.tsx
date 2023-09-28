@@ -13,7 +13,7 @@ export default function useGetGroupData(props: Props) {
   const [groupData, setGroupData] = useState<PackItem[] | []>([]);
 
   const { error, isLoading, isValidating } = useSWR(
-    `getGroupData${groupID}`,
+    [`getGroupData${groupID}`, `${groupID}`],
     async () => {
       const { data } = await supabase
         .from("pack_item")

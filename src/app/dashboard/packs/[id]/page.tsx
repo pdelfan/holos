@@ -9,10 +9,8 @@ import useGetGroups from "@/hooks/useGetGroups";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
-import { packStatsAtom } from "@/store/store";
 import { convertWeight } from "@/utils/numberUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -28,14 +26,10 @@ export default function Pack(props: Props) {
   });
   const { currency } = useGetPreferredCurrency();
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
-  const {
-    groups,
-    setGroups,
-    isLoading: isLoadingGroups,
-  } = useGetGroups({
+  const { groups, setGroups } = useGetGroups({
     packID: params.id,
   });
-  const [packStats, setPackStats] = useAtom(packStatsAtom);
+  const [packStats, setPackStats] = useState<PackStats[] | []>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
   const onDeleteGroup = async (id: number) => {
@@ -106,6 +100,7 @@ export default function Pack(props: Props) {
                   key={group.id}
                   group={group}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
+                  setPackStats={setPackStats}
                   currency={currency}
                   packWeightUnit={pack.weight_unit}
                 />
