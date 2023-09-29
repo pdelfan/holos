@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 interface Props {
   onClose: () => void;
   item: PackItem;
-  onUpdate: (item: SetStateAction<[] | GroupData[]>) => void;
+  onUpdate: (item: SetStateAction<[] | GroupData[] | null>) => void;
   onDelete: (id: number) => void;
 }
 
@@ -45,6 +45,7 @@ export default function EditItemForm(props: Props) {
 
     // filter out the item and replace its data
     onUpdate((prev) => {
+      if (!prev) return prev;
       const group = prev.find((group) => group.id === item.group_id);
       if (!group) return prev;
       return [

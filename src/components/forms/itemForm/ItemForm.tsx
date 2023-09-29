@@ -16,7 +16,7 @@ import useDebounce from "@/hooks/useDebounce";
 interface Props {
   onClose: () => void;
   groupID: number;
-  onAddItem: (item: SetStateAction<[] | GroupData[]>) => void;
+  onAddItem: (item: SetStateAction<[] | GroupData[] | null>) => void;
   newPosition: number;
 }
 
@@ -95,6 +95,7 @@ export default function ItemForm(props: Props) {
     }
 
     onAddItem((prev) => {
+      if (!prev) return prev;
       const group = prev.find((group) => group.id === groupID);
       if (!group || !data) return prev;
       return [

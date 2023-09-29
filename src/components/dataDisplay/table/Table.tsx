@@ -33,10 +33,10 @@ import {
 import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
-  onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[]>>;
+  onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[] | null>>;
   onDeleteGroup: () => void;
   setPackStats: React.Dispatch<React.SetStateAction<PackStats[]>>;
-  setGroupData: Dispatch<SetStateAction<[] | GroupData[]>>;
+  setGroupData: Dispatch<SetStateAction<[] | GroupData[] | null>>;
   group: GroupData;
   currency: string;
   packWeightUnit: string;
@@ -94,6 +94,7 @@ function Table(props: Props) {
 
       // find group and update pack_item
       setGroupData((prev) => {
+        if (!prev) return prev;
         const indexToUpdate = prev.findIndex((item) => item.id === group.id);
 
         if (indexToUpdate === -1) {
@@ -145,47 +146,47 @@ function Table(props: Props) {
     quantity: group.pack_item.reduce((acc, item) => acc + item.quantity, 0),
   };
 
-  useEffect(() => {
-    const groupTotal: PackStats = {
-      group_id: group.id,
-      group_title: group.title,
-      weight_unit: packWeightUnit,
-      total_weight: group.pack_item.reduce(
-        (acc, item) =>
-          acc +
-          convertWeight(
-            item.inventory.weight,
-            item.inventory.weight_unit,
-            packWeightUnit
-          ) *
-            item.quantity,
-        0
-      ),
-      base_weight: group.pack_item
-        .filter((item) => item.type === "General")
-        .reduce(
-          (acc, item) =>
-            acc +
-            convertWeight(
-              item.inventory.weight,
-              item.inventory.weight_unit,
-              packWeightUnit
-            ) *
-              item.quantity,
-          0
-        ),
-      price: group.pack_item.reduce(
-        (acc, item) => acc + item.inventory.price * item.quantity,
-        0
-      ),
-      quantity: group.pack_item.reduce((acc, item) => acc + item.quantity, 0),
-    };
+  // useEffect(() => {
+  //   const groupTotal: PackStats = {
+  //     group_id: group.id,
+  //     group_title: group.title,
+  //     weight_unit: packWeightUnit,
+  //     total_weight: group.pack_item.reduce(
+  //       (acc, item) =>
+  //         acc +
+  //         convertWeight(
+  //           item.inventory.weight,
+  //           item.inventory.weight_unit,
+  //           packWeightUnit
+  //         ) *
+  //           item.quantity,
+  //       0
+  //     ),
+  //     base_weight: group.pack_item
+  //       .filter((item) => item.type === "General")
+  //       .reduce(
+  //         (acc, item) =>
+  //           acc +
+  //           convertWeight(
+  //             item.inventory.weight,
+  //             item.inventory.weight_unit,
+  //             packWeightUnit
+  //           ) *
+  //             item.quantity,
+  //         0
+  //       ),
+  //     price: group.pack_item.reduce(
+  //       (acc, item) => acc + item.inventory.price * item.quantity,
+  //       0
+  //     ),
+  //     quantity: group.pack_item.reduce((acc, item) => acc + item.quantity, 0),
+  //   };
 
-    setPackStats((prev) => [
-      ...prev.filter((item) => item.group_id !== group.id),
-      groupTotal,
-    ]);
-  }, [group.id, group.pack_item, group.title, packWeightUnit, setPackStats]);
+  //   setPackStats((prev) => [
+  //     ...prev.filter((item) => item.group_id !== group.id),
+  //     groupTotal,
+  //   ]);
+  // }, [group.id, group.pack_item, group.title, packWeightUnit, setPackStats]);
 
   const onDeleteItem = async (id: number) => {
     const { error } = await supabase.from("pack_item").delete().eq("id", id);
@@ -193,7 +194,10 @@ function Table(props: Props) {
       toast.error("Couldn't delete this item.");
       return;
     }
-    setGroupData((prev) => [...prev.filter((item) => item.id !== group.id)]);
+    setGroupData((prev) => {
+      if (!prev) return prev;
+      return [...prev.filter((item) => item.id !== group.id)];
+    });
 
     toast.success("Deleted item from gorup.");
   };
@@ -289,8 +293,8 @@ function Table(props: Props) {
             onClose={() => setShowAddItemModal(false)}
           />
         </Modal>
-      )} 
-       {showEditGroupModal && (
+      )}
+      {showEditGroupModal && (
         <Modal>
           <EditGroupForm
             group={group}

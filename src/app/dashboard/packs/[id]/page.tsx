@@ -27,12 +27,12 @@ export default function Pack(props: Props) {
   });
   const { currency } = useGetPreferredCurrency();
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
+  const { packData, setPackData } = useGetPackData({ packID: params.id });
   const [packStats, setPackStats] = useState<PackStats[] | []>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
-  const { packData, setPackData } = useGetPackData({ packID: params.id });
-
   const onDeleteGroup = async (id: number) => {
+    if (!packData) return;
     const { error } = await supabase.from("group").delete().eq("id", id);
     if (error) {
       toast.error("Couldn't delete this group.");
@@ -43,6 +43,55 @@ export default function Pack(props: Props) {
 
     toast.success("Deleted group.");
   };
+
+  useEffect(() => {
+    if (!packData) return;
+    const updatedTotal: PackStats[] = packData.map((group) => {
+      const total_weight = group.pack_item.reduce(
+        (acc, item) =>
+          acc +
+          convertWeight(
+            item.inventory.weight,
+            item.inventory.weight_unit,
+            pack?.weight_unit ?? "kg" // Provide a default value "kg" if pack?.weight_unit is undefined
+          ) *
+            item.quantity,
+        0
+      );
+      const base_weight = group.pack_item
+        .filter((item) => item.type === "General")
+        .reduce(
+          (acc, item) =>
+            acc +
+            convertWeight(
+              item.inventory.weight,
+              item.inventory.weight_unit,
+              pack?.weight_unit ?? "kg" // Provide a default value "kg" if pack?.weight_unit is undefined
+            ) *
+              item.quantity,
+          0
+        );
+      const price = group.pack_item.reduce(
+        (acc, item) => acc + item.inventory.price * item.quantity,
+        0
+      );
+      const quantity = group.pack_item.reduce(
+        (acc, item) => acc + item.quantity,
+        0
+      );
+
+      return {
+        group_id: group.id,
+        group_title: group.title,
+        weight_unit: pack?.weight_unit ?? "kg", // Provide a default value "kg" if pack?.weight_unit is undefined
+        total_weight,
+        base_weight,
+        price,
+        quantity,
+      };
+    });
+    setPackStats(updatedTotal);
+  }, [pack?.weight_unit, packData]);
 
   // get total base weight, total weight, total price, total quantity
   const total: PackSummary = {
@@ -78,7 +127,7 @@ export default function Pack(props: Props) {
       group_id: group.group_id,
       weight: parseFloat(group.total_weight.toFixed(2)),
       weight_unit: group.weight_unit,
-    }));    
+    }));
     setChartData(visualizationData);
   }, [packStats]);
 
@@ -104,7 +153,8 @@ export default function Pack(props: Props) {
             <PackSummary data={total} />
           </section>
           <section className="flex flex-col gap-10 mt-12">
-            {packData.length > 0 &&
+            {packData &&
+              packData.length > 0 &&
               packData.map((group) => (
                 <Table
                   key={group.id}

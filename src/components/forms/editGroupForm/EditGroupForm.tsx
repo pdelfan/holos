@@ -7,7 +7,7 @@ import FormSelect from "../formSelect/FormSelect";
 
 interface Props {
   group: Group;
-  onUpdate: Dispatch<SetStateAction<[] | GroupData[]>>;
+  onUpdate: Dispatch<SetStateAction<[] | GroupData[] | null>>;
   onClose: () => void;
 }
 
@@ -43,14 +43,15 @@ export default function EditGroupForm(props: Props) {
 
     toast.success("Updated group.");
     onClose();
-    onUpdate((prev) =>
-      prev.map((item) => {
+    onUpdate((prev) => {
+      if (!prev) return prev;
+      return prev.map((item) => {
         if (item.id === group.id) {
           return { ...item, title: title, weight_unit: weightUnit };
         }
         return item;
-      })
-    );
+      });
+    });
   };
 
   return (

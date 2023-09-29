@@ -10,7 +10,7 @@ interface Props {
 export default function useGetPackData(props: Props) {
   const { packID } = props;
   const supabase = createClientComponentClient<Database>();
-  const [packData, setPackData] = useState<GroupData[]>([]);
+  const [packData, setPackData] = useState<GroupData[] | null>(null);
 
   const { error, isLoading, isValidating } = useSWR(
     [`getPackData${packID}`, `${packID}`],
@@ -21,7 +21,6 @@ export default function useGetPackData(props: Props) {
         .select("*, pack_item(*, inventory(*))")
         .match({ pack_id: packID });
 
-      console.log(groups);
       setPackData(groups as GroupData[]);
     }
   );
