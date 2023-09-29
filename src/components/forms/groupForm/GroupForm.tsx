@@ -1,18 +1,18 @@
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import useOutsideSelect from "@/hooks/useOutsideSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
-import { updateGroupData } from "@/utils/fetchUtils";
 import FormSelect from "../formSelect/FormSelect";
 
 interface Props {
   packID: number;
+  onUpdate: Dispatch<SetStateAction<[] | Group[]>>;
   onClose: () => void;
 }
 
 export default function GroupForm(props: Props) {
-  const { packID, onClose } = props;
+  const { packID, onUpdate, onClose } = props;
   const [title, setTitle] = useState("");
   const [weightUnit, setWeightUnit] = useState("g");
   const ref = useOutsideSelect({ callback: () => onClose() });
@@ -26,16 +26,19 @@ export default function GroupForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase.from("group").insert({
-      title: title,
-      total_base_weight: 0,
-      total_weight: 0,
-      weight_unit: weightUnit,
-      total_price: 0,
-      total_quantity: 0,
-      user_id: user.session.user.id,
-      pack_id: packID,
-    });
+    const { data, error } = await supabase
+      .from("group")
+      .insert({
+        title: title,
+        total_base_weight: 0,
+        total_weight: 0,
+        weight_unit: weightUnit,
+        total_price: 0,
+        total_quantity: 0,
+        user_id: user.session.user.id,
+        pack_id: packID,
+      })
+      .select("*");
 
     if (error) {
       toast.error("Couldn't add this group to pack.");
@@ -43,8 +46,8 @@ export default function GroupForm(props: Props) {
     }
 
     toast.success("Added group to pack.");
+    onUpdate((prev) => [...prev, ...data]);
     onClose();
-    updateGroupData();
   };
 
   return (

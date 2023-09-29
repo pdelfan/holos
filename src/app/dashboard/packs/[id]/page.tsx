@@ -124,6 +124,7 @@ export default function Pack(props: Props) {
               <Modal>
                 <GroupForm
                   packID={Number(params.id)}
+                  onUpdate={setGroups}
                   onClose={() => setShowAddGroupModal(false)}
                 />
               </Modal>
