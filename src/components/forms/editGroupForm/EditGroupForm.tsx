@@ -1,18 +1,18 @@
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import useOutsideSelect from "@/hooks/useOutsideSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
-import { updateGroupData } from "@/utils/fetchUtils";
 import FormSelect from "../formSelect/FormSelect";
 
 interface Props {
   group: Group;
+  onUpdate: Dispatch<SetStateAction<[] | Group[]>>;
   onClose: () => void;
 }
 
 export default function EditGroupForm(props: Props) {
-  const { group, onClose } = props;
+  const { group, onUpdate, onClose } = props;
   const [title, setTitle] = useState(group.title);
   const [weightUnit, setWeightUnit] = useState(group.weight_unit);
   const ref = useOutsideSelect({ callback: () => onClose() });
@@ -43,7 +43,14 @@ export default function EditGroupForm(props: Props) {
 
     toast.success("Updated group.");
     onClose();
-    updateGroupData();
+    onUpdate((prev) =>
+      prev.map((item) => {
+        if (item.id === group.id) {
+          return { ...item, title: title, weight_unit: weightUnit };
+        }
+        return item;
+      })
+    );
   };
 
   return (
