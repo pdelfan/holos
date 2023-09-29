@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 interface Props {
   onClose: () => void;
   item: PackItem;
-  onUpdate: (item: SetStateAction<[] | PackItem[]>) => void;
+  onUpdate: (item: SetStateAction<[] | GroupData[]>) => void;
   onDelete: (id: number) => void;
 }
 
@@ -44,14 +44,24 @@ export default function EditItemForm(props: Props) {
     toast.success("Updated item.");
 
     // filter out the item and replace its data
-    onUpdate((prev) => [
-      ...prev.filter((curr) => curr.id !== item.id),
-      {
-        ...item,
-        type: type,
-        quantity: quantity,
-      },
-    ]);
+    onUpdate((prev) => {
+      const group = prev.find((group) => group.id === item.group_id);
+      if (!group) return prev;
+      return [
+        ...prev.filter((group) => group.id !== item.group_id),
+        {
+          ...group,
+          pack_item: [
+            ...group.pack_item.filter((packItem) => packItem.id !== item.id),
+            {
+              ...item,
+              type: type,
+              quantity: quantity,
+            },
+          ],
+        },
+      ];
+    });
 
     onClose();
   };
@@ -82,7 +92,7 @@ export default function EditItemForm(props: Props) {
               placeholder="0"
               aria-label="Item quantity"
               className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
-              value={quantity}
+              value={quantity || ""}
               onChange={(e) => setQuantity(parseInt(e.target.value))}
             />
           </div>

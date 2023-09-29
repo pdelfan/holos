@@ -23,7 +23,7 @@ function ChartSummary(props: Props) {
 
               return (
                 <div
-                  key={datum.group}
+                  key={datum.group_id}
                   className="h-6 rounded-sm group hover:drop-shadow-md"
                   style={{
                     backgroundColor: CHART_COLOURS[index],
@@ -41,7 +41,7 @@ function ChartSummary(props: Props) {
           <div className="flex flex-wrap gap-x-5 gap-y-2 mt-2">
             {chartData.map((datum, index) => (
               // legend
-              <div key={index} className="flex gap-1.5 items-center">
+              <div key={datum.group_id} className="flex gap-1.5 items-center">
                 <div
                   className="h-3 w-3"
                   style={{ backgroundColor: CHART_COLOURS[index] }}

@@ -29,6 +29,7 @@ interface PackSummary {
 
 interface ChartData {
   weight_unit: string;
+  group_id: number;
   group: string;
   weight: number;
 }
@@ -125,4 +126,16 @@ interface PackStats {
   weight_unit: string;
   price: number;
   quantity: number;
+}
+
+interface GroupData {
+  id: number;
+  title: string;
+  pack_id: number;
+  user_id: string;
+  total_weight: number;
+  weight_unit: string;
+  total_quantity: number;
+  total_price: number;
+  pack_item: PackItem[];
 }

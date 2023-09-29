@@ -16,7 +16,7 @@ import useDebounce from "@/hooks/useDebounce";
 interface Props {
   onClose: () => void;
   groupID: number;
-  onAddItem: (item: SetStateAction<[] | PackItem[]>) => void;
+  onAddItem: (item: SetStateAction<[] | GroupData[]>) => void;
   newPosition: number;
 }
 
@@ -85,20 +85,29 @@ export default function ItemForm(props: Props) {
           type: type,
         },
       ])
-      .select();
+      .select(
+        "*, inventory ( id, title, description, image_url, url, price, weight, weight_unit )"
+      );
 
     if (error) {
       toast.error("Couldn't add item to group.");
       return;
     }
 
-    onAddItem((prev) => [
-      ...prev,
-      {
-        ...data[0],
-        inventory: selectedItem,
-      },
-    ]);
+    onAddItem((prev) => {
+      const group = prev.find((group) => group.id === groupID);
+      if (!group || !data) return prev;
+      return [
+        ...prev.filter((group) => group.id !== groupID),
+        {
+          ...group,
+          pack_item: [
+            ...group.pack_item,
+            { ...data[0], inventory: selectedItem },
+          ],
+        },
+      ];
+    });
 
     toast.success("Added item to group.");
     onClose();

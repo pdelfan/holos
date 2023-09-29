@@ -1,0 +1,35 @@
+import { Database } from "@/lib/database.types";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useState } from "react";
+import useSWR from "swr";
+
+interface Props {
+  packID: string;
+}
+
+export default function useGetPackData(props: Props) {
+  const { packID } = props;
+  const supabase = createClientComponentClient<Database>();
+  const [packData, setPackData] = useState<GroupData[]>([]);
+
+  const { error, isLoading, isValidating } = useSWR(
+    [`getPackData${packID}`, `${packID}`],
+    async () => {
+      const { data: user } = await supabase.auth.getSession();
+      const { data: groups } = await supabase
+        .from("group")
+        .select("*, pack_item(*, inventory(*))")
+        .match({ pack_id: packID });
+
+      console.log(groups);
+      setPackData(groups as GroupData[]);
+    }
+  );
+
+  return {
+    packData,
+    setPackData,
+    errorPackData: error,
+    isLoadingPackData: isLoading,
+  };
+}

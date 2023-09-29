@@ -7,7 +7,7 @@ import FormSelect from "../formSelect/FormSelect";
 
 interface Props {
   group: Group;
-  onUpdate: Dispatch<SetStateAction<[] | Group[]>>;
+  onUpdate: Dispatch<SetStateAction<[] | GroupData[]>>;
   onClose: () => void;
 }
 

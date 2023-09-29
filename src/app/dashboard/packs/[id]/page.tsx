@@ -6,7 +6,6 @@ import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
 import Modal from "@/components/feedback/modal/Modal";
 import GroupForm from "@/components/forms/groupForm/GroupForm";
-import useGetGroups from "@/hooks/useGetGroups";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
@@ -14,6 +13,7 @@ import { convertWeight } from "@/utils/numberUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import useGetPackData from "@/hooks/useGetPackData";
 
 interface Props {
   params: { id: string };
@@ -27,11 +27,10 @@ export default function Pack(props: Props) {
   });
   const { currency } = useGetPreferredCurrency();
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
-  const { groups, setGroups } = useGetGroups({
-    packID: params.id,
-  });
   const [packStats, setPackStats] = useState<PackStats[] | []>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
+
+  const { packData, setPackData } = useGetPackData({ packID: params.id });
 
   const onDeleteGroup = async (id: number) => {
     const { error } = await supabase.from("group").delete().eq("id", id);
@@ -39,7 +38,7 @@ export default function Pack(props: Props) {
       toast.error("Couldn't delete this group.");
       return;
     }
-    setGroups(groups.filter((item) => item.id !== id));
+    setPackData(packData.filter((item) => item.id !== id));
     setPackStats(packStats.filter((item) => item.group_id !== id));
 
     toast.success("Deleted group.");
@@ -76,6 +75,7 @@ export default function Pack(props: Props) {
   useEffect(() => {
     const visualizationData = packStats.map((group) => ({
       group: group.group_title,
+      group_id: group.group_id,
       weight: parseFloat(group.total_weight.toFixed(2)),
       weight_unit: group.weight_unit,
     }));    
@@ -104,12 +104,13 @@ export default function Pack(props: Props) {
             <PackSummary data={total} />
           </section>
           <section className="flex flex-col gap-10 mt-12">
-            {groups.length > 0 &&
-              groups.map((group) => (
+            {packData.length > 0 &&
+              packData.map((group) => (
                 <Table
                   key={group.id}
                   group={group}
-                  onUpdateGroup={setGroups}
+                  setGroupData={setPackData}
+                  onUpdateGroup={setPackData}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
                   setPackStats={setPackStats}
                   currency={currency}
@@ -125,7 +126,7 @@ export default function Pack(props: Props) {
               <Modal>
                 <GroupForm
                   packID={Number(params.id)}
-                  onUpdate={setGroups}
+                  onUpdate={setPackData}
                   onClose={() => setShowAddGroupModal(false)}
                 />
               </Modal>

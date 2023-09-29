@@ -7,7 +7,7 @@ import FormSelect from "../formSelect/FormSelect";
 
 interface Props {
   packID: number;
-  onUpdate: Dispatch<SetStateAction<[] | Group[]>>;
+  onUpdate: Dispatch<SetStateAction<[] | GroupData[]>>;
   onClose: () => void;
 }
 
@@ -46,7 +46,13 @@ export default function GroupForm(props: Props) {
     }
 
     toast.success("Added group to pack.");
-    onUpdate((prev) => [...prev, ...data]);
+    onUpdate((prev) => [
+      ...prev,
+      {
+        ...data[0],
+        pack_item: [],
+      },
+    ]);
     onClose();
   };
 

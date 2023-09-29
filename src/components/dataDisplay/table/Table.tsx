@@ -33,25 +33,32 @@ import {
 import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
-  onUpdateGroup: Dispatch<SetStateAction<[] | Group[]>>;
+  onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[]>>;
   onDeleteGroup: () => void;
   setPackStats: React.Dispatch<React.SetStateAction<PackStats[]>>;
-  group: Group;
+  setGroupData: Dispatch<SetStateAction<[] | GroupData[]>>;
+  group: GroupData;
   currency: string;
   packWeightUnit: string;
 }
 
 function Table(props: Props) {
-  const { onUpdateGroup, onDeleteGroup, setPackStats, group, currency, packWeightUnit } =
-    props;
+  const {
+    onUpdateGroup,
+    onDeleteGroup,
+    setPackStats,
+    setGroupData,
+    group,
+    currency,
+    packWeightUnit,
+  } = props;
   const supabase = createClientComponentClient<Database>();
-  const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
+  // const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
-
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -74,18 +81,38 @@ function Table(props: Props) {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      const oldIndex = groupData.findIndex(
+      const oldIndex = group.pack_item.findIndex(
         (item: PackItem) => item.id === active.id
       );
-      const newIndex = groupData.findIndex(
+      const newIndex = group.pack_item.findIndex(
         (item: PackItem) => item.id === over.id
       );
 
-      const reorderedData = arrayMove(groupData, oldIndex, newIndex);
+      const reorderedData = arrayMove(group.pack_item, oldIndex, newIndex).sort(
+        (a, b) => a.position - b.position
+      );
 
-      setGroupData([...reorderedData].sort((a, b) => a.position - b.position));
+      // find group and update pack_item
+      setGroupData((prev) => {
+        const indexToUpdate = prev.findIndex((item) => item.id === group.id);
 
-      const changedItems = calculateChangedItems(groupData, oldIndex, newIndex);
+        if (indexToUpdate === -1) {
+          // Item not found, return the previous array
+          return prev;
+        }
+
+        return [
+          ...prev.slice(0, indexToUpdate), // Items before the updated item
+          { ...group, pack_item: reorderedData }, // Updated item
+          ...prev.slice(indexToUpdate + 1), // Items after the updated item
+        ];
+      });
+
+      const changedItems = calculateChangedItems(
+        group.pack_item,
+        oldIndex,
+        newIndex
+      );
 
       if (changedItems.length === 0) return;
 
@@ -100,11 +127,11 @@ function Table(props: Props) {
   };
 
   const total = {
-    price: groupData.reduce(
+    price: group.pack_item.reduce(
       (acc, item) => acc + item.inventory.price * item.quantity,
       0
     ),
-    weight: groupData.reduce(
+    weight: group.pack_item.reduce(
       (acc, item) =>
         acc +
         convertWeight(
@@ -115,7 +142,7 @@ function Table(props: Props) {
           item.quantity,
       0
     ),
-    quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
+    quantity: group.pack_item.reduce((acc, item) => acc + item.quantity, 0),
   };
 
   useEffect(() => {
@@ -123,7 +150,7 @@ function Table(props: Props) {
       group_id: group.id,
       group_title: group.title,
       weight_unit: packWeightUnit,
-      total_weight: groupData.reduce(
+      total_weight: group.pack_item.reduce(
         (acc, item) =>
           acc +
           convertWeight(
@@ -134,7 +161,7 @@ function Table(props: Props) {
             item.quantity,
         0
       ),
-      base_weight: groupData
+      base_weight: group.pack_item
         .filter((item) => item.type === "General")
         .reduce(
           (acc, item) =>
@@ -147,18 +174,18 @@ function Table(props: Props) {
               item.quantity,
           0
         ),
-      price: groupData.reduce(
+      price: group.pack_item.reduce(
         (acc, item) => acc + item.inventory.price * item.quantity,
         0
       ),
-      quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
-    };    
+      quantity: group.pack_item.reduce((acc, item) => acc + item.quantity, 0),
+    };
 
     setPackStats((prev) => [
-      ...prev.filter((item) => item.group_title !== group.title),
+      ...prev.filter((item) => item.group_id !== group.id),
       groupTotal,
     ]);
-  }, [group.id, group.title, groupData, packWeightUnit, setPackStats]);
+  }, [group.id, group.pack_item, group.title, packWeightUnit, setPackStats]);
 
   const onDeleteItem = async (id: number) => {
     const { error } = await supabase.from("pack_item").delete().eq("id", id);
@@ -166,7 +193,7 @@ function Table(props: Props) {
       toast.error("Couldn't delete this item.");
       return;
     }
-    setGroupData(groupData.filter((item) => item.id !== id));
+    setGroupData((prev) => [...prev.filter((item) => item.id !== group.id)]);
 
     toast.success("Deleted item from gorup.");
   };
@@ -209,7 +236,7 @@ function Table(props: Props) {
           id="DndContext"
         >
           <SortableContext
-            items={groupData}
+            items={group.pack_item}
             strategy={verticalListSortingStrategy}
           >
             {isExpanded && (
@@ -230,7 +257,7 @@ function Table(props: Props) {
                 </thead>
                 <tbody>
                   <>
-                    {groupData
+                    {group.pack_item
                       .sort((a, b) => a.position - b.position)
                       .map((item) => (
                         <TableRow
@@ -253,17 +280,17 @@ function Table(props: Props) {
           </SortableContext>
         </DndContext>
       </div>
-      {showAddItemModal && groupData && (
+      {showAddItemModal && group.pack_item && (
         <Modal>
           <ItemForm
             groupID={group.id}
             onAddItem={setGroupData}
-            newPosition={groupData.length}
+            newPosition={group.pack_item.length}
             onClose={() => setShowAddItemModal(false)}
           />
         </Modal>
-      )}
-      {showEditGroupModal && (
+      )} 
+       {showEditGroupModal && (
         <Modal>
           <EditGroupForm
             group={group}
