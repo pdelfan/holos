@@ -11,8 +11,6 @@ import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import Dropdown from "@/components/actions/dropdown/Dropdown";
 import DropdownItem from "@/components/actions/dropdown/DropdownItem";
-import { packStatsAtom } from "@/store/store";
-import { useSetAtom } from "jotai";
 import { convertWeight } from "@/utils/numberUtils";
 import EditItemForm from "@/components/forms/editItemForm/EditItemForm";
 import ItemForm from "@/components/forms/itemForm/ItemForm";
@@ -154,7 +152,7 @@ function Table(props: Props) {
         0
       ),
       quantity: groupData.reduce((acc, item) => acc + item.quantity, 0),
-    };
+    };    
 
     setPackStats((prev) => [
       ...prev.filter((item) => item.group_title !== group.title),

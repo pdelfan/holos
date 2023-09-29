@@ -78,8 +78,7 @@ export default function Pack(props: Props) {
       group: group.group_title,
       weight: parseFloat(group.total_weight.toFixed(2)),
       weight_unit: group.weight_unit,
-    }));
-    toast.error("update");
+    }));    
     setChartData(visualizationData);
   }, [packStats]);
 
