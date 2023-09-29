@@ -1,13 +1,8 @@
-// TODO: Duplicate or move this file outside the `_examples` folder to make it a route
-
 import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
-import toast from "react-hot-toast";
 
-export const dynamic = "force-dynamic";
-
-export async function GET(request: NextRequest) {
-  const requestUrl = new URL(request.url);
+export async function GET(req: NextRequest) {
+  const requestUrl = new URL(req.url);
   const user = requestUrl.searchParams.get("user");
 
   const supabase = createClient(
@@ -21,10 +16,32 @@ export async function GET(request: NextRequest) {
     }
   );
   if (!user) {
-    return NextResponse.redirect("http:localhost:3000/");
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/notify?message=notDeleted`,
+      {
+        statusText: "Account was not deleted",
+        status: 301,
+      }
+    );
   }
 
   const { data, error } = await supabase.auth.admin.deleteUser(user);
 
-  return NextResponse.redirect("http:localhost:3000/");
+  if (error) {
+    return NextResponse.redirect(
+      `${process.env.NEXT_PUBLIC_SITE_URL}/notify?message=notDeleted`,
+      {
+        statusText: "Account was not deleted",
+        status: 301,
+      }
+    );
+  }
+
+  return NextResponse.redirect(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/notify?message=deleted`,
+    {
+      statusText: "Account deleted",
+      status: 301,
+    }
+  );
 }
