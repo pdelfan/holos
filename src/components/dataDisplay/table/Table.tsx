@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AddItemRow from "../addItem/AddItemRow";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
@@ -35,6 +35,7 @@ import {
 import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
+  onUpdateGroup: Dispatch<SetStateAction<[] | Group[]>>;
   onDeleteGroup: () => void;
   setPackStats: React.Dispatch<React.SetStateAction<PackStats[]>>;
   group: Group;
@@ -43,7 +44,8 @@ interface Props {
 }
 
 function Table(props: Props) {
-  const { onDeleteGroup, setPackStats, group, currency, packWeightUnit } = props;
+  const { onUpdateGroup, onDeleteGroup, setPackStats, group, currency, packWeightUnit } =
+    props;
   const supabase = createClientComponentClient<Database>();
   const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
@@ -51,7 +53,6 @@ function Table(props: Props) {
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
-
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -268,6 +269,7 @@ function Table(props: Props) {
         <Modal>
           <EditGroupForm
             group={group}
+            onUpdate={onUpdateGroup}
             onClose={() => setShowEditGroupModal(false)}
           />
         </Modal>

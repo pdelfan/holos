@@ -79,6 +79,7 @@ export default function Pack(props: Props) {
       weight: parseFloat(group.total_weight.toFixed(2)),
       weight_unit: group.weight_unit,
     }));
+    toast.error("update");
     setChartData(visualizationData);
   }, [packStats]);
 
@@ -109,6 +110,7 @@ export default function Pack(props: Props) {
                 <Table
                   key={group.id}
                   group={group}
+                  onUpdateGroup={setGroups}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
                   setPackStats={setPackStats}
                   currency={currency}
