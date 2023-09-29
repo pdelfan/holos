@@ -5,15 +5,28 @@ interface Props {
   children?: ReactNode;
   icon?: string;
   disabled?: boolean;
+  textColor?: string;
+  bgColor?: string;
   onClick?: () => void;
 }
 
 export default function Button(props: Props) {
-  const { children, icon, disabled = false, onClick } = props;
+  const {
+    children,
+    textColor,
+    bgColor,
+    icon,
+    disabled = false,
+    onClick,
+  } = props;
 
   return (
     <button
-      className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover disabled:cursor-not-allowed"
+      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm ${
+        bgColor ? bgColor : "bg-button"
+      } ${
+        textColor ? textColor : "text-button-text"
+      } hover:brightness-95 disabled:cursor-not-allowed`}
       disabled={disabled}
       onClick={onClick}
     >

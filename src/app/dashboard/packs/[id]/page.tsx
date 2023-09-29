@@ -1,5 +1,6 @@
 "use client";
 import Button from "@/components/actions/button/Button";
+import ShareIcon from "@/assets/icons/shareIcon.svg";
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
@@ -85,10 +86,19 @@ export default function Pack(props: Props) {
     <>
       {pack && (
         <>
-          <h1 className="text-3xl font-semibold text-header-1">{pack.title}</h1>
-          <h2 className="font-medium text-header-2 mt-1 max-w-2xl">
-            {pack.description}
-          </h2>
+          <section className="flex flex-wrap justify-between items-center gap-3">
+            <div>
+              <h1 className="text-3xl font-semibold text-header-1">
+                {pack.title}
+              </h1>
+              <h2 className="font-medium text-header-2 mt-1 max-w-2xl">
+                {pack.description}
+              </h2>
+            </div>
+            <Button bgColor="bg-purple" textColor="text-white" icon={ShareIcon}>
+              Share
+            </Button>
+          </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
             <PackSummary data={total} />
