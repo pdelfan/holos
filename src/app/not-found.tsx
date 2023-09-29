@@ -13,7 +13,7 @@ export default function NotFound() {
         The page you are looking for could not be found.
       </h2>
       <Link
-        className="mt-3 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover"
+        className="mt-6 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover"
         href={`${process.env.NEXT_PUBLIC_SITE_URL}`}
       >
         Return Home

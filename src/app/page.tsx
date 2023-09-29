@@ -3,6 +3,7 @@ import LandingImage from "@/assets/images/landingImage.png";
 import Logo from "@/assets/logo.svg";
 import TripsImage from "@/assets/images/tripsExample.png";
 import InventoryImage from "@/assets/images/inventoryExample.png";
+import WishlistImage from "@/assets/images/wishlistExample.png";
 import PrivacyIcon from "@/assets/icons/lockIcon.svg";
 import Link from "next/link";
 
@@ -64,7 +65,7 @@ export default function Home() {
               bring with you.
             </p>
             <Image
-              className="mt-6 m-auto"
+              className="mt-6 mx-auto"
               src={InventoryImage}
               alt="Two inventory cards showing jackets along with their price and weight"
               width={350}
@@ -77,7 +78,7 @@ export default function Home() {
               packing for your next trip.
             </p>
             <Image
-              className="mt-6 m-auto"
+              className="mt-6 mx-auto"
               src={TripsImage}
               alt="Two trip cards showing title of the trip"
               width={350}
@@ -85,13 +86,22 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-wrap gap-5">
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1">
-            <h3 className="font-semibold text-2xl text-header-1">Wishlist</h3>
-            <p className="font-medium  text-md text-header-2 mt-3">
-              Save your favourite items for later, when you want to go shopping.
-            </p>
+          <div className="bg-[#F7F7F7] rounded-xl flex-1 justify-between min-w-[49%] relative">
+            <div className="p-6">
+              <h3 className="font-semibold text-2xl text-header-1">Wishlist</h3>
+              <p className="font-medium  text-md text-header-2 mt-3">
+                Save your favourite items for later, when you want to go
+                shopping.
+              </p>
+            </div>
+            <Image
+              className="mt-6 mx-auto px-6"
+              src={WishlistImage}
+              alt="Wishlist page showing several items with their title and website link."
+              width={460}
+            />
           </div>
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
             <h3 className="font-semibold text-2xl text-header-1">Privacy</h3>
             <p className="font-medium  text-md text-header-2 mt-3">
               Holos is developed by hikers like you for free and will remain
