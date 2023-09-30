@@ -1,6 +1,7 @@
 import Image from "next/image";
 import LandingImage from "@/assets/images/landingImage.png";
 import Logo from "@/assets/logo.svg";
+import PackImage from "@/assets/images/packExample.png";
 import TripsImage from "@/assets/images/tripsExample.png";
 import InventoryImage from "@/assets/images/inventoryExample.png";
 import WishlistImage from "@/assets/images/wishlistExample.png";
@@ -50,12 +51,20 @@ export default function Home() {
         />
       </section>
       <section className="flex flex-col flex-wrap gap-5 p-3 mt-10 max-w-7xl animate-delay-700 animate-fade-up">
-        <div className="bg-[#F7F7F7] p-6 rounded-xl">
-          <h3 className="font-semibold text-2xl text-header-1">Packs</h3>
-          <p className="font-medium  text-md text-header-2 mt-3">
-            Create your own pack and see how much you should be packing for your
-            next trip.
-          </p>
+        <div className="bg-[#F7F7F7] p-6 rounded-xl flex flex-wrap xl:flex-nowrap gap-3">
+          <div className="w-full sm:max-w-sm">
+            <h3 className="font-semibold text-2xl text-header-1">Packs</h3>
+            <p className="font-medium  text-md text-header-2 mt-3">
+              Create your own pack and see how much you should be packing for
+              your next trip.
+            </p>
+          </div>
+          <Image
+            className="border-2 border-gray-200 rounded-xl animate-fade-up mx-auto mt-6 xl:mt-0"
+            src={PackImage}
+            alt="Illustration of a pack with several items inside"
+            width={900}
+          />
         </div>
         <div className="flex flex-wrap gap-5">
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
@@ -86,8 +95,8 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-wrap gap-5">
-          <div className="bg-[#F7F7F7] rounded-xl flex-1 justify-between min-w-[49%] relative">
-            <div className="p-6">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
+            <div>
               <h3 className="font-semibold text-2xl text-header-1">Wishlist</h3>
               <p className="font-medium  text-md text-header-2 mt-3">
                 Save your favourite items for later, when you want to go
@@ -95,7 +104,7 @@ export default function Home() {
               </p>
             </div>
             <Image
-              className="mt-6 mx-auto px-6"
+              className="border-2 border-gray-200 rounded-xl mt-6 mx-auto"
               src={WishlistImage}
               alt="Wishlist page showing several items with their title and website link."
               width={460}

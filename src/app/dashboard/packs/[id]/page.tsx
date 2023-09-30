@@ -53,7 +53,7 @@ export default function Pack(props: Props) {
           convertWeight(
             item.inventory.weight,
             item.inventory.weight_unit,
-            pack?.weight_unit ?? "kg" 
+            pack?.weight_unit ?? "kg"
           ) *
             item.quantity,
         0
@@ -66,7 +66,7 @@ export default function Pack(props: Props) {
             convertWeight(
               item.inventory.weight,
               item.inventory.weight_unit,
-              pack?.weight_unit ?? "kg" 
+              pack?.weight_unit ?? "kg"
             ) *
               item.quantity,
           0
@@ -83,7 +83,7 @@ export default function Pack(props: Props) {
       return {
         group_id: group.id,
         group_title: group.title,
-        weight_unit: pack?.weight_unit ?? "kg", 
+        weight_unit: pack?.weight_unit ?? "kg",
         total_weight,
         base_weight,
         price,
@@ -144,7 +144,11 @@ export default function Pack(props: Props) {
                 {pack.description}
               </h2>
             </div>
-            <Button bgColor="bg-purple" textColor="text-white" icon={ShareIcon}>
+            <Button
+              bgColor="bg-pink-600"
+              textColor="text-white"
+              icon={ShareIcon}
+            >
               Share
             </Button>
           </section>

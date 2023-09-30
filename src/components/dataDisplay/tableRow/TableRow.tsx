@@ -49,8 +49,8 @@ function TableRow(props: Props) {
         ref={setNodeRef}
         style={style}
       >
-        <td className="text-center pl-1">
-          {!shareMode && (
+        {!shareMode && (
+          <td className="text-center pl-1">
             <button
               className="p-2 hover:bg-button-hover rounded-lg"
               style={{ cursor: isDragging ? "grabbing" : "grab" }}
@@ -66,8 +66,8 @@ function TableRow(props: Props) {
                 height={10}
               />
             </button>
-          )}
-        </td>
+          </td>
+        )}
         <td className="py-3">
           {image && (
             <Image
@@ -110,8 +110,8 @@ function TableRow(props: Props) {
         <td className="text-center p-3">
           <span className="text-sm">{quantity}</span>
         </td>
-        <td>
-          {!shareMode && (
+        {!shareMode && (
+          <td>
             <span className="flex justify-center p-3">
               <button
                 onClick={() => {
@@ -128,8 +128,8 @@ function TableRow(props: Props) {
                 />
               </button>
             </span>
-          )}
-        </td>
+          </td>
+        )}
       </tr>
     </>
   );

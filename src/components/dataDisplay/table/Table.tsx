@@ -221,7 +221,7 @@ function Table(props: Props) {
               <table className="border-collapse table-auto w-full">
                 <thead className="bg-table-head">
                   <tr className=" rounded-xl">
-                    <th className="p-2" />
+                    {!shareMode && <th className="p-2" />}
                     <th className="p-2 text-sm">Image</th>
                     <th className="p-2 text-sm">Item</th>
                     <th className="p-2 text-sm">Description</th>
@@ -230,7 +230,7 @@ function Table(props: Props) {
                     <th className="p-2 text-sm">Price</th>
                     <th className="p-2 text-sm">Weight</th>
                     <th className="p-2 text-sm">QTY</th>
-                    <th className="p-2 text-sm"></th>
+                    {!shareMode && <th className="p-2 text-sm"></th>}
                   </tr>
                 </thead>
                 <tbody>
