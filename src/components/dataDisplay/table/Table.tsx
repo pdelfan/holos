@@ -152,9 +152,23 @@ function Table(props: Props) {
       toast.error("Couldn't delete this item.");
       return;
     }
+
+    // remove item from group's pack_item
     setGroupData((prev) => {
       if (!prev) return prev;
-      return [...prev.filter((item) => item.id !== group.id)];
+      const foundGroup: any = prev.find(
+        (groupInPack) => groupInPack.id === group.id
+      );
+      if (!foundGroup) return prev;
+      return [
+        ...prev.filter((groupInPack) => groupInPack.id !== foundGroup.id),
+        {
+          ...group,
+          pack_item: [
+            ...foundGroup.pack_item.filter((item: PackItem) => item.id !== id),
+          ],
+        },
+      ];
     });
 
     toast.success("Deleted item from gorup.");
