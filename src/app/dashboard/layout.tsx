@@ -1,6 +1,8 @@
 import AppBar from "@/components/navigational/appBar/AppBar";
 import Header from "@/components/navigational/header/Header";
 
+export const dynamic = 'force-dynamic'
+
 export default function DashboardLayout({
   children,
 }: {

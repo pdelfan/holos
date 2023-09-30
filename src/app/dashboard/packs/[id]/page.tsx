@@ -28,7 +28,7 @@ export default function Pack(props: Props) {
   const { currency } = useGetPreferredCurrency();
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const { packData, setPackData } = useGetPackData({ packID: params.id });
-  const [packStats, setPackStats] = useState<PackStats[] | []>([]);
+  const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
   const onDeleteGroup = async (id: number) => {
