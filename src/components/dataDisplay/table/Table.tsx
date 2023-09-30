@@ -37,6 +37,7 @@ interface Props {
   onDeleteGroup: () => void;
   setPackStats: React.Dispatch<React.SetStateAction<PackStats[]>>;
   setGroupData: Dispatch<SetStateAction<[] | GroupData[] | null>>;
+  shareMode?: boolean;
   group: GroupData;
   currency: string;
   packWeightUnit: string;
@@ -46,11 +47,10 @@ function Table(props: Props) {
   const {
     onUpdateGroup,
     onDeleteGroup,
-    setPackStats,
     setGroupData,
+    shareMode,
     group,
     currency,
-    packWeightUnit,
   } = props;
   const supabase = createClientComponentClient<Database>();
   // const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
@@ -98,14 +98,14 @@ function Table(props: Props) {
         const indexToUpdate = prev.findIndex((item) => item.id === group.id);
 
         if (indexToUpdate === -1) {
-          // Item not found, return the previous array
+          // item not found, return the previous array
           return prev;
         }
 
         return [
-          ...prev.slice(0, indexToUpdate), // Items before the updated item
-          { ...group, pack_item: reorderedData }, // Updated item
-          ...prev.slice(indexToUpdate + 1), // Items after the updated item
+          ...prev.slice(0, indexToUpdate), // items before the updated item
+          { ...group, pack_item: reorderedData }, // updated item
+          ...prev.slice(indexToUpdate + 1), // items after the updated item
         ];
       });
 
@@ -146,48 +146,6 @@ function Table(props: Props) {
     quantity: group.pack_item.reduce((acc, item) => acc + item.quantity, 0),
   };
 
-  // useEffect(() => {
-  //   const groupTotal: PackStats = {
-  //     group_id: group.id,
-  //     group_title: group.title,
-  //     weight_unit: packWeightUnit,
-  //     total_weight: group.pack_item.reduce(
-  //       (acc, item) =>
-  //         acc +
-  //         convertWeight(
-  //           item.inventory.weight,
-  //           item.inventory.weight_unit,
-  //           packWeightUnit
-  //         ) *
-  //           item.quantity,
-  //       0
-  //     ),
-  //     base_weight: group.pack_item
-  //       .filter((item) => item.type === "General")
-  //       .reduce(
-  //         (acc, item) =>
-  //           acc +
-  //           convertWeight(
-  //             item.inventory.weight,
-  //             item.inventory.weight_unit,
-  //             packWeightUnit
-  //           ) *
-  //             item.quantity,
-  //         0
-  //       ),
-  //     price: group.pack_item.reduce(
-  //       (acc, item) => acc + item.inventory.price * item.quantity,
-  //       0
-  //     ),
-  //     quantity: group.pack_item.reduce((acc, item) => acc + item.quantity, 0),
-  //   };
-
-  //   setPackStats((prev) => [
-  //     ...prev.filter((item) => item.group_id !== group.id),
-  //     groupTotal,
-  //   ]);
-  // }, [group.id, group.pack_item, group.title, packWeightUnit, setPackStats]);
-
   const onDeleteItem = async (id: number) => {
     const { error } = await supabase.from("pack_item").delete().eq("id", id);
     if (error) {
@@ -206,31 +164,33 @@ function Table(props: Props) {
     <section>
       <div className="flex justify-between mb-2">
         <h3 className="font-medium text-lg">{group.title}</h3>
-        <div className="flex gap-2">
-          <Dropdown
-            button={
-              <span className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover">
-                ···
-              </span>
-            }
-          >
-            <DropdownItem
-              icon={EditIcon}
-              onClick={() => setShowEditGroupModal(!showEditGroupModal)}
+        {!shareMode && (
+          <div className="flex gap-2">
+            <Dropdown
+              button={
+                <span className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover">
+                  ···
+                </span>
+              }
             >
-              Edit
-            </DropdownItem>
-            <DropdownItem icon={DeleteIcon} onClick={onDeleteGroup}>
-              Delete
-            </DropdownItem>
-            <DropdownItem
-              icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? "Fold" : "expand"}
-            </DropdownItem>
-          </Dropdown>
-        </div>
+              <DropdownItem
+                icon={EditIcon}
+                onClick={() => setShowEditGroupModal(!showEditGroupModal)}
+              >
+                Edit
+              </DropdownItem>
+              <DropdownItem icon={DeleteIcon} onClick={onDeleteGroup}>
+                Delete
+              </DropdownItem>
+              <DropdownItem
+                icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? "Fold" : "expand"}
+              </DropdownItem>
+            </Dropdown>
+          </div>
+        )}
       </div>
       <div className="relative overflow-auto rounded-xl border-2 bg-white">
         <DndContext
@@ -267,17 +227,20 @@ function Table(props: Props) {
                         <TableRow
                           key={item.id}
                           item={item}
+                          shareMode={shareMode}
                           onSelect={() => setSelectedItem(item)}
                           onEdit={setShowEditItemModal}
                         />
                       ))}
                   </>
-                  <AddItemRow
-                    onAdd={setShowAddItemModal}
-                    total={total}
-                    weightUnit={group.weight_unit}
-                    currency={currency}
-                  />
+                  {!shareMode && (
+                    <AddItemRow
+                      onAdd={setShowAddItemModal}
+                      total={total}
+                      weightUnit={group.weight_unit}
+                      currency={currency}
+                    />
+                  )}
                 </tbody>
               </table>
             )}

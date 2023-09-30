@@ -9,12 +9,13 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   item: PackItem;
+  shareMode?: boolean;
   onEdit: (showEditItemModal: SetStateAction<boolean>) => void;
   onSelect: (item: SetStateAction<[] | PackItem>) => void;
 }
 
 function TableRow(props: Props) {
-  const { item, onEdit, onSelect } = props;
+  const { item, shareMode, onEdit, onSelect } = props;
   const { id, quantity, type } = item;
   const {
     title,
@@ -49,21 +50,23 @@ function TableRow(props: Props) {
         style={style}
       >
         <td className="text-center pl-1">
-          <button
-            className="p-2 hover:bg-button-hover rounded-lg"
-            style={{ cursor: isDragging ? "grabbing" : "grab" }}
-            {...listeners}
-            {...attributes}
-          >
-            <Image
-              draggable={false}
-              className="w-auto h-auto"
-              src={DragIcon}
-              alt="Drag icon"
-              width={10}
-              height={10}
-            />
-          </button>
+          {!shareMode && (
+            <button
+              className="p-2 hover:bg-button-hover rounded-lg"
+              style={{ cursor: isDragging ? "grabbing" : "grab" }}
+              {...listeners}
+              {...attributes}
+            >
+              <Image
+                draggable={false}
+                className="w-auto h-auto"
+                src={DragIcon}
+                alt="Drag icon"
+                width={10}
+                height={10}
+              />
+            </button>
+          )}
         </td>
         <td className="py-3">
           {image && (
@@ -108,22 +111,24 @@ function TableRow(props: Props) {
           <span className="text-sm">{quantity}</span>
         </td>
         <td>
-          <span className="flex justify-center p-3">
-            <button
-              onClick={() => {
-                onSelect(item);
-                onEdit(true);
-              }}
-            >
-              <Image
-                className="min-w-[1.3rem]"
-                src={EditIcon}
-                alt="Link icon"
-                width={20}
-                height={20}
-              />
-            </button>
-          </span>
+          {!shareMode && (
+            <span className="flex justify-center p-3">
+              <button
+                onClick={() => {
+                  onSelect(item);
+                  onEdit(true);
+                }}
+              >
+                <Image
+                  className="min-w-[1.3rem]"
+                  src={EditIcon}
+                  alt="Link icon"
+                  width={20}
+                  height={20}
+                />
+              </button>
+            </span>
+          )}
         </td>
       </tr>
     </>

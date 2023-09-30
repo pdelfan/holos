@@ -143,7 +143,7 @@ export default function Settings() {
           </Button>
           {showDeleteConfirmation && (
             <div className="mt-5">
-              <small className="block text-red-500 font-medium mt-1">
+              <small className="block text-gray-500 font-medium mt-1">
                 Are you sure you want to delete your profile?
               </small>
               <div className="flex flex-wrap gap-3 mt-2">
@@ -156,6 +156,8 @@ export default function Settings() {
                       `${location.origin}/auth/deleteUser?user=${user?.id}`
                     );
                   }}
+                  bgColor="bg-red-500"
+                  textColor="text-white"
                 >
                   Yes, delete my profile
                 </Button>

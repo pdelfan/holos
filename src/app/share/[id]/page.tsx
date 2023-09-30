@@ -1,11 +1,8 @@
 "use client";
-import Button from "@/components/actions/button/Button";
-import ShareIcon from "@/assets/icons/shareIcon.svg";
+
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
-import Modal from "@/components/feedback/modal/Modal";
-import GroupForm from "@/components/forms/groupForm/GroupForm";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
@@ -19,14 +16,13 @@ interface Props {
   params: { id: string };
 }
 
-export default function Pack(props: Props) {
+export default function SharedPack(props: Props) {
   const { params } = props;
   const supabase = createClientComponentClient<Database>();
-  const { pack, setPack } = useGetPack({
+  const { pack } = useGetPack({
     packID: params.id,
   });
   const { currency } = useGetPreferredCurrency();
-  const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const { packData, setPackData } = useGetPackData({ packID: params.id });
   const [packStats, setPackStats] = useState<PackStats[] | []>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
@@ -53,7 +49,7 @@ export default function Pack(props: Props) {
           convertWeight(
             item.inventory.weight,
             item.inventory.weight_unit,
-            pack?.weight_unit ?? "kg" 
+            pack?.weight_unit ?? "kg"
           ) *
             item.quantity,
         0
@@ -66,7 +62,7 @@ export default function Pack(props: Props) {
             convertWeight(
               item.inventory.weight,
               item.inventory.weight_unit,
-              pack?.weight_unit ?? "kg" 
+              pack?.weight_unit ?? "kg"
             ) *
               item.quantity,
           0
@@ -83,7 +79,7 @@ export default function Pack(props: Props) {
       return {
         group_id: group.id,
         group_title: group.title,
-        weight_unit: pack?.weight_unit ?? "kg", 
+        weight_unit: pack?.weight_unit ?? "kg",
         total_weight,
         base_weight,
         price,
@@ -98,7 +94,7 @@ export default function Pack(props: Props) {
     weight_unit: pack?.weight_unit ?? "kg",
     currency: currency,
     base_weight: packStats.reduce(
-      (acc, group) =>
+      (acc, group: PackStats) =>
         acc +
         convertWeight(
           group.base_weight,
@@ -108,7 +104,7 @@ export default function Pack(props: Props) {
       0
     ),
     total_weight: packStats.reduce(
-      (acc, group) =>
+      (acc, group: PackStats) =>
         acc +
         convertWeight(
           group.total_weight,
@@ -117,8 +113,14 @@ export default function Pack(props: Props) {
         ),
       0
     ),
-    total_cost: packStats.reduce((acc, group) => acc + group.price, 0),
-    total_items: packStats.reduce((acc, group) => acc + group.quantity, 0),
+    total_cost: packStats.reduce(
+      (acc, group: PackStats) => acc + group.price,
+      0
+    ),
+    total_items: packStats.reduce(
+      (acc, group: PackStats) => acc + group.quantity,
+      0
+    ),
   };
 
   useEffect(() => {
@@ -144,9 +146,6 @@ export default function Pack(props: Props) {
                 {pack.description}
               </h2>
             </div>
-            <Button bgColor="bg-purple" textColor="text-white" icon={ShareIcon}>
-              Share
-            </Button>
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
@@ -159,6 +158,7 @@ export default function Pack(props: Props) {
                 <Table
                   key={group.id}
                   group={group}
+                  shareMode={true}
                   setGroupData={setPackData}
                   onUpdateGroup={setPackData}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
@@ -168,21 +168,6 @@ export default function Pack(props: Props) {
                 />
               ))}
           </section>
-          <section className="mt-5">
-            <Button onClick={() => setShowAddGroupModal(!showAddGroupModal)}>
-              Add Group
-            </Button>
-            {showAddGroupModal && (
-              <Modal>
-                <GroupForm
-                  packID={Number(params.id)}
-                  onUpdate={setPackData}
-                  onClose={() => setShowAddGroupModal(false)}
-                />
-              </Modal>
-            )}
-          </section>
-          <section></section>
         </>
       )}
     </>
