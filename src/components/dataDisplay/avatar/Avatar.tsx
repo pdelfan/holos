@@ -18,11 +18,13 @@ function Avatar(props: Props) {
         <>
           {image && (
             <Image
-              className="rounded-full h-52 w-52"
+              className={`rounded-full object-cover inline-block ${
+                size === "small" ? "h-8 w-8" : "h-24 w-24"
+              }`}
               src={image}
               alt="Avatar image"
-              width={size === "small" ? 35 : 50}
-              height={size === "small" ? 35 : 50}
+              width={size === "small" ? 35 : 96}
+              height={size === "small" ? 35 : 96}
             />
           )}
           {!image && (
