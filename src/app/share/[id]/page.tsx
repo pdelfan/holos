@@ -9,9 +9,11 @@ import { convertWeight } from "@/utils/numberUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useGetPackData from "@/hooks/useGetPackData";
 import Link from "next/link";
 import useGetSharedPack from "@/hooks/useGetSharedPack";
+import useGetSharedPackData from "@/hooks/useGetSharedPackData";
+import useGetPublicUser from "@/hooks/useGetPublicUser";
+import Avatar from "@/components/dataDisplay/avatar/Avatar";
 
 interface Props {
   params: { id: string };
@@ -23,12 +25,13 @@ export default function SharedPack(props: Props) {
   const { pack } = useGetSharedPack({
     shareID: params.id,
   });
-  const { currency } = useGetPreferredCurrency();
-  const { packData, setPackData } = useGetPackData({
+  const { packData, setPackData } = useGetSharedPackData({
     packID: pack?.id.toString() ?? "",
   });
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
+
+  const { user, preferredCurrency } = useGetPublicUser({ shareID: params.id });
 
   const onDeleteGroup = async (id: number) => {
     if (!packData) return;
@@ -95,7 +98,7 @@ export default function SharedPack(props: Props) {
   // get total base weight, total weight, total price, total quantity
   const total: PackSummary = {
     weight_unit: pack?.weight_unit ?? "kg",
-    currency: currency,
+    currency: preferredCurrency,
     base_weight: packStats.reduce(
       (acc, group: PackStats) =>
         acc +
@@ -163,6 +166,17 @@ export default function SharedPack(props: Props) {
                 {pack.description}
               </h2>
             </div>
+            {user && (
+              <div className="flex flex-wrap gap-3 items-center">
+                <div className="flex flex-col flex-wrap">
+                  <span className="text-xs font-medium text-gray-500">
+                    Created by
+                  </span>
+                  <span className="font-medium text-sm">{user}</span>
+                </div>
+                <Avatar size="small" name={user} />
+              </div>
+            )}
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
@@ -180,7 +194,7 @@ export default function SharedPack(props: Props) {
                   onUpdateGroup={setPackData}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
                   setPackStats={setPackStats}
-                  currency={currency}
+                  currency={preferredCurrency}
                   packWeightUnit={pack.weight_unit}
                 />
               ))}

@@ -50,7 +50,7 @@ export default function Home() {
           width={900}
         />
       </section>
-      <section className="flex flex-col flex-wrap gap-5 p-3 mt-10 max-w-7xl animate-delay-700 animate-fade-up">
+      <section className="flex flex-col flex-wrap gap-5 p-3 mt-10 max-w-7xl animate-delay-1000 animate-fade-up">
         <div className="bg-[#F7F7F7] p-6 rounded-xl flex flex-wrap xl:flex-nowrap gap-3">
           <div className="w-full sm:max-w-sm">
             <h3 className="font-semibold text-2xl text-header-1">Packs</h3>

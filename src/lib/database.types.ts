@@ -279,21 +279,21 @@ export interface Database {
       user: {
         Row: {
           avatar_url: string | null
-          email: string | null
+          email: string
           id: string
           name: string | null
           preferred_currency: string
         }
         Insert: {
           avatar_url?: string | null
-          email?: string | null
+          email: string
           id: string
           name?: string | null
           preferred_currency?: string
         }
         Update: {
           avatar_url?: string | null
-          email?: string | null
+          email?: string
           id?: string
           name?: string | null
           preferred_currency?: string

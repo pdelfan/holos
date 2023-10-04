@@ -1,7 +1,7 @@
 create table
 public.user (
 id uuid not null,
-email text null,
+email text not null,
 avatar_url text null,
 name text null,
 preferred_currency text not null default '$'::text,
@@ -109,8 +109,8 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.user (id)
-  values (new.id);
+  insert into public.user (id, email)
+  values (new.id, new.email);
   return new;
 end;
 $$;
@@ -143,31 +143,105 @@ after update of email on auth.users
 -- RLS
 alter table public.group enable row level security;
 
-create policy "Users can CRUD their own groups" on public.group
-for all
+create policy "Users can select their own groups" on public.group 
+for select
 to authenticated
 using ( auth.uid() = user_id );
+
+create policy "Users can insert their own groups" on public.group 
+for insert
+to authenticated
+with check ( auth.uid() = user_id );
+
+create policy "Users can update their own groups" on public.group 
+for update
+to authenticated
+using ( auth.uid() = user_id );
+
+create policy "Users can delete their own groups" on public.group 
+for delete
+to authenticated
+using ( auth.uid() = user_id );
+
+create policy "Everyone can select groups" on public.group
+for select
+using ( true );
 
 
 alter table public.user enable row level security;
 
-create policy "Users can CRUD their own info" on public.user
-for all
+create policy "Users can select their own info" on public.user
+for select
 using ( auth.uid() = id );
+
+create policy "Users can insert their own info" on public.user
+for insert
+with check ( auth.uid() = id );
+
+create policy "Users can update their own info" on public.user
+for update
+using ( auth.uid() = id );
+
+create policy "Everyone can select users" on public.user
+for select
+using ( true );
+
 
 alter table public.inventory enable row level security;
 
-create policy "Users can CRUD their own inventory" on public.inventory
-for all
+create policy "Users can select their own inventory" on public.inventory
+for select
 to authenticated
 using ( auth.uid() = user_id );
+
+create policy "Users can insert their own inventory" on public.inventory
+for insert
+to authenticated
+with check ( auth.uid() = user_id );
+
+create policy "Users can update their own inventory" on public.inventory
+for update
+to authenticated
+using ( auth.uid() = user_id );
+
+create policy "Users can delete their own inventory" on public.inventory
+for delete
+to authenticated
+using ( auth.uid() = user_id );
+
+create policy "Everyone can select inventory" on public.inventory
+for select
+using ( true );
+
+
 
 alter table public.pack enable row level security;
 
-create policy "Users can CRUD their own packs" on public.pack
-for all
+create policy "Users can select their own packs" on public.pack
+for select
 to authenticated
 using ( auth.uid() = user_id );
+
+create policy "Users can insert their own packs" on public.pack
+for insert
+to authenticated
+with check ( auth.uid() = user_id );
+
+create policy "Users can update their own packs" on public.pack
+for update
+to authenticated
+using ( auth.uid() = user_id );
+
+create policy "Users can delete their own packs" on public.pack
+for delete
+to authenticated
+using ( auth.uid() = user_id );
+
+create policy "Everyone can select pack" on public.pack
+for select
+using ( true );
+
+
 
 alter table public.trip enable row level security;
 
@@ -183,8 +257,21 @@ for all
 to authenticated
 using ( auth.uid() = user_id );
 
+
 alter table public.pack_item enable row level security;
 
-create policy "Users can CRUD their own pack item" on public.pack_item
-for all
+create policy "Users can update their own pack item" on public.pack_item
+for update
+using ( true );
+
+create policy "Users can insert their own pack item" on public.pack_item
+for insert
+with check ( true );
+
+create policy "Users can delete their own pack item" on public.pack_item
+for delete
+using ( true );
+
+create policy "Everyone can select pack item" on public.pack_item
+for select
 using ( true );

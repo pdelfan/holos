@@ -13,11 +13,10 @@ export default function useGetSharedPack(props: Props) {
 
   useEffect(() => {
     const getPack = async () => {
-      const { data: user } = await supabase.auth.getSession();
       const { data } = await supabase
         .from("pack")
         .select("*")
-        .match({ user_id: user.session?.user.id, share_id: shareID });
+        .match({ share_id: shareID });
       setPack(data ? data[0] : null);
     };
     getPack();

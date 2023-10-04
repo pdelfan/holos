@@ -11,7 +11,7 @@ import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
 import { convertWeight } from "@/utils/numberUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
@@ -23,7 +23,7 @@ interface Props {
 export default function Pack(props: Props) {
   const { params } = props;
   const supabase = createClientComponentClient<Database>();
-  const { pack, setPack } = useGetPack({
+  const { pack } = useGetPack({
     packID: params.id,
   });
   const { currency } = useGetPreferredCurrency();
@@ -96,32 +96,34 @@ export default function Pack(props: Props) {
   }, [pack?.weight_unit, packData]);
 
   // get total base weight, total weight, total price, total quantity
-  const total: PackSummary = {
-    weight_unit: pack?.weight_unit ?? "kg",
-    currency: currency,
-    base_weight: packStats.reduce(
-      (acc, group) =>
-        acc +
-        convertWeight(
-          group.base_weight,
-          group.weight_unit,
-          pack?.weight_unit ?? "kg"
-        ),
-      0
-    ),
-    total_weight: packStats.reduce(
-      (acc, group) =>
-        acc +
-        convertWeight(
-          group.total_weight,
-          group.weight_unit,
-          pack?.weight_unit ?? "kg"
-        ),
-      0
-    ),
-    total_cost: packStats.reduce((acc, group) => acc + group.price, 0),
-    total_items: packStats.reduce((acc, group) => acc + group.quantity, 0),
-  };
+  const total: PackSummary = useMemo(() => {
+    return {
+      weight_unit: pack?.weight_unit ?? "kg",
+      currency: currency,
+      base_weight: packStats.reduce(
+        (acc, group) =>
+          acc +
+          convertWeight(
+            group.base_weight,
+            group.weight_unit,
+            pack?.weight_unit ?? "kg"
+          ),
+        0
+      ),
+      total_weight: packStats.reduce(
+        (acc, group) =>
+          acc +
+          convertWeight(
+            group.total_weight,
+            group.weight_unit,
+            pack?.weight_unit ?? "kg"
+          ),
+        0
+      ),
+      total_cost: packStats.reduce((acc, group) => acc + group.price, 0),
+      total_items: packStats.reduce((acc, group) => acc + group.quantity, 0),
+    };
+  }, [pack, packStats, currency]);
 
   useEffect(() => {
     const visualizationData = packStats.map((group) => ({

@@ -9,8 +9,7 @@ export default function PackCardSkeleton() {
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2">
             <div className="bg-gray-200 grow h-3 rounded-lg animate-pulse" />
-            <div className="bg-gray-200 grow h-3 rounded-lg animate-pulse" />
-            <div className="bg-gray-200 grow h-3 rounded-lg animate-pulse" />
+            <div className="bg-gray-200 grow h-3 rounded-lg animate-pulse" />            
           </div>
         </div>
       </div>
