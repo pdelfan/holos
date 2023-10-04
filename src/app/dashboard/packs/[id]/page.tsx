@@ -14,6 +14,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useGetPackData from "@/hooks/useGetPackData";
+import ShareForm from "@/components/forms/shareForm/ShareForm";
 
 interface Props {
   params: { id: string };
@@ -27,6 +28,7 @@ export default function Pack(props: Props) {
   });
   const { currency } = useGetPreferredCurrency();
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
   const { packData, setPackData } = useGetPackData({ packID: params.id });
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
@@ -148,6 +150,7 @@ export default function Pack(props: Props) {
               bgColor="bg-pink-600"
               textColor="text-white"
               icon={ShareIcon}
+              onClick={() => setShowShareModal(!showShareModal)}
             >
               Share
             </Button>
@@ -182,6 +185,14 @@ export default function Pack(props: Props) {
                   packID={Number(params.id)}
                   onUpdate={setPackData}
                   onClose={() => setShowAddGroupModal(false)}
+                />
+              </Modal>
+            )}
+            {showShareModal && (
+              <Modal>
+                <ShareForm
+                  pack={pack}
+                  onClose={() => setShowShareModal(false)}
                 />
               </Modal>
             )}

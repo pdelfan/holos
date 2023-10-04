@@ -200,7 +200,7 @@ function Table(props: Props) {
                 icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
                 onClick={() => setIsExpanded(!isExpanded)}
               >
-                {isExpanded ? "Fold" : "expand"}
+                {isExpanded ? "Fold" : "Expand"}
               </DropdownItem>
             </Dropdown>
           </div>

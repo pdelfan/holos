@@ -138,6 +138,8 @@ export interface Database {
           created_at: string
           description: string
           id: number
+          is_public: boolean
+          share_id: string
           title: string
           total_cost: number
           total_items: number
@@ -150,6 +152,8 @@ export interface Database {
           created_at?: string
           description: string
           id?: number
+          is_public: boolean
+          share_id?: string
           title: string
           total_cost: number
           total_items: number
@@ -162,6 +166,8 @@ export interface Database {
           created_at?: string
           description?: string
           id?: number
+          is_public?: boolean
+          share_id?: string
           title?: string
           total_cost?: number
           total_items?: number

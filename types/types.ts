@@ -15,6 +15,8 @@ interface Pack {
   total_items: number;
   total_weight: number;
   weight_unit: string;
+  is_public: boolean;
+  share_id: string;
   user_id: string;
 }
 

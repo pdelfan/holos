@@ -65,6 +65,8 @@ total_weight numeric not null,
 weight_unit text not null,
 total_cost numeric not null,
 total_items numeric not null,
+is_public boolean not null,
+share_id uuid default uuid_generate_v4() not null,
 user_id uuid not null,
 constraint pack_pkey primary key (id),
 constraint pack_user_id_fkey foreign key (user_id) references "user" (id) on delete cascade

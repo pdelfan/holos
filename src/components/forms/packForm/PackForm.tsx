@@ -36,6 +36,7 @@ export default function PackForm(props: Props) {
         total_cost: 0,
         total_items: 0,
         user_id: user.session.user.id,
+        is_public: false,
       },
     ]);
 

@@ -11,6 +11,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useGetPackData from "@/hooks/useGetPackData";
+import Link from "next/link";
+import useGetSharedPack from "@/hooks/useGetSharedPack";
 
 interface Props {
   params: { id: string };
@@ -19,11 +21,11 @@ interface Props {
 export default function SharedPack(props: Props) {
   const { params } = props;
   const supabase = createClientComponentClient<Database>();
-  const { pack } = useGetPack({
-    packID: params.id,
+  const { pack } = useGetSharedPack({
+    shareID: params.id,
   });
   const { currency } = useGetPreferredCurrency();
-  const { packData, setPackData } = useGetPackData({ packID: params.id });
+  const { packData, setPackData } = useGetPackData({ packID: pack?.id.toString() ?? "" });
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
@@ -135,7 +137,21 @@ export default function SharedPack(props: Props) {
 
   return (
     <>
-      {pack && (
+      {pack && !pack.is_public && (
+        <section className="flex flex-col items-center justify-center p-3 h-[85vh]">
+          <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1">
+            The pack you are looking for could not be found.
+          </h1>
+          <Link
+            className="mt-6 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover"
+            href={`${process.env.NEXT_PUBLIC_SITE_URL}`}
+          >
+            Return Home
+          </Link>
+        </section>
+      )}
+
+      {pack && pack.is_public && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>

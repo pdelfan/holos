@@ -15,11 +15,12 @@ export default function useGetPackData(props: Props) {
   const { error, isLoading, isValidating } = useSWR(
     [`getPackData${packID}`, `${packID}`],
     async () => {
+      if (packID === "") return;
       const { data: user } = await supabase.auth.getSession();
       const { data: groups } = await supabase
         .from("group")
         .select("*, pack_item(*, inventory(*))")
-        .match({ pack_id: packID });
+        .match({ pack_id: packID, user_id: user.session?.user.id });
 
       setPackData(groups as GroupData[]);
     }
