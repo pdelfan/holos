@@ -3,7 +3,6 @@
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
-import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
 import { convertWeight } from "@/utils/numberUtils";
@@ -25,7 +24,9 @@ export default function SharedPack(props: Props) {
     shareID: params.id,
   });
   const { currency } = useGetPreferredCurrency();
-  const { packData, setPackData } = useGetPackData({ packID: pack?.id.toString() ?? "" });
+  const { packData, setPackData } = useGetPackData({
+    packID: pack?.id.toString() ?? "",
+  });
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 

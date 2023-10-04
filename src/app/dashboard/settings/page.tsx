@@ -10,6 +10,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import FormSelect from "@/components/forms/formSelect/FormSelect";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
+import useGetUsername from "@/hooks/useGetUsername";
 
 export default function Settings() {
   const supabase = createClientComponentClient<Database>();
@@ -21,6 +22,8 @@ export default function Settings() {
   const [preferredCurrency, setPreferredCurrency] = useState("$");
   const { user } = useGetUser();
   const router = useRouter();
+  const { name, setName } = useGetUsername();
+  const [username, setUsername] = useState(name);
 
   const onUpdateEmail = async () => {
     if (newEmail === user?.email) {
@@ -83,6 +86,23 @@ export default function Settings() {
     toast.success("Updated preferred currency.");
   };
 
+  const onUpdateName = async () => {
+    if (!user) return;
+    const { data, error } = await supabase
+      .from("user")
+      .update({ name: username })
+      .eq("id", user.id)
+      .select("name");
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    setName(data[0].name);
+    toast.success("Updated name.");
+  };
+
   return (
     <>
       {user && currency && (
@@ -91,9 +111,47 @@ export default function Settings() {
           <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
             <div className="flex flex-col items-center gap-2">
               <Avatar name={user?.email ?? null} size="large" />
-              {user && (
-                <h2 className="font-medium text-md text-gray">{user.email}</h2>
+              {name && (
+                <h2 className="font-medium text-lg text-gray-dark">{name}</h2>
               )}
+              {user && (
+                <h2 className="font-medium text-md text-gray-500">
+                  {user.email}
+                </h2>
+              )}
+            </div>
+
+            <div className="max-w-xs">
+              <h2 className="font-medium">Public Name</h2>
+              <p className="mt-1 mb-4">
+                Your name will be displayed when you share a pack.
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  onUpdateName();
+                }}
+              >
+                <label htmlFor="name" className="text-gray-light">
+                  Name
+                </label>
+                <input
+                  autoFocus
+                  required
+                  id="name"
+                  type="text"
+                  name="name"
+                  className="px-4 py-2.5 bg-input rounded-xl mt-1 mb-4 w-full text-gray-600 focus:outline-gray-400 focus:bg-input-focus"
+                  placeholder={name ?? ""}
+                  value={username ?? ""}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
+                <Button disabled={loading} aria-disabled={loading}>
+                  Update Name
+                </Button>
+              </form>
             </div>
 
             <div className="max-w-xs">

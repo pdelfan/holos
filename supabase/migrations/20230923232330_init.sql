@@ -3,6 +3,7 @@ public.user (
 id uuid not null,
 email text null,
 avatar_url text null,
+name text null,
 preferred_currency text not null default '$'::text,
 constraint user_pkey primary key (id),
 constraint user_id_fkey foreign key (id) references auth.users (id) on delete cascade
