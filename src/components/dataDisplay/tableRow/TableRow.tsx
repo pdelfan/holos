@@ -45,7 +45,7 @@ function TableRow(props: Props) {
   return (
     <>
       <tr
-        className="bg-table-row border-y-2 align-middle"
+        className={`bg-table-row border-y-2 align-middle`}
         ref={setNodeRef}
         style={style}
       >

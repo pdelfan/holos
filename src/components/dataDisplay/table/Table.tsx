@@ -247,14 +247,13 @@ function Table(props: Props) {
                         />
                       ))}
                   </>
-                  {!shareMode && (
-                    <AddItemRow
-                      onAdd={setShowAddItemModal}
-                      total={total}
-                      weightUnit={group.weight_unit}
-                      currency={currency}
-                    />
-                  )}
+                  <AddItemRow
+                    onAdd={setShowAddItemModal}
+                    shareMode={shareMode}
+                    total={total}
+                    weightUnit={group.weight_unit}
+                    currency={currency}
+                  />
                 </tbody>
               </table>
             )}
