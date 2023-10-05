@@ -25,7 +25,7 @@ function WishlistCard(props: Props) {
       {isLoading && <Skeleton />}
       {data && (
         <article
-          className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer group hover:border-neutral-300"
+          className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300"
           onClick={() => {
             window.open(data.url, "_blank");
           }}
@@ -58,7 +58,7 @@ function WishlistCard(props: Props) {
               <h3 className="text-stone-600 font-medium leading-5">{data.title}</h3>
             )}
           </div>
-          <div className="hidden group-hover:flex gap-2 absolute right-5 top-5">
+          <div className="flex gap-2 absolute right-5 top-5">
             <button
               className="bg-button p-2 rounded-full hover:bg-button-hover"
               onClick={(e) => {

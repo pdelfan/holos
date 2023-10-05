@@ -12,6 +12,7 @@ import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import useDebounce from "@/hooks/useDebounce";
+import Button from "@/components/actions/button/Button";
 
 interface Props {
   onClose: () => void;
@@ -228,18 +229,17 @@ export default function ItemForm(props: Props) {
         </div>
 
         <div className="flex flex-wrap gap-3 justify-end">
-          <button
-            onClick={onClose}
-            className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
-          >
+          <Button type="button" onClick={onClose}>
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
             type="submit"
-            className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
+            disabled={selectedItem ? false : true}
+            bgColor="bg-zinc-600"
+            textColor="text-gray-100"
           >
             Add Item
-          </button>
+          </Button>
         </div>
       </form>
     </div>

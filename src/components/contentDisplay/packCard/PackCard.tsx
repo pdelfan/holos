@@ -1,17 +1,14 @@
-import PackSummary from "../packSummary/PackSummary";
 import Image from "next/image";
-import DeleteIcon from "@/assets/icons/deleteIcon.svg";
-import EditIcon from "@/assets/icons/editIcon.svg";
+import MoreIcon from "@/assets/icons/moreIcon.svg";
 import { useRouter } from "next/navigation";
 
 interface Props {
   data: Pack;
-  onEdit: () => void;
-  onDelete: () => void;
+  onEdit: () => void;  
 }
 
 function PackCard(props: Props) {
-  const { data, onEdit, onDelete } = props;
+  const { data, onEdit } = props;
   const { title, description } = data;
   const router = useRouter();
 
@@ -22,7 +19,7 @@ function PackCard(props: Props) {
 
   return (
     <article
-      className="flex flex-col relative rounded-2xl p-5 cursor-pointer group hover:brightness-105"
+      className="flex flex-col relative rounded-2xl p-5 cursor-pointer hover:brightness-105"
       style={gradient}
       onClick={() => {
         router.push(`packs/${data.id}`);
@@ -36,17 +33,7 @@ function PackCard(props: Props) {
           {description}
         </h3>
       </div>
-      <div className="hidden group-focus:flex group-hover:flex gap-2 absolute right-5 top-5">
-        <button
-          className="bg-button p-2 rounded-full hover:bg-button-hover"
-          tabIndex={0}
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        >
-          <Image src={DeleteIcon} alt="Delete icon" width={20} height={20} />
-        </button>
+      <div className="flex gap-2 absolute right-5 top-5">     
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover"
           tabIndex={0}
@@ -55,7 +42,7 @@ function PackCard(props: Props) {
             onEdit();
           }}
         >
-          <Image src={EditIcon} alt="Edit icon" width={20} height={20} />
+          <Image src={MoreIcon} alt="Edit icon" width={20} height={20} />
         </button>
       </div>
     </article>

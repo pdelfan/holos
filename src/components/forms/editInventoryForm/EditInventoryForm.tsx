@@ -5,15 +5,16 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import { updateIventoryData } from "@/utils/fetchUtils";
-import { deepEqual } from "assert";
+import Button from "@/components/actions/button/Button";
 
 interface Props {
   inventoryItem: InventoryItem;
+  onDelete: () => void;
   onClose: () => void;
 }
 
 export default function EditInventoryForm(props: Props) {
-  const { onClose, inventoryItem } = props;
+  const { onClose, onDelete, inventoryItem } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
   const [title, setTitle] = useState(inventoryItem.title);
@@ -192,20 +193,30 @@ export default function EditInventoryForm(props: Props) {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3 justify-end">
-          <button
+        <div className="flex flex-wrap gap-3 justify-between">
+          <Button
             type="button"
-            onClick={onClose}
-            className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
+            onClick={() => {
+              onDelete();
+              onClose();
+            }}
+            bgColor="bg-red-600"
+            textColor="text-white"
           >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
-          >
-            Update Item
-          </button>
+            Delete
+          </Button>
+          <div className="flex flex-wrap gap-3">
+            <Button type="button" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              bgColor="bg-zinc-600"
+              textColor="text-gray-100"
+            >
+              Update Item
+            </Button>
+          </div>
         </div>
       </form>
     </div>

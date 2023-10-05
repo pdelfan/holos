@@ -56,7 +56,6 @@ export default function TripGrid() {
                   baseWeight={item.base_weight}
                   totalWeight={item.total_weight}
                   weightUnit={item.weight_unit}
-                  onDelete={() => onDeleteTrip(item.id)}
                   onEdit={() => {
                     setCurrentTrip(item);
                     setShowModal(true);
@@ -76,6 +75,7 @@ export default function TripGrid() {
         <Modal>
           <EditTripForm
             tripItem={currentTrip}
+            onDelete={() => onDeleteTrip(currentTrip.id)}
             onClose={() => setShowModal(false)}
           />
         </Modal>

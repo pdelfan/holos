@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
 import { updatePackData } from "@/utils/fetchUtils";
 import FormSelect from "../formSelect/FormSelect";
+import Button from "@/components/actions/button/Button";
 
 interface Props {
   onClose: () => void;
@@ -96,19 +97,12 @@ export default function PackForm(props: Props) {
         </div>
 
         <div className="flex flex-wrap gap-3 mt-5 justify-end">
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-lg bg-zinc-50 text-zinc-500 text-sm font-medium px-4 py-2 border hover:bg-zinc-100"
-          >
+          <Button type="button" onClick={onClose}>
             Cancel
-          </button>
-          <button
-            type="submit"
-            className="rounded-lg bg-zinc-600 text-gray-100 text-sm font-medium px-4 py-2 border hover:bg-zinc-700"
-          >
+          </Button>
+          <Button type="submit" bgColor="bg-zinc-600" textColor="text-gray-100">
             Add Pack
-          </button>
+          </Button>
         </div>
       </form>
     </div>

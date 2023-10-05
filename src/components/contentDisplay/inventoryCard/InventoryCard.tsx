@@ -1,19 +1,17 @@
 import Image from "next/image";
 import { useCallback } from "react";
-import DeleteIcon from "@/assets/icons/deleteIcon.svg";
-import EditIcon from "@/assets/icons/editIcon.svg";
+import MoreIcon from "@/assets/icons/moreIcon.svg";
 import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
 import CostIcon from "@/assets/icons/costIcon.svg";
 
 interface Props {
   data: InventoryItem;
   currency: string;
-  onDelete: () => void;
   onEdit: () => void;
 }
 
 function InventoryCard(props: Props) {
-  const { data, currency, onDelete, onEdit } = props;
+  const { data, currency, onEdit } = props;
   const { title, image_url, url, description, price, weight, weight_unit } =
     data;
 
@@ -23,7 +21,7 @@ function InventoryCard(props: Props) {
 
   return (
     <article
-      className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer group hover:border-neutral-300"
+      className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300"
       onClick={() => {
         if (!url) return;
         window.open(url, "_blank");
@@ -70,17 +68,7 @@ function InventoryCard(props: Props) {
           )}
         </div>
       </div>
-      <div className="hidden group-focus:flex group-hover:flex gap-2 absolute right-5 top-5">
-        <button
-          className="bg-button p-2 rounded-full hover:bg-button-hover"
-          tabIndex={0}
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        >
-          <Image src={DeleteIcon} alt="Dots icon" width={20} height={20} />
-        </button>
+      <div className="flex gap-2 absolute right-5 top-5">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover"
           tabIndex={0}
@@ -89,7 +77,7 @@ function InventoryCard(props: Props) {
             onEdit();
           }}
         >
-          <Image src={EditIcon} alt="Dots icon" width={20} height={20} />
+          <Image src={MoreIcon} alt="Dots icon" width={20} height={20} />
         </button>
       </div>
     </article>

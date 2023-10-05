@@ -60,7 +60,6 @@ export default function InventoryGrid() {
                   key={item.id}
                   data={item}
                   currency={currency}
-                  onDelete={() => onDeleteInventoryItem(item.id)}
                   onEdit={() => {
                     setCurrentInventoryItem(item);
                     setShowModal(true);
@@ -80,6 +79,7 @@ export default function InventoryGrid() {
         <Modal>
           <EditInventoryForm
             inventoryItem={currentIventoryItem}
+            onDelete={() => onDeleteInventoryItem(currentIventoryItem.id)}
             onClose={() => setShowModal(false)}
           />
         </Modal>

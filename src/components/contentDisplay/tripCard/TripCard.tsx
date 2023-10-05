@@ -1,7 +1,5 @@
 import Image from "next/image";
-import DeleteIcon from "@/assets/icons/deleteIcon.svg";
-import EditIcon from "@/assets/icons/editIcon.svg";
-import TripIcon from "@/assets/icons/tripIcon.svg";
+import MoreIcon from "@/assets/icons/moreIcon.svg";
 
 interface Props {
   title: string;
@@ -13,7 +11,6 @@ interface Props {
   baseWeight: number;
   totalWeight: number;
   weightUnit: string;
-  onDelete: () => void;
   onEdit: () => void;
 }
 
@@ -28,7 +25,6 @@ function TripCard(props: Props) {
     baseWeight,
     totalWeight,
     weightUnit,
-    onDelete,
     onEdit,
   } = props;
 
@@ -45,17 +41,15 @@ function TripCard(props: Props) {
 
   return (
     <article
-      className="relative flex flex-col justify-between gap-8 rounded-2xl p-5 bg-gradient-trip-radial group hover:saturate-50 focus-visible"
+      className="relative flex flex-col justify-between gap-8 rounded-2xl p-5 bg-gradient-trip-radial hover:saturate-50 focus-visible"
       style={gradient}
       tabIndex={0}
     >
-      <div className="flex flex-wrap gap-1 justify-between items-center">
-        <span className="flex items-center gap-1">
-          <h2 className="text-lg text-white font-medium break-words overflow-clip leading-5">
-            {title}
-          </h2>
-        </span>
-        <h3 className="text-md text-white font-medium break-words overflow-clip">
+      <div className="flex flex-col flex-wrap gap-1">
+        <h2 className="text-lg text-white font-medium break-words overflow-clip leading-5">
+          {title}
+        </h2>
+        <h3 className="text-sm text-white font-medium break-words overflow-clip">
           {formattedDate}
         </h3>
       </div>
@@ -73,7 +67,7 @@ function TripCard(props: Props) {
             Distance
           </span>
           <span className="text-white text-lg font-medium">
-            {distance} {distanceUnit}            
+            {distance} {distanceUnit}
           </span>
         </li>
         <li className="flex flex-col">
@@ -81,7 +75,7 @@ function TripCard(props: Props) {
             Base Weight
           </span>
           <span className="text-white text-lg font-medium">
-            {baseWeight} {weightUnit}            
+            {baseWeight} {weightUnit}
           </span>
         </li>
         <li className="flex flex-col">
@@ -89,21 +83,11 @@ function TripCard(props: Props) {
             Total weight
           </span>
           <span className="text-white text-lg font-medium">
-            {totalWeight} {weightUnit}            
+            {totalWeight} {weightUnit}
           </span>
         </li>
       </ul>
-      <div className="hidden group-focus:flex group-hover:flex gap-2 absolute right-5 top-5">
-        <button
-          className="bg-button p-2 rounded-full hover:bg-button-hover"
-          tabIndex={0}
-          onClick={(e) => {
-            e.stopPropagation();
-            onDelete();
-          }}
-        >
-          <Image src={DeleteIcon} alt="Dots icon" width={20} height={20} />
-        </button>
+      <div className="flex gap-2 absolute right-5 top-5">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover"
           tabIndex={0}
@@ -112,7 +96,7 @@ function TripCard(props: Props) {
             onEdit();
           }}
         >
-          <Image src={EditIcon} alt="Dots icon" width={20} height={20} />
+          <Image src={MoreIcon} alt="Dots icon" width={20} height={20} />
         </button>
       </div>
     </article>

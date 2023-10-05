@@ -11,7 +11,6 @@ import { useState } from "react";
 import Modal from "@/components/feedback/modal/Modal";
 import useGetPacks from "@/hooks/useGetPacks";
 import PackCard from "../packCard/PackCard";
-import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import EditPackForm from "@/components/forms/editPackForm/EditPackForm";
 
 export default function PackGrid() {
@@ -21,7 +20,6 @@ export default function PackGrid() {
   const [showModal, setShowModal] = useState(false);
   const [currentPack, setCurrentPack] = useState<Pack | null>(null);
   const { packs, setPacks, error, isLoading, isValidating } = useGetPacks();
-  const { currency } = useGetPreferredCurrency();
 
   const onDeletePack = async (id: number) => {
     const { error } = await supabase.from("pack").delete().eq("id", id);
@@ -50,7 +48,6 @@ export default function PackGrid() {
                 <PackCard
                   key={item.id}
                   data={item}
-                  onDelete={() => onDeletePack(item.id)}
                   onEdit={() => {
                     setCurrentPack(item);
                     setShowModal(true);
@@ -70,6 +67,7 @@ export default function PackGrid() {
         <Modal>
           <EditPackForm
             pack={currentPack}
+            onDelete={() => onDeletePack(currentPack.id)}
             onClose={() => setShowModal(false)}
           />
         </Modal>
