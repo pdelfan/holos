@@ -16,6 +16,24 @@ import toast from "react-hot-toast";
 import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
+import ViewIcon from "@/assets/icons/viewIcon.svg";
+import ViewOffIcon from "@/assets/icons/viewOffIcon.svg";
+import EditIcon from "@/assets/icons/editIcon.svg";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { calculateChangedGroups } from "@/utils/dndUtils";
 
 interface Props {
   params: { id: string };
@@ -28,11 +46,78 @@ export default function Pack(props: Props) {
     packID: params.id,
   });
   const { currency } = useGetPreferredCurrency();
+  const [viewMode, setViewMode] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const { packData, setPackData } = useGetPackData({ packID: params.id });
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const onSort = async (chagnedGroups: Group[]) => {
+    const { error } = await supabase.from("group").upsert(chagnedGroups);
+
+    if (error) {
+      toast.error("Couldn't update new positions.");
+      return;
+    }
+
+    toast.success("Updated new positions");
+  };
+
+  const handleDragEnd = (event: any) => {
+    if (!packData) return;
+
+    const { active, over } = event;
+
+    if (active.id !== over.id) {
+      const oldIndex = packData.findIndex(
+        (item: GroupData) => item.id === active.id
+      );
+      const newIndex = packData.findIndex(
+        (item: GroupData) => item.id === over.id
+      );
+
+      const reorderedData = arrayMove(packData, oldIndex, newIndex).sort(
+        (a, b) => a.position - b.position
+      );
+
+      // find group and update groups
+      setPackData((prev) => {
+        if (!prev) return prev;
+        const indexToUpdate = prev.findIndex((item) => item.id === active.id);
+
+        if (indexToUpdate === -1) {
+          // item not found, return the previous array
+          return prev;
+        }
+
+        return [
+          ...prev.slice(0, indexToUpdate), // items before the updated item
+          { ...prev[indexToUpdate], position: newIndex }, // updated item
+          ...prev.slice(indexToUpdate + 1), // items after the updated item
+        ];
+      });
+
+      const changedItems = calculateChangedGroups(packData, oldIndex, newIndex);
+
+      if (changedItems.length === 0) return;
+
+      // remove pack_item from changed groups
+      const changedGroupsWithoutPackItem = changedItems.map((item) => {
+        const { pack_item, ...rest } = item;
+        return rest;
+      });
+
+      onSort(changedGroupsWithoutPackItem);
+    }
+  };
 
   const onDeleteGroup = async (id: number) => {
     if (!packData) return;
@@ -139,7 +224,7 @@ export default function Pack(props: Props) {
   return (
     <>
       {!pack && <PackSkeleton />}
-      {pack && (
+      {pack && packData && packStats && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
@@ -150,35 +235,61 @@ export default function Pack(props: Props) {
                 {pack.description}
               </h2>
             </div>
-            <Button
-              bgColor="bg-pink-600"
-              textColor="text-white"
-              icon={ShareIcon}
-              onClick={() => setShowShareModal(!showShareModal)}
-            >
-              Share
-            </Button>
+            <span className="flex flex-wrap gap-3">
+              <Button
+                bgColor="bg-button dark:bg-neutral-700"
+                textColor="text-button-text dark:text-neutral-300"
+                icon={viewMode ?  EditIcon : ViewIcon}
+                onClick={() => setViewMode(!viewMode)}
+              >
+                {viewMode ? "Edit" : "View"}
+              </Button>
+              <Button
+                bgColor="bg-purple"
+                textColor="text-white"
+                icon={ShareIcon}
+                onClick={() => setShowShareModal(!showShareModal)}
+              >
+                Share
+              </Button>
+            </span>
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
             <PackSummary data={total} />
           </section>
           <section className="flex flex-col gap-10 mt-12">
-            {packData &&
-              packData.length > 0 &&
-              packData.map((group) => (
-                <Table
-                  key={group.id}
-                  group={group}
-                  setGroupData={setPackData}
-                  onUpdateGroup={setPackData}
-                  onDeleteGroup={() => onDeleteGroup(group.id)}
-                  setPackStats={setPackStats}
-                  currency={currency}
-                  packWeightUnit={pack.weight_unit}
-                />
-              ))}
+            {packData.length > 0 && (
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+                id="GroupDndContext"
+              >
+                <SortableContext
+                  items={packData
+                    .sort((a, b) => a.position - b.position)
+                    .map((group) => group.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {packData.map((group) => (
+                    <Table
+                      key={group.id}
+                      group={group}
+                      viewMode={viewMode}
+                      setGroupData={setPackData}
+                      onUpdateGroup={setPackData}
+                      onDeleteGroup={() => onDeleteGroup(group.id)}
+                      setPackStats={setPackStats}
+                      currency={currency}
+                      packWeightUnit={pack.weight_unit}
+                    />
+                  ))}
+                </SortableContext>
+              </DndContext>
+            )}
           </section>
+
           <section className="mt-5">
             <Button
               bgColor="bg-button dark:bg-neutral-700"
@@ -191,6 +302,7 @@ export default function Pack(props: Props) {
               <Modal>
                 <GroupForm
                   packID={Number(params.id)}
+                  newPosition={packStats.length}
                   onUpdate={setPackData}
                   onClose={() => setShowAddGroupModal(false)}
                 />
@@ -205,7 +317,6 @@ export default function Pack(props: Props) {
               </Modal>
             )}
           </section>
-          <section></section>
         </>
       )}
     </>

@@ -114,10 +114,12 @@ interface Group {
   title: string;
   pack_id: number;
   user_id: string;
+  total_base_weight: number;
   total_weight: number;
   weight_unit: string;
   total_quantity: number;
   total_price: number;
+  position: number;
 }
 
 interface PackStats {
@@ -135,9 +137,11 @@ interface GroupData {
   title: string;
   pack_id: number;
   user_id: string;
+  total_base_weight: number;
   total_weight: number;
   weight_unit: string;
   total_quantity: number;
-  total_price: number;
+  total_price: number;  
   pack_item: PackItem[];
+  position: number;
 }

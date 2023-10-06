@@ -15,6 +15,8 @@ import EditItemForm from "@/components/forms/editItemForm/EditItemForm";
 import ItemForm from "@/components/forms/itemForm/ItemForm";
 import ExpandMoreIcon from "@/assets/icons/expandMoreIcon.svg";
 import ExpandLessIcon from "@/assets/icons/expandLessIcon.svg";
+import Image from "next/image";
+import DragIcon from "@/assets/icons/dragIcon.svg";
 import {
   DndContext,
   closestCenter,
@@ -27,17 +29,19 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
+  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { calculateChangedItems } from "@/utils/dndUtils";
 import Button from "@/components/actions/button/Button";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[] | null>>;
   onDeleteGroup: () => void;
   setPackStats: React.Dispatch<React.SetStateAction<PackStats[]>>;
   setGroupData: Dispatch<SetStateAction<[] | GroupData[] | null>>;
-  shareMode?: boolean;
+  viewMode?: boolean;
   group: GroupData;
   currency: string;
   packWeightUnit: string;
@@ -48,7 +52,7 @@ function Table(props: Props) {
     onUpdateGroup,
     onDeleteGroup,
     setGroupData,
-    shareMode,
+    viewMode,
     group,
     currency,
   } = props;
@@ -64,6 +68,22 @@ function Table(props: Props) {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: group.id });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    filter: isDragging ? "contrast(0.9)" : "contrast(1)",
+    touchAction: "none",
+  };
 
   const onSort = async (changedItems: PackItemWithoutInventory[]) => {
     const { error } = await supabase.from("pack_item").upsert(changedItems);
@@ -174,98 +194,129 @@ function Table(props: Props) {
   };
 
   return (
-    <section>
-      <div className="flex justify-between mb-2">
-        <h3 className="font-medium text-lg dark:text-neutral-200">{group.title}</h3>
-        {!shareMode && (
-          <div className="flex gap-2">
-            <Dropdown
-              button={
-                <Button
-                  bgColor="bg-button dark:bg-neutral-700"
-                  textColor="text-button-text dark:text-neutral-200"
-                >
-                  ···
-                </Button>
-              }
-            >
-              <DropdownItem
-                icon={EditIcon}
-                onClick={() => setShowEditGroupModal(!showEditGroupModal)}
+    <>
+      <section ref={setNodeRef} style={style}>
+        <div className="flex justify-between mb-2">
+          <span className="flex items-center gap-1">
+            {!viewMode && (
+              <button
+                className="p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
+                style={{ cursor: isDragging ? "grabbing" : "grab" }}
+                {...listeners}
+                {...attributes}
               >
-                Edit
-              </DropdownItem>
-              <DropdownItem icon={DeleteIcon} onClick={onDeleteGroup}>
-                Delete
-              </DropdownItem>
-              <DropdownItem
-                icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
-                onClick={() => setIsExpanded(!isExpanded)}
-              >
-                {isExpanded ? "Fold" : "Expand"}
-              </DropdownItem>
-            </Dropdown>
-          </div>
-        )}
-      </div>
-      <div className="relative overflow-auto rounded-xl border-2 bg-white dark:border-neutral-600">
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-          id="DndContext"
-        >
-          <SortableContext
-            items={group.pack_item}
-            strategy={verticalListSortingStrategy}
-          >
-            {isExpanded && (
-              <table className="border-collapse table-auto w-full bg-white dark:bg-neutral-800">
-                <thead className="bg-table-head dark:bg-neutral-900">
-                  <tr className=" rounded-xl">
-                    {!shareMode && <th className="p-2" />}
-                    <th className="p-2 text-sm dark:text-neutral-300">Image</th>
-                    <th className="p-2 text-sm dark:text-neutral-300">Item</th>
-                    <th className="p-2 text-sm dark:text-neutral-300">
-                      Description
-                    </th>
-                    <th className="p-2 text-sm dark:text-neutral-300">Link</th>
-                    <th className="p-2 text-sm dark:text-neutral-300">Type</th>
-                    <th className="p-2 text-sm dark:text-neutral-300">Price</th>
-                    <th className="p-2 text-sm dark:text-neutral-300">
-                      Weight
-                    </th>
-                    <th className="p-2 text-sm dark:text-neutral-300">QTY</th>
-                    {!shareMode && <th className="p-2 text-sm"></th>}
-                  </tr>
-                </thead>
-                <tbody>
-                  <>
-                    {group.pack_item
-                      .sort((a, b) => a.position - b.position)
-                      .map((item) => (
-                        <TableRow
-                          key={item.id}
-                          item={item}
-                          shareMode={shareMode}
-                          onSelect={() => setSelectedItem(item)}
-                          onEdit={setShowEditItemModal}
-                        />
-                      ))}
-                  </>
-                  <AddItemRow
-                    onAdd={setShowAddItemModal}
-                    shareMode={shareMode}
-                    total={total}
-                    weightUnit={group.weight_unit}
-                    currency={currency}
-                  />
-                </tbody>
-              </table>
+                <Image
+                  draggable={false}
+                  className="w-auto h-auto"
+                  src={DragIcon}
+                  alt="Drag icon"
+                  width={10}
+                  height={10}
+                />
+              </button>
             )}
-          </SortableContext>
-        </DndContext>
-      </div>
+
+            <h3 className="font-medium text-lg dark:text-neutral-200">
+              {group.title}
+            </h3>
+          </span>
+          {!viewMode && (
+            <div className="flex gap-2">
+              <Dropdown
+                button={
+                  <span className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button dark:bg-neutral-700 text-button-text dark:text-neutral-200 hover:brightness-95">
+                    ···
+                  </span>
+                }
+              >
+                <DropdownItem
+                  icon={EditIcon}
+                  onClick={() => setShowEditGroupModal(!showEditGroupModal)}
+                >
+                  Edit
+                </DropdownItem>
+                <DropdownItem icon={DeleteIcon} onClick={onDeleteGroup}>
+                  Delete
+                </DropdownItem>
+                <DropdownItem
+                  icon={isExpanded ? ExpandLessIcon : ExpandMoreIcon}
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? "Fold" : "Expand"}
+                </DropdownItem>
+              </Dropdown>
+            </div>
+          )}
+        </div>
+        <div className="relative overflow-auto rounded-xl border-2 bg-white dark:border-neutral-600">
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+            id="DndContext"
+          >
+            <SortableContext
+              items={group.pack_item}
+              strategy={verticalListSortingStrategy}
+            >
+              {isExpanded && (
+                <table className="border-collapse table-auto w-full bg-white dark:bg-neutral-800">
+                  <thead className="bg-table-head dark:bg-neutral-900">
+                    <tr className=" rounded-xl">
+                      {!viewMode && <th className="p-2" />}
+                      <th className="p-2 text-sm dark:text-neutral-300">
+                        Image
+                      </th>
+                      <th className="p-2 text-sm dark:text-neutral-300">
+                        Item
+                      </th>
+                      <th className="p-2 text-sm dark:text-neutral-300">
+                        Description
+                      </th>
+                      <th className="p-2 text-sm dark:text-neutral-300">
+                        Link
+                      </th>
+                      <th className="p-2 text-sm dark:text-neutral-300">
+                        Type
+                      </th>
+                      <th className="p-2 text-sm dark:text-neutral-300">
+                        Price
+                      </th>
+                      <th className="p-2 text-sm dark:text-neutral-300">
+                        Weight
+                      </th>
+                      <th className="p-2 text-sm dark:text-neutral-300">QTY</th>
+                      {!viewMode && <th className="p-2 text-sm"></th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <>
+                      {group.pack_item
+                        .sort((a, b) => a.position - b.position)
+                        .map((item) => (
+                          <TableRow
+                            key={item.id}
+                            item={item}
+                            viewMode={viewMode}
+                            onSelect={() => setSelectedItem(item)}
+                            onEdit={setShowEditItemModal}
+                          />
+                        ))}
+                    </>
+                    <AddItemRow
+                      onAdd={setShowAddItemModal}
+                      viewMode={viewMode}
+                      total={total}
+                      weightUnit={group.weight_unit}
+                      currency={currency}
+                    />
+                  </tbody>
+                </table>
+              )}
+            </SortableContext>
+          </DndContext>
+        </div>
+      </section>
       {showAddItemModal && group.pack_item && (
         <Modal>
           <ItemForm
@@ -295,7 +346,7 @@ function Table(props: Props) {
           />
         </Modal>
       )}
-    </section>
+    </>
   );
 }
 

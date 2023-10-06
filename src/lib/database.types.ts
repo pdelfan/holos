@@ -38,6 +38,7 @@ export interface Database {
         Row: {
           id: number
           pack_id: number
+          position: number
           title: string
           total_base_weight: number
           total_price: number
@@ -49,6 +50,7 @@ export interface Database {
         Insert: {
           id?: number
           pack_id: number
+          position: number
           title: string
           total_base_weight: number
           total_price: number
@@ -60,6 +62,7 @@ export interface Database {
         Update: {
           id?: number
           pack_id?: number
+          position?: number
           title?: string
           total_base_weight?: number
           total_price?: number

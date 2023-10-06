@@ -84,6 +84,7 @@ user_id uuid not null,
 total_base_weight numeric not null,
 total_price numeric not null,
 weight_unit text not null,
+position numeric not null,
 constraint group_pkey primary key (id),
 constraint group_pack_id_fkey foreign key (pack_id) references pack (id) on delete cascade,
 constraint group_user_id_fkey foreign key (user_id) references "user" (id) on delete cascade

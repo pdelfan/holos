@@ -3,20 +3,20 @@ import { SetStateAction } from "react";
 
 interface Props {
   onAdd: (showAddItemModal: SetStateAction<boolean>) => void;
-  shareMode?: boolean;
+  viewMode?: boolean;
   total: TotalGroup;
   weightUnit: string;
   currency: string;
 }
 
 export default function AddItemRow(props: Props) {
-  const { onAdd, shareMode, total, weightUnit, currency } = props;
+  const { onAdd, viewMode, total, weightUnit, currency } = props;
 
   return (
     <>
       <tr className="border-table-rowBorder dark:bg-neutral-700">
         <td className="text-center p-3">
-          {!shareMode && (
+          {!viewMode && (
             <Button
               bgColor="bg-button dark:bg-neutral-400"
               textColor="text-button-text dark:text-neutral-600"
@@ -26,7 +26,7 @@ export default function AddItemRow(props: Props) {
             </Button>
           )}
         </td>
-        {!shareMode && <td className="py-3" />}
+        {!viewMode && <td className="py-3" />}
         <td className="text-center p-3" />
         <td className="text-center p-3" />
         <td className="text-center p-3" />
@@ -47,7 +47,7 @@ export default function AddItemRow(props: Props) {
             {total.quantity}
           </span>
         </td>
-        {!shareMode && (
+        {!viewMode && (
           <td>
             <span className="flex gap-5 justify-center p-3"></span>
           </td>

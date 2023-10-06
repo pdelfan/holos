@@ -10,12 +10,13 @@ import Label from "@/components/inputs/label/Label";
 
 interface Props {
   packID: number;
+  newPosition: number;
   onUpdate: Dispatch<SetStateAction<[] | GroupData[] | null>>;
   onClose: () => void;
 }
 
 export default function GroupForm(props: Props) {
-  const { packID, onUpdate, onClose } = props;
+  const { packID, newPosition, onUpdate, onClose } = props;
   const [title, setTitle] = useState("");
   const [weightUnit, setWeightUnit] = useState("g");
   const ref = useOutsideSelect({ callback: () => onClose() });
@@ -40,6 +41,7 @@ export default function GroupForm(props: Props) {
         total_quantity: 0,
         user_id: user.session.user.id,
         pack_id: packID,
+        position: newPosition,
       })
       .select("*");
 

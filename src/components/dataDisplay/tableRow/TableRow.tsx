@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Tag from "../../contentDisplay/tag/Tag";
-import { SetStateAction, useCallback, useEffect, useState } from "react";
+import { SetStateAction } from "react";
 import LinkIcon from "@/assets/icons/linkIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DragIcon from "@/assets/icons/dragIcon.svg";
@@ -9,13 +9,13 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   item: PackItem;
-  shareMode?: boolean;
+  viewMode?: boolean;
   onEdit: (showEditItemModal: SetStateAction<boolean>) => void;
   onSelect: (item: SetStateAction<[] | PackItem>) => void;
 }
 
 function TableRow(props: Props) {
-  const { item, shareMode, onEdit, onSelect } = props;
+  const { item, viewMode, onEdit, onSelect } = props;
   const { id, quantity, type } = item;
   const {
     title,
@@ -37,9 +37,10 @@ function TableRow(props: Props) {
   } = useSortable({ id: id });
 
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
     filter: isDragging ? "contrast(0.9)" : "contrast(1)",
+    touchAction: "none",
   };
 
   return (
@@ -49,8 +50,8 @@ function TableRow(props: Props) {
         ref={setNodeRef}
         style={style}
       >
-        {!shareMode && (
-          <td className="text-center pl-1">
+        {!viewMode && (
+          <td className="text-center pl-1 touch-none">
             <button
               className="p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
               style={{ cursor: isDragging ? "grabbing" : "grab" }}
@@ -114,7 +115,7 @@ function TableRow(props: Props) {
         <td className="text-center p-3">
           <span className="text-sm dark:text-neutral-300">{quantity}</span>
         </td>
-        {!shareMode && (
+        {!viewMode && (
           <td>
             <span className="flex justify-center p-3">
               <button

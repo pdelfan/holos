@@ -193,7 +193,7 @@ export default function SharedPack(props: Props) {
                 <Table
                   key={group.id}
                   group={group}
-                  shareMode={true}
+                  viewMode={true}
                   setGroupData={setPackData}
                   onUpdateGroup={setPackData}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
