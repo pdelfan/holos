@@ -15,6 +15,7 @@ import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
+import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
 
 interface Props {
   params: { id: string };
@@ -137,6 +138,7 @@ export default function Pack(props: Props) {
 
   return (
     <>
+      {!pack && <PackSkeleton />}
       {pack && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
@@ -178,7 +180,11 @@ export default function Pack(props: Props) {
               ))}
           </section>
           <section className="mt-5">
-            <Button bgColor="bg-button dark:bg-neutral-700" textColor="text-button-text dark:text-neutral-200" onClick={() => setShowAddGroupModal(!showAddGroupModal)}>
+            <Button
+              bgColor="bg-button dark:bg-neutral-700"
+              textColor="text-button-text dark:text-neutral-200"
+              onClick={() => setShowAddGroupModal(!showAddGroupModal)}
+            >
               Add Group
             </Button>
             {showAddGroupModal && (

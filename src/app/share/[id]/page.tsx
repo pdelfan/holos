@@ -3,7 +3,6 @@
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
-import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { Database } from "@/lib/database.types";
 import { convertWeight } from "@/utils/numberUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -14,6 +13,7 @@ import useGetSharedPack from "@/hooks/useGetSharedPack";
 import useGetSharedPackData from "@/hooks/useGetSharedPackData";
 import useGetPublicUser from "@/hooks/useGetPublicUser";
 import Avatar from "@/components/dataDisplay/avatar/Avatar";
+import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
 
 interface Props {
   params: { id: string };
@@ -25,7 +25,7 @@ export default function SharedPack(props: Props) {
   const { pack } = useGetSharedPack({
     shareID: params.id,
   });
-  const { packData, setPackData } = useGetSharedPackData({
+  const { packData, setPackData, isLoadingPackData } = useGetSharedPackData({
     packID: pack?.id.toString() ?? "",
   });
   const [packStats, setPackStats] = useState<PackStats[]>([]);
@@ -141,13 +141,15 @@ export default function SharedPack(props: Props) {
 
   return (
     <>
-      {pack && !pack.is_public && (
+      {isLoadingPackData && <PackSkeleton />}
+
+      {!isLoadingPackData && pack && !pack.is_public && (
         <section className="flex flex-col items-center justify-center p-3 h-[85vh]">
           <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1 dark:text-neutral-100">
             The pack you are looking for could not be found.
           </h1>
           <Link
-            className="mt-6 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover"
+            className="mt-6 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover dark:bg-neutral-700 dark:text-neutral-200"
             href={`${process.env.NEXT_PUBLIC_SITE_URL}`}
           >
             Return Home
@@ -155,7 +157,7 @@ export default function SharedPack(props: Props) {
         </section>
       )}
 
-      {pack && pack.is_public && (
+      {!isLoadingPackData && pack && pack.is_public && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
@@ -172,7 +174,9 @@ export default function SharedPack(props: Props) {
                   <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">
                     Created by
                   </span>
-                  <span className="font-medium text-sm dark:text-neutral-100">{user}</span>
+                  <span className="font-medium text-sm dark:text-neutral-100">
+                    {user}
+                  </span>
                 </div>
                 <Avatar size="small" name={user} />
               </div>
