@@ -41,17 +41,14 @@ export default function ItemForm(props: Props) {
   const searchInventory = useCallback(
     async (query: string) => {
       if (query.trim() === "") return;
-      setIsLoading(true);
 
-      // format query if there's more than one term
-      if (query.trim().split(" ").length > 1) {
-        query = query.trim().replace(/\s+/g, " ").split(" ").join(" | ");
-      }
+      setIsLoading(true);
 
       const { data, error } = await supabase
         .from("inventory")
         .select()
-        .textSearch("title", query);
+        .limit(15)
+        .ilike("title", `%${query}%`);
 
       if (error) {
         toast.error("Couldn't search inventory.");
