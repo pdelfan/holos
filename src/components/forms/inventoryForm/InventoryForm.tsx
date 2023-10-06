@@ -8,6 +8,7 @@ import { updateIventoryData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import TextArea from "@/components/inputs/textarea/Textarea";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   onClose: () => void;
@@ -66,9 +67,7 @@ export default function InventoryForm(props: Props) {
       <form onSubmit={onAddItem} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Title
-            </label>
+            <Label>Title</Label>
             <Input
               autoFocus
               required
@@ -81,13 +80,11 @@ export default function InventoryForm(props: Props) {
             />
           </div>
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Description
-            </label>
+            <Label>Description</Label>
             <TextArea
               placeholder="Description"
               aria-label="Description"
-              maxLength={120}              
+              maxLength={120}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -97,9 +94,7 @@ export default function InventoryForm(props: Props) {
         <div className="flex gap-8">
           <div className="flex flex-wrap gap-3">
             <div className="flex-1">
-              <label className="text-md font-medium text-gray-900 dark:text-white">
-                Price
-              </label>
+              <Label>Price</Label>
               <Input
                 required
                 type="number"
@@ -118,9 +113,7 @@ export default function InventoryForm(props: Props) {
               />
             </div>
             <div className="flex-1">
-              <label className="text-md font-medium text-gray-900 dark:text-white">
-                Weight
-              </label>
+              <Label>Weight</Label>
               <Input
                 required
                 type="number"
@@ -143,9 +136,7 @@ export default function InventoryForm(props: Props) {
 
         <div className="flex flex-wrap justify-between gap-3">
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Item URL
-            </label>
+            <Label>Item URL</Label>
             <Input
               type="url"
               placeholder="https://"
@@ -157,9 +148,7 @@ export default function InventoryForm(props: Props) {
             />
           </div>
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Image URL
-            </label>
+            <Label>Image URL</Label>
             <Input
               type="url"
               placeholder="https://"
@@ -176,7 +165,11 @@ export default function InventoryForm(props: Props) {
           <Button type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" bgColor="bg-zinc-600 dark:bg-zinc-800" textColor="text-gray-100">
+          <Button
+            type="submit"
+            bgColor="bg-zinc-600 dark:bg-zinc-800"
+            textColor="text-gray-100"
+          >
             Add Item
           </Button>
         </div>

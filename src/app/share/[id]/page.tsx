@@ -143,7 +143,7 @@ export default function SharedPack(props: Props) {
     <>
       {pack && !pack.is_public && (
         <section className="flex flex-col items-center justify-center p-3 h-[85vh]">
-          <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1">
+          <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1 dark:text-neutral-100">
             The pack you are looking for could not be found.
           </h1>
           <Link
@@ -159,20 +159,20 @@ export default function SharedPack(props: Props) {
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
-              <h1 className="text-3xl font-semibold text-header-1">
+              <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
                 {pack.title}
               </h1>
-              <h2 className="font-medium text-header-2 mt-1 max-w-2xl">
+              <h2 className="font-medium text-header-2 mt-1 max-w-2xl dark:text-neutral-400">
                 {pack.description}
               </h2>
             </div>
             {user && (
               <div className="flex flex-wrap gap-3 items-center">
                 <div className="flex flex-col flex-wrap">
-                  <span className="text-xs font-medium text-gray-500">
+                  <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">
                     Created by
                   </span>
-                  <span className="font-medium text-sm">{user}</span>
+                  <span className="font-medium text-sm dark:text-neutral-100">{user}</span>
                 </div>
                 <Avatar size="small" name={user} />
               </div>

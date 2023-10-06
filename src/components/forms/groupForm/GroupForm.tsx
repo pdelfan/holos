@@ -6,6 +6,7 @@ import { Database } from "@/lib/database.types";
 import FormSelect from "../formSelect/FormSelect";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   packID: number;
@@ -70,9 +71,7 @@ export default function GroupForm(props: Props) {
       <form onSubmit={onAddGroup}>
         <div className="flex flex-wrap gap-3">
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Title
-            </label>
+            <Label>Title</Label>
             <Input
               autoFocus
               required
@@ -97,7 +96,11 @@ export default function GroupForm(props: Props) {
           <Button type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" bgColor="bg-zinc-600 dark:bg-zinc-800" textColor="text-gray-100">
+          <Button
+            type="submit"
+            bgColor="bg-zinc-600 dark:bg-zinc-800"
+            textColor="text-gray-100"
+          >
             Add Group
           </Button>
         </div>

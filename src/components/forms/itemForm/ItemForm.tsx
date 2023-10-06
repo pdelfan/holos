@@ -14,6 +14,7 @@ import Image from "next/image";
 import useDebounce from "@/hooks/useDebounce";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   onClose: () => void;
@@ -124,9 +125,7 @@ export default function ItemForm(props: Props) {
       <form onSubmit={onAdd} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Search
-            </label>
+            <Label>Search</Label>
             <Input
               autoFocus
               maxLength={80}
@@ -214,9 +213,7 @@ export default function ItemForm(props: Props) {
             />
           </div>
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Quantity
-            </label>
+            <Label>Quantity</Label>
             <Input
               required
               type="number"

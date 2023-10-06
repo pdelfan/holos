@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { updateTripData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   tripItem: TripItem;
@@ -84,9 +85,7 @@ export default function EditTripForm(props: Props) {
       <form onSubmit={onUpdateTrip} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Title
-            </label>
+            <Label>Title</Label>
             <Input
               autoFocus
               required
@@ -99,9 +98,7 @@ export default function EditTripForm(props: Props) {
             />
           </div>
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Date
-            </label>
+            <Label>Date</Label>
             <Input
               required
               type="date"
@@ -115,9 +112,7 @@ export default function EditTripForm(props: Props) {
         <div className="flex gap-8">
           <div className="flex flex-wrap gap-3">
             <div className="flex-1">
-              <label className="text-md font-medium text-gray-900 dark:text-white">
-                Elevation
-              </label>
+              <Label>Elevation</Label>
               <Input
                 required
                 type="number"
@@ -139,14 +134,12 @@ export default function EditTripForm(props: Props) {
 
           <div className="flex flex-wrap gap-3">
             <div className="flex-1">
-              <label className="text-md font-medium text-gray-900 dark:text-white">
-                Distance
-              </label>
+              <Label>Distance</Label>
               <Input
                 required
                 type="number"
                 step="0.01"
-                aria-label="Elevation of the trip"                
+                aria-label="Elevation of the trip"
                 value={distance}
                 onChange={(e) => setDistance(parseFloat(e.target.value))}
               />
@@ -164,15 +157,13 @@ export default function EditTripForm(props: Props) {
 
         <div className="flex flex-wrap justify-between gap-3">
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Base Weight
-            </label>
+            <Label>Base Weight</Label>
             <Input
               required
               type="number"
               step="0.01"
               placeholder="0"
-              aria-label="Base Weight"              
+              aria-label="Base Weight"
               value={baseWeight}
               onChange={(e) => {
                 setBaseWeight(parseFloat(e.target.value));
@@ -180,15 +171,13 @@ export default function EditTripForm(props: Props) {
             />
           </div>
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Total Weight
-            </label>
+            <Label>Total Weight</Label>
             <Input
               required
               type="number"
               step="0.01"
               placeholder="0"
-              aria-label="Total Weight"              
+              aria-label="Total Weight"
               value={totalWeight}
               onChange={(e) => {
                 setTotalWeight(parseFloat(e.target.value));

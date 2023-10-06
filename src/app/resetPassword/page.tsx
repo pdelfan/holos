@@ -6,6 +6,7 @@ import LoadingIcon from "@/assets/icons/loadingIcon.svg";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Database } from "@/lib/database.types";
+import Label from "@/components/inputs/label/Label";
 
 export default function UpdatePassword() {
   const supabase = createClientComponentClient<Database>();
@@ -34,17 +35,17 @@ export default function UpdatePassword() {
   };
 
   return (
-    <section className="bg-white border rounded-2xl max-w-xs p-5">
+    <section className="bg-white border rounded-2xl max-w-xs p-5 dark:bg-neutral-700 dark:border-neutral-600">
       <Link
         href="/"
         className="flex h-10 w-10 items-center justify-center font-medium text-lg bg-button p-2 rounded-full hover:bg-button-hover"
       >
         {"<-"}
       </Link>
-      <h1 className="text-xl font-semibold text-gray-800 mb-1 mt-3">
+      <h1 className="text-xl font-semibold text-gray-800 mb-1 mt-3 dark:text-neutral-100">
         Reset password
       </h1>
-      <h2 className="text-sm font-medium text-gray-500">
+      <h2 className="text-sm font-medium text-gray-500 dark:text-neutral-400">
         Enter the email associated with your account and we will send you an
         email with instructions to reset your password.
       </h2>
@@ -55,9 +56,7 @@ export default function UpdatePassword() {
           onResetPasswordRequest();
         }}
       >
-        <label htmlFor="email" className="text-gray-light">
-          Email
-        </label>
+        <Label htmlFor="email">Email</Label>
         <input
           autoFocus
           required
@@ -73,12 +72,12 @@ export default function UpdatePassword() {
           }}
         />
         {!success && error && (
-          <small className="block text-red-500 font-medium mt-1 animate-fade">
+          <small className="block text-red-500 font-medium mt-1 animate-fade dark:text-red-400">
             {error}
           </small>
         )}
         {success && (
-          <small className="block text-green-600 font-medium mt-1 animate-fade">
+          <small className="block text-green-600 font-medium mt-1 animate-fade dark:text-green-500">
             We sent you an email to ({email}) with instructions to reset your
             password.
           </small>

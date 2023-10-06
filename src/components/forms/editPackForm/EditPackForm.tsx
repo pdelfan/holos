@@ -8,6 +8,7 @@ import { updatePackData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import TextArea from "@/components/inputs/textarea/Textarea";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   pack: Pack;
@@ -62,9 +63,7 @@ export default function EditPackForm(props: Props) {
       <form onSubmit={onUpdatePack}>
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Title
-            </label>
+            <Label>Title</Label>
             <Input
               autoFocus
               required
@@ -77,13 +76,11 @@ export default function EditPackForm(props: Props) {
             />
           </div>
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Description
-            </label>
+            <Label>Description</Label>
             <TextArea
               placeholder="Description"
               aria-label="Description"
-              maxLength={120}              
+              maxLength={120}
               value={description ?? ""}
               onChange={(e) => setDescription(e.target.value)}
             />

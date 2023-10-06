@@ -12,6 +12,7 @@ import FormSelect from "@/components/forms/formSelect/FormSelect";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import useGetUsername from "@/hooks/useGetUsername";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 export default function Settings() {
   const supabase = createClientComponentClient<Database>();
@@ -137,10 +138,8 @@ export default function Settings() {
                   onUpdateName();
                 }}
               >
-                <label htmlFor="name" className="text-gray-light">
-                  Name
-                </label>
-                <Input                  
+                <Label htmlFor="name">Name</Label>
+                <Input
                   required
                   id="name"
                   name="name"
@@ -223,10 +222,8 @@ export default function Settings() {
                   onUpdateEmail();
                 }}
               >
-                <label htmlFor="email" className="text-gray-light">
-                  Email
-                </label>
-                <Input                  
+                <Label htmlFor="email">Email</Label>
+                <Input
                   required
                   id="email"
                   type="email"

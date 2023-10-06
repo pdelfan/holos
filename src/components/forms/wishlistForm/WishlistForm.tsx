@@ -6,6 +6,7 @@ import { Database } from "@/lib/database.types";
 import { updateWishlistData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   onClose: () => void;
@@ -45,9 +46,7 @@ export default function WishlistForm(props: Props) {
       className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border-2 border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200 dark:bg-neutral-700 dark:border-neutral-600"
     >
       <form onSubmit={onAddBookmark}>
-        <label className="text-md font-medium text-gray-900 dark:text-white">
-          Website Address
-        </label>
+        <Label>Website Address</Label>
         <Input
           autoFocus
           required
@@ -63,7 +62,11 @@ export default function WishlistForm(props: Props) {
           <Button type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" bgColor="bg-zinc-600 dark:bg-zinc-800" textColor="text-gray-100">
+          <Button
+            type="submit"
+            bgColor="bg-zinc-600 dark:bg-zinc-800"
+            textColor="text-gray-100"
+          >
             Add Item
           </Button>
         </div>

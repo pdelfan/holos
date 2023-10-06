@@ -7,6 +7,7 @@ import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Database } from "@/lib/database.types";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 export default function SignUp() {
   const supabase = createClientComponentClient<Database>();
@@ -62,37 +63,38 @@ export default function SignUp() {
           handleSignUp();
         }}
       >
-        <label htmlFor="email" className="text-gray-light">
-          Email
-        </label>
-        <Input
-          autoFocus
-          required
-          type="email"
-          name="email"
-          placeholder="you@email.com"
-          value={email}
-          onChange={(e) => {
-            setError("");
-            setSuccess(false);
-            setEmail(e.target.value);
-          }}
-        />
-        <label htmlFor="password" className="inline-block text-gray-light mt-3">
-          Password
-        </label>
-        <Input
-          required
-          type="password"
-          name="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => {
-            setError("");
-            setSuccess(false);
-            setPassword(e.target.value);
-          }}
-        />
+        <span>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            autoFocus
+            required
+            type="email"
+            name="email"
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => {
+              setError("");
+              setSuccess(false);
+              setEmail(e.target.value);
+            }}
+          />
+        </span>
+
+        <span className="block mt-3">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            required
+            type="password"
+            name="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => {
+              setError("");
+              setSuccess(false);
+              setPassword(e.target.value);
+            }}
+          />
+        </span>
         {!success && error && (
           <small className="block text-red-500 font-medium mt-1 animate-fade dark:text-red-500">
             {error}

@@ -8,6 +8,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import { useRouter } from "next/navigation";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 export default function SignIn() {
   const supabase = createClientComponentClient<Database>();
@@ -61,35 +62,35 @@ export default function SignIn() {
           handleSignIn();
         }}
       >
-        <label htmlFor="email" className="text-gray-light">
-          Email
-        </label>
-        <Input
-          autoFocus
-          required
-          type="email"
-          name="email"
-          placeholder="you@email.com"
-          value={email}
-          onChange={(e) => {
-            setError("");
-            setEmail(e.target.value);
-          }}
-        />
-        <label htmlFor="password" className="inline-block text-gray-light mt-3">
-          Password
-        </label>
-        <Input
-          required
-          type="password"
-          name="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => {
-            setError("");
-            setPassword(e.target.value);
-          }}
-        />
+        <span>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            autoFocus
+            required
+            type="email"
+            name="email"
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => {
+              setError("");
+              setEmail(e.target.value);
+            }}
+          />
+        </span>
+        <span className="block mt-3">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            required
+            type="password"
+            name="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => {
+              setError("");
+              setPassword(e.target.value);
+            }}
+          />
+        </span>
         {error && (
           <small className="block text-red-500 font-medium mt-1 animate-fade dark:text-red-400">
             {error}

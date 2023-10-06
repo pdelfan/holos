@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <header className="sticky z-50 top-0 left-0 right-0 flex flex-wrap items-center justify-between gap-2 bg-white px-3 py-2 border-b">
+      <header className="sticky z-50 top-0 left-0 right-0 flex flex-wrap items-center justify-between gap-2 bg-white px-3 py-2 border-b dark:bg-neutral-800 dark:border-neutral-700">
         <Link href="/" className="flex flex-wrap items-center gap-3">
           <Image src={Logo} alt="HOLOS logo" width={40} />
         </Link>

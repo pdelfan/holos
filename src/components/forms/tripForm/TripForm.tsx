@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { updateTripData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   onClose: () => void;
@@ -67,9 +68,7 @@ export default function TripForm(props: Props) {
       <form onSubmit={onAddTrip} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Title
-            </label>
+            <Label>Title</Label>
             <Input
               autoFocus
               required
@@ -82,9 +81,7 @@ export default function TripForm(props: Props) {
             />
           </div>
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Date
-            </label>
+            <Label>Date</Label>
             <Input
               required
               type="date"
@@ -98,9 +95,7 @@ export default function TripForm(props: Props) {
         <div className="flex gap-8">
           <div className="flex flex-wrap gap-3">
             <div className="flex-1">
-              <label className="text-md font-medium text-gray-900 dark:text-white">
-                Elevation
-              </label>
+              <Label>Elevation</Label>
               <Input
                 required
                 type="number"
@@ -121,9 +116,7 @@ export default function TripForm(props: Props) {
 
           <div className="flex flex-wrap gap-3">
             <div className="flex-1">
-              <label className="text-md font-medium text-gray-900 dark:text-white">
-                Distance
-              </label>
+              <Label>Distance</Label>
               <Input
                 required
                 type="number"
@@ -145,9 +138,7 @@ export default function TripForm(props: Props) {
 
         <div className="flex flex-wrap justify-between gap-3">
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Base Weight
-            </label>
+            <Label>Base Weight</Label>
             <Input
               required
               type="number"
@@ -161,9 +152,7 @@ export default function TripForm(props: Props) {
             />
           </div>
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Total Weight
-            </label>
+            <Label>Total Weight</Label>
             <Input
               required
               type="number"
@@ -187,7 +176,11 @@ export default function TripForm(props: Props) {
 
         <div className="flex flex-wrap gap-3 justify-end">
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" bgColor="bg-zinc-600 dark:bg-zinc-800" textColor="text-gray-100">
+          <Button
+            type="submit"
+            bgColor="bg-zinc-600 dark:bg-zinc-800"
+            textColor="text-gray-100"
+          >
             Add Trip
           </Button>
         </div>

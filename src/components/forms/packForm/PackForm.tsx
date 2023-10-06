@@ -8,6 +8,7 @@ import FormSelect from "../formSelect/FormSelect";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import TextArea from "@/components/inputs/textarea/Textarea";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   onClose: () => void;
@@ -61,28 +62,24 @@ export default function PackForm(props: Props) {
       <form onSubmit={onAddPack}>
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Title
-            </label>
+            <Label>Title</Label>
             <Input
               autoFocus
               required
               type="text"
               maxLength={80}
               placeholder="Title"
-              aria-label="Pack title"              
+              aria-label="Pack title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
           <div className="flex-auto">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Description
-            </label>
+            <Label>Description</Label>
             <TextArea
               placeholder="Description"
               aria-label="Description"
-              maxLength={120}              
+              maxLength={120}
               value={description ?? ""}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -100,7 +97,11 @@ export default function PackForm(props: Props) {
           <Button type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" bgColor="bg-zinc-600 dark:bg-zinc-800" textColor="text-gray-100">
+          <Button
+            type="submit"
+            bgColor="bg-zinc-600 dark:bg-zinc-800"
+            textColor="text-gray-100"
+          >
             Add Pack
           </Button>
         </div>

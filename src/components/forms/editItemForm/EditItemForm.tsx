@@ -6,6 +6,7 @@ import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   onClose: () => void;
@@ -85,9 +86,7 @@ export default function EditItemForm(props: Props) {
             />
           </div>
           <div className="flex-1">
-            <label className="text-md font-medium text-gray-900 dark:text-white">
-              Quantity
-            </label>
+            <Label>Quantity</Label>
             <Input
               required
               type="number"

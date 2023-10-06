@@ -6,6 +6,7 @@ import LoadingIcon from "@/assets/icons/loadingIcon.svg";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import type { Database } from "@/lib/database.types";
+import Label from "@/components/inputs/label/Label";
 
 export default function UpdatePassword() {
   const supabase = createClientComponentClient<Database>();
@@ -34,17 +35,17 @@ export default function UpdatePassword() {
   };
 
   return (
-    <section className="bg-white border rounded-2xl max-w-xs p-5">
+    <section className="bg-white border rounded-2xl max-w-xs p-5 dark:bg-neutral-700 dark:border-neutral-600">
       <Link
         href="/"
         className="flex h-10 w-10 items-center justify-center font-medium text-lg bg-button p-2 rounded-full hover:bg-button-hover"
       >
         {"<-"}
       </Link>
-      <h1 className="text-xl font-semibold text-gray-800 mb-1 mt-3">
+      <h1 className="text-xl font-semibold text-gray-800 mb-1 mt-3 dark:text-neutral-100">
         Create a new password
       </h1>
-      <h2 className="text-sm font-medium text-gray-500">
+      <h2 className="text-sm font-medium text-gray-500 dark:text-neutral-400">
         Your new password must be different from your previous password.
       </h2>
       <form
@@ -54,9 +55,7 @@ export default function UpdatePassword() {
           handleUpdatePassword();
         }}
       >
-        <label htmlFor="password" className="inline-block text-gray-light mt-3">
-          New Password
-        </label>
+        <Label htmlFor="password">New Password</Label>
         <input
           required
           type="password"
@@ -71,12 +70,12 @@ export default function UpdatePassword() {
           }}
         />
         {!success && error && (
-          <small className="block text-red-500 font-medium mt-1 animate-fade">
+          <small className="block text-red-500 font-medium mt-1 animate-fade dark:text-red-400">
             {error}
           </small>
         )}
         {success && (
-          <small className="block text-green-600 font-medium mt-1 animate-fade">
+          <small className="block text-green-600 font-medium mt-1 animate-fade dark:text-green-500">
             Your password was updated successfully!
           </small>
         )}

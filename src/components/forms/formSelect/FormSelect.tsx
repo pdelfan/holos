@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from "react";
 import DropdownIcon from "@/assets/icons/dropdownIcon.svg";
+import Label from "@/components/inputs/label/Label";
 
 interface Props {
   label: string;
@@ -20,15 +21,17 @@ export default function FormSelect(props: Props) {
 
   return (
     <div className="flex flex-col">
-      <label className="flex text-md font-medium text-gray-900 dark:text-white">
-        {label}
-        <Image
-          src={DropdownIcon}
-          alt="Arrow down icon"
-          width={20}
-          height={20}
-        />
-      </label>
+      <Label>
+        <span className="flex">
+          {label}
+          <Image
+            src={DropdownIcon}
+            alt="Arrow down icon"
+            width={20}
+            height={20}
+          />
+        </span>
+      </Label>
       <span className="flex items-center">
         <select
           className="appearance-none px-4 py-2.5 bg-input rounded-xl mt-1 w-full flex-1 text-gray-600 focus:outline-gray-400 focus:bg-input-focus dark:bg-neutral-500 dark:focus:bg-neutral-400 dark:focus:outline-neutral-600 dark:placeholder-neutral-400 dark:text-neutral-100"
