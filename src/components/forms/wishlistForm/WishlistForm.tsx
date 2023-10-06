@@ -63,7 +63,7 @@ export default function WishlistForm(props: Props) {
           <Button type="button" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" bgColor="bg-zinc-600" textColor="text-gray-100">
+          <Button type="submit" bgColor="bg-zinc-600 dark:bg-zinc-800" textColor="text-gray-100">
             Add Item
           </Button>
         </div>

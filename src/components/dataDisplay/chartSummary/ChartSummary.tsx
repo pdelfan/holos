@@ -13,7 +13,7 @@ function ChartSummary(props: Props) {
   return (
     <>
       {data.length === 0 && (
-        <p>Add items to see a visual breakdown of your pack.</p>
+        <p className="dark:text-neutral-300">Add items to see a visual breakdown of your pack.</p>
       )}
       {data.length > 0 && (
         <div className="flex flex-col grow max-w-6xl">

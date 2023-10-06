@@ -118,7 +118,7 @@ export default function EditItemForm(props: Props) {
             </Button>
             <Button
               type="submit"
-              bgColor="bg-zinc-600"
+              bgColor="bg-zinc-600 dark:bg-zinc-800"
               textColor="text-gray-100"
             >
               Update Item

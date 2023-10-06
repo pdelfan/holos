@@ -236,7 +236,7 @@ export default function ItemForm(props: Props) {
           <Button
             type="submit"
             disabled={selectedItem ? false : true}
-            bgColor="bg-zinc-600"
+            bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
           >
             Add Item

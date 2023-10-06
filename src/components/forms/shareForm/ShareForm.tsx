@@ -62,10 +62,10 @@ export default function ShareForm(props: Props) {
   return (
     <div
       ref={ref}
-      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
+      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border-2 border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200 dark:bg-neutral-700 dark:border-neutral-600"
     >
       <span className="flex flex-wrap justify-between items-center gap-3">
-        <h3 className="font-medium">Sharing</h3>
+        <h3 className="font-medium dark:text-neutral-200">Sharing</h3>
         <div className="flex flex-wrap items-center gap-3">
           <span className="ml-3 text-sm font-medium text-gray-500 dark:text-gray-300">
             {isPublic !== null
@@ -81,14 +81,14 @@ export default function ShareForm(props: Props) {
       </span>
 
       {!isPublic && (
-        <p className="text-sm mt-3">
+        <p className="text-sm mt-3 dark:text-gray-300">
           This pack is currently private. Enable sharing to make it public.
         </p>
       )}
 
       {isPublic && (
         <div className="mt-5">
-          <p className="mt-2 text-gray-600 text-sm font-medium">
+          <p className="mt-2 text-gray-600 text-sm font-medium dark:text-gray-300">
             Share this link with people to view your pack.
           </p>
 
