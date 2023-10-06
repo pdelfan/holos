@@ -1,7 +1,7 @@
 import Image from "next/image";
 import WearableIcon from "@/assets/icons/clothingIcon.svg";
 import ConsumableIcon from "@/assets/icons/consumableIcon.svg";
-import GeneralIcon from "@/assets/icons/items.svg";
+import GeneralIcon from "@/assets/icons/itemsIcon.svg";
 
 interface Props {
   title: string;

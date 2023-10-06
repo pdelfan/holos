@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import AddItemRow from "../addItem/AddItemRow";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditGroupForm from "@/components/forms/editGroupForm/EditGroupForm";
 import Modal from "@/components/feedback/modal/Modal";
-import useGetGroupData from "@/hooks/useGetGroupData";
 import TableRow from "../tableRow/TableRow";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
@@ -31,6 +30,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { calculateChangedItems } from "@/utils/dndUtils";
+import Button from "@/components/actions/button/Button";
 
 interface Props {
   onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[] | null>>;
@@ -53,7 +53,6 @@ function Table(props: Props) {
     currency,
   } = props;
   const supabase = createClientComponentClient<Database>();
-  // const { groupData, setGroupData } = useGetGroupData({ groupID: group.id });
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showEditItemModal, setShowEditItemModal] = useState(false);
@@ -177,14 +176,17 @@ function Table(props: Props) {
   return (
     <section>
       <div className="flex justify-between mb-2">
-        <h3 className="font-medium text-lg">{group.title}</h3>
+        <h3 className="font-medium text-lg dark:text-neutral-200">{group.title}</h3>
         {!shareMode && (
           <div className="flex gap-2">
             <Dropdown
               button={
-                <span className="flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text hover:bg-button-hover">
+                <Button
+                  bgColor="bg-button dark:bg-neutral-700"
+                  textColor="text-button-text dark:text-neutral-200"
+                >
                   ···
-                </span>
+                </Button>
               }
             >
               <DropdownItem
@@ -206,7 +208,7 @@ function Table(props: Props) {
           </div>
         )}
       </div>
-      <div className="relative overflow-auto rounded-xl border-2 bg-white">
+      <div className="relative overflow-auto rounded-xl border-2 bg-white dark:border-neutral-600">
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -218,18 +220,22 @@ function Table(props: Props) {
             strategy={verticalListSortingStrategy}
           >
             {isExpanded && (
-              <table className="border-collapse table-auto w-full">
-                <thead className="bg-table-head">
+              <table className="border-collapse table-auto w-full bg-white dark:bg-neutral-800">
+                <thead className="bg-table-head dark:bg-neutral-900">
                   <tr className=" rounded-xl">
                     {!shareMode && <th className="p-2" />}
-                    <th className="p-2 text-sm">Image</th>
-                    <th className="p-2 text-sm">Item</th>
-                    <th className="p-2 text-sm">Description</th>
-                    <th className="p-2 text-sm">Link</th>
-                    <th className="p-2 text-sm">Type</th>
-                    <th className="p-2 text-sm">Price</th>
-                    <th className="p-2 text-sm">Weight</th>
-                    <th className="p-2 text-sm">QTY</th>
+                    <th className="p-2 text-sm dark:text-neutral-300">Image</th>
+                    <th className="p-2 text-sm dark:text-neutral-300">Item</th>
+                    <th className="p-2 text-sm dark:text-neutral-300">
+                      Description
+                    </th>
+                    <th className="p-2 text-sm dark:text-neutral-300">Link</th>
+                    <th className="p-2 text-sm dark:text-neutral-300">Type</th>
+                    <th className="p-2 text-sm dark:text-neutral-300">Price</th>
+                    <th className="p-2 text-sm dark:text-neutral-300">
+                      Weight
+                    </th>
+                    <th className="p-2 text-sm dark:text-neutral-300">QTY</th>
                     {!shareMode && <th className="p-2 text-sm"></th>}
                   </tr>
                 </thead>

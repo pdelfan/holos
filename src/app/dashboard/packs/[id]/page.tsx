@@ -141,10 +141,10 @@ export default function Pack(props: Props) {
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
-              <h1 className="text-3xl font-semibold text-header-1">
+              <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
                 {pack.title}
               </h1>
-              <h2 className="font-medium text-header-2 mt-1 max-w-2xl">
+              <h2 className="font-medium text-header-2 mt-1 max-w-2xl dark:text-neutral-400">
                 {pack.description}
               </h2>
             </div>
@@ -178,7 +178,7 @@ export default function Pack(props: Props) {
               ))}
           </section>
           <section className="mt-5">
-            <Button onClick={() => setShowAddGroupModal(!showAddGroupModal)}>
+            <Button bgColor="bg-button dark:bg-neutral-700" textColor="text-button-text dark:text-neutral-200" onClick={() => setShowAddGroupModal(!showAddGroupModal)}>
               Add Group
             </Button>
             {showAddGroupModal && (

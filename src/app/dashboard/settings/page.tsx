@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import FormSelect from "@/components/forms/formSelect/FormSelect";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import useGetUsername from "@/hooks/useGetUsername";
+import Input from "@/components/inputs/Input/Input";
 
 export default function Settings() {
   const supabase = createClientComponentClient<Database>();
@@ -107,23 +108,27 @@ export default function Settings() {
     <>
       {user && currency && (
         <>
-          <h1 className="text-3xl font-semibold text-header-1">Settings</h1>
+          <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+            Settings
+          </h1>
           <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
             <div className="flex flex-col items-center gap-2">
               <Avatar name={user?.email ?? null} size="large" />
               {name && (
-                <h2 className="font-medium text-lg text-gray-dark">{name}</h2>
+                <h2 className="font-medium text-lg text-gray-dark dark:text-neutral-100">
+                  {name}
+                </h2>
               )}
               {user && (
-                <h2 className="font-medium text-md text-gray-500">
+                <h2 className="font-medium text-md text-gray-500 dark:text-gray-400">
                   {user.email}
                 </h2>
               )}
             </div>
 
             <div className="max-w-xs">
-              <h2 className="font-medium">Public Name</h2>
-              <p className="mt-1 mb-4">
+              <h2 className="font-medium dark:text-neutral-100">Public Name</h2>
+              <p className="mt-1 mb-4 dark:text-neutral-400">
                 Your name will be displayed when you share a pack.
               </p>
               <form
@@ -135,28 +140,36 @@ export default function Settings() {
                 <label htmlFor="name" className="text-gray-light">
                   Name
                 </label>
-                <input
-                  autoFocus
+                <Input                  
                   required
                   id="name"
-                  type="text"
                   name="name"
-                  className="px-4 py-2.5 bg-input rounded-xl mt-1 mb-4 w-full text-gray-600 focus:outline-gray-400 focus:bg-input-focus"
+                  type="text"
                   placeholder={name ?? ""}
                   value={username ?? ""}
                   onChange={(e) => {
                     setUsername(e.target.value);
                   }}
                 />
-                <Button disabled={loading} aria-disabled={loading}>
-                  Update Name
-                </Button>
+                <span className="block mt-3">
+                  <Button
+                    bgColor="bg-button dark:bg-neutral-700"
+                    textColor="text-button-text dark:text-neutral-300"
+                    type="submit"
+                    disabled={loading}
+                    aria-disabled={loading}
+                  >
+                    Update Name
+                  </Button>
+                </span>
               </form>
             </div>
 
             <div className="max-w-xs">
-              <h2 className="font-medium">Preferred Currency</h2>
-              <p className="mt-1 mb-4">
+              <h2 className="font-medium dark:text-neutral-100">
+                Preferred Currency
+              </h2>
+              <p className="mt-1 mb-4 dark:text-neutral-400">
                 This will set the currency for items in your inventory.
               </p>
               <form
@@ -165,7 +178,7 @@ export default function Settings() {
                   onUpdatePreferredCurrency();
                 }}
               >
-                <span className="block mb-4">
+                <span className="block mb-3">
                   <FormSelect
                     label="Currency"
                     initialValue={currency}
@@ -185,13 +198,21 @@ export default function Settings() {
                     onChange={setPreferredCurrency}
                   />
                 </span>
-                <Button>Save Currency</Button>
+                <Button
+                  type="submit"
+                  bgColor="bg-button dark:bg-neutral-700"
+                  textColor="text-button-text dark:text-neutral-300"
+                >
+                  Save Currency
+                </Button>
               </form>
             </div>
 
             <div className="max-w-xs">
-              <h2 className="font-medium">Update Email</h2>
-              <p className="mt-1 mb-4">
+              <h2 className="font-medium dark:text-neutral-100">
+                Update Email
+              </h2>
+              <p className="mt-1 mb-4 dark:text-neutral-400">
                 After changing your email, we will send a confirmation link to{" "}
                 <u>both your current and new email</u>. You will need to confirm
                 both.
@@ -205,33 +226,43 @@ export default function Settings() {
                 <label htmlFor="email" className="text-gray-light">
                   Email
                 </label>
-                <input
-                  autoFocus
+                <Input                  
                   required
                   id="email"
                   type="email"
                   name="email"
-                  className="px-4 py-2.5 bg-input rounded-xl mt-1 mb-4 w-full text-gray-600 focus:outline-gray-400 focus:bg-input-focus"
                   placeholder="new@email.com"
                   value={newEmail}
                   onChange={(e) => {
                     setNewEmail(e.target.value);
                   }}
                 />
-                <Button disabled={loading} aria-disabled={loading}>
-                  Update Email
-                </Button>
+                <span className="block mt-3">
+                  <Button
+                    disabled={loading}
+                    aria-disabled={loading}
+                    type="submit"
+                    bgColor="bg-button dark:bg-neutral-700"
+                    textColor="text-button-text dark:text-neutral-300"
+                  >
+                    Update Email
+                  </Button>
+                </span>
               </form>
             </div>
 
-            <div className="max-w-xs">
-              <h2 className="font-medium">Reset Password</h2>
+            <div className="max-w-xs dark:text-neutral-100">
+              <h2 className="font-medium dark:text-neutral-400">
+                Reset Password
+              </h2>
               <p className="mt-1 mb-4">
                 You will receive a link to reset your password in your email.
               </p>
               <Button
                 disabled={loading || resetSuccess}
                 aria-disabled={loading || resetSuccess}
+                bgColor="bg-button dark:bg-neutral-700"
+                textColor="text-button-text dark:text-neutral-300"
                 onClick={onResetPassword}
               >
                 Reset Password
@@ -244,12 +275,16 @@ export default function Settings() {
             </div>
 
             <div className="max-w-xs">
-              <h2 className="font-medium">Delete Profile</h2>
-              <p className="mt-1 mb-4">
+              <h2 className="font-medium dark:text-neutral-100">
+                Delete Profile
+              </h2>
+              <p className="mt-1 mb-4 dark:text-neutral-400">
                 Delete your profile and all the data connected to it. This is
                 not reversible.
               </p>
               <Button
+                bgColor="bg-button dark:bg-neutral-700"
+                textColor="text-button-text dark:text-neutral-300"
                 onClick={() =>
                   setShowDeleteConfirmation(!showDeleteConfirmation)
                 }
@@ -258,11 +293,15 @@ export default function Settings() {
               </Button>
               {showDeleteConfirmation && (
                 <div className="mt-5">
-                  <small className="block text-gray-500 font-medium mt-1">
+                  <small className="block text-gray-500 font-medium mt-1 dark:text-neutral-400">
                     Are you sure you want to delete your profile?
                   </small>
                   <div className="flex flex-wrap gap-3 mt-2">
-                    <Button onClick={() => setShowDeleteConfirmation(false)}>
+                    <Button
+                      bgColor="bg-button dark:bg-neutral-700"
+                      textColor="text-button-text dark:text-neutral-300"
+                      onClick={() => setShowDeleteConfirmation(false)}
+                    >
                       Cancel
                     </Button>
                     <Button

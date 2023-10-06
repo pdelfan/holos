@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import Button from "@/components/actions/button/Button";
+import Input from "@/components/inputs/Input/Input";
 
 interface Props {
   onClose: () => void;
@@ -71,7 +72,7 @@ export default function EditItemForm(props: Props) {
   return (
     <div
       ref={ref}
-      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[70vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
+      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[70vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border-2 border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200 dark:bg-neutral-700 dark:border-neutral-600"
     >
       <form onSubmit={onUpdateItem} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap gap-3">
@@ -87,13 +88,12 @@ export default function EditItemForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Quantity
             </label>
-            <input
+            <Input
               required
               type="number"
               step="1"
               placeholder="0"
               aria-label="Item quantity"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={quantity || ""}
               onChange={(e) => setQuantity(parseInt(e.target.value))}
             />

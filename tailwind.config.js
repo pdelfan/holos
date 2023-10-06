@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+module.exports = {  
   plugins: [require("tailwindcss-animated")],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -34,7 +34,7 @@ module.exports = {
         },
         header: {
           1: "#333333",
-          2: "#888888"
+          2: "#888888",
         },
       },
     },

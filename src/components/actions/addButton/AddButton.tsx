@@ -9,7 +9,7 @@ function AddButton(props: Props) {
   const { onClick } = props;
   return (
     <button
-      className="bg-gray rounded-full p-3 mx-3 mb-3 hover:bg-gray-dark"
+      className="bg-gray rounded-full p-3 mx-3 mb-3 hover:bg-gray-dark dark:bg-neutral-500 dark:hover:bg-neutral-600"
       onClick={onClick}
     >
       <Image src={AddIcon} alt="Plus icon" width={22} height={22} />

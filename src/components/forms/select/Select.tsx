@@ -28,18 +28,23 @@ export default function Select(props: Props) {
 
   return (
     <div className="relative" ref={ref}>
-      <Button onClick={() => setIsOpen(!isOpen)} icon={selected.icon}>
+      <Button
+        onClick={() => setIsOpen(!isOpen)}
+        icon={selected.icon}
+        bgColor="bg-button dark:bg-neutral-700"
+        textColor="text-button-text dark:text-neutral-300"
+      >
         {selected.text}
       </Button>
       {isOpen && (
         <div
-          className={`absolute top-10 z-10  ${
+          className={`absolute top-10 z-10 ${
             direction === "right" ? "right-0" : "left-0"
-          } flex flex-col w-max bg-white mt-2 rounded-lg p-2 shadow-lg border-2 border-gray-100 animate-fade-down animate-duration-150`}
+          } flex flex-col w-max bg-white mt-2 rounded-lg p-2 shadow-lg border-2 border-gray-100 animate-fade-down animate-duration-150 dark:bg-neutral-700 dark:border-neutral-600`}
         >
           {options.map((option) => (
             <button
-              className="flex justify-start items-center gap-2 p-2 rounded-lg font-medium text-button-text hover:bg-gray-100"
+              className="flex justify-start items-center gap-2 p-2 rounded-lg font-medium text-button-text dark:text-neutral-300 hover:bg-gray-100 dark:hover:bg-neutral-800"
               key={option.text}
               onClick={() => {
                 handleSelect(option);

@@ -25,15 +25,15 @@ function WishlistCard(props: Props) {
       {isLoading && <Skeleton />}
       {data && (
         <article
-          className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300"
+          className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
           onClick={() => {
             window.open(data.url, "_blank");
           }}
         >
           {viewMode !== "Compact" && (
             <Image
-              className={`rounded-lg ml-auto mr-auto mb-6 ${
-                viewMode === "Large" ? "h-44 w-48" : "h-28 w-28"
+              className={`rounded-lg ml-auto mr-auto mb-6 bg-white ${
+                viewMode === "Large" ? "h-40 w-40" : "h-28 w-28"
               } object-contain`}
               loader={imageLoader}
               src={data.image ?? PlaceholderImage}
@@ -50,17 +50,19 @@ function WishlistCard(props: Props) {
                 width={20}
                 height={20}
               />
-              <h2 className="break-words overflow-clip text-sm text-gray-400 lead">
+              <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400">
                 {getShortAddress(data.url)}
               </h2>
             </div>
             {viewMode !== "Medium" && (
-              <h3 className="text-stone-600 font-medium leading-5">{data.title}</h3>
+              <h3 className="text-stone-600 font-medium leading-5 dark:text-neutral-300">
+                {data.title}
+              </h3>
             )}
           </div>
           <div className="flex gap-2 absolute right-5 top-5">
             <button
-              className="bg-button p-2 rounded-full hover:bg-button-hover"
+              className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
               onClick={(e) => {
                 e.stopPropagation();
                 onDelete();

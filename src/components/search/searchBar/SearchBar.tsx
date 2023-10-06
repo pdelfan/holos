@@ -19,10 +19,10 @@ function SearchBar(props: Props) {
 
   return (
     <div>
-      <span className="flex gap-2 px-4 py-2.5 bg-input rounded-xl">
+      <span className="flex gap-2 px-4 py-2.5 bg-input rounded-xl dark:bg-neutral-800">
         <Image src={SearchIcon} alt="Search icon" className="w-6" />
         <input
-          className="w-full rounded-md outline-none bg-transparent placeholder-input-placeholder text-input-text font-medium"
+          className="w-full rounded-md outline-none bg-transparent placeholder-input-placeholder text-input-text font-medium dark:text-neutral-300"
           type="text"
           name="text"
           placeholder={placeholder}

@@ -11,7 +11,7 @@ function AppBar() {
 
   return (
     <nav>
-      <ul className="fixed bottom-0 left-0 right-0 p-2 flex items-center justify-center bg-white border-t overflow-x-scroll sm:hidden">
+      <ul className="fixed bottom-0 left-0 right-0 p-2 flex items-center justify-center bg-white border-t overflow-x-scroll sm:hidden dark:bg-neutral-800 dark:border-neutral-700">
         {tabs.map((tab) => (
           <NavItem
             key={tab.id}

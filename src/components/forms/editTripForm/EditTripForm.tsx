@@ -6,6 +6,7 @@ import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import { updateTripData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
+import Input from "@/components/inputs/Input/Input";
 
 interface Props {
   tripItem: TripItem;
@@ -78,7 +79,7 @@ export default function EditTripForm(props: Props) {
   return (
     <div
       ref={ref}
-      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[70vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
+      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[70vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border-2 border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200 dark:bg-neutral-700 dark:border-neutral-600"
     >
       <form onSubmit={onUpdateTrip} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
@@ -86,14 +87,13 @@ export default function EditTripForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Title
             </label>
-            <input
+            <Input
               autoFocus
               required
               type="text"
               maxLength={60}
               placeholder="Title"
               aria-label="Title"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -102,11 +102,10 @@ export default function EditTripForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Date
             </label>
-            <input
+            <Input
               required
               type="date"
               aria-label="Date of the trip"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
@@ -119,12 +118,11 @@ export default function EditTripForm(props: Props) {
               <label className="text-md font-medium text-gray-900 dark:text-white">
                 Elevation
               </label>
-              <input
+              <Input
                 required
                 type="number"
                 step="0.01"
                 aria-label="Elevation of the trip"
-                className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
                 value={elevation}
                 onChange={(e) => setElevation(parseFloat(e.target.value))}
               />
@@ -144,12 +142,11 @@ export default function EditTripForm(props: Props) {
               <label className="text-md font-medium text-gray-900 dark:text-white">
                 Distance
               </label>
-              <input
+              <Input
                 required
                 type="number"
                 step="0.01"
-                aria-label="Elevation of the trip"
-                className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+                aria-label="Elevation of the trip"                
                 value={distance}
                 onChange={(e) => setDistance(parseFloat(e.target.value))}
               />
@@ -170,13 +167,12 @@ export default function EditTripForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Base Weight
             </label>
-            <input
+            <Input
               required
               type="number"
               step="0.01"
               placeholder="0"
-              aria-label="Base Weight"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              aria-label="Base Weight"              
               value={baseWeight}
               onChange={(e) => {
                 setBaseWeight(parseFloat(e.target.value));
@@ -187,13 +183,12 @@ export default function EditTripForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Total Weight
             </label>
-            <input
+            <Input
               required
               type="number"
               step="0.01"
               placeholder="0"
-              aria-label="Total Weight"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              aria-label="Total Weight"              
               value={totalWeight}
               onChange={(e) => {
                 setTotalWeight(parseFloat(e.target.value));

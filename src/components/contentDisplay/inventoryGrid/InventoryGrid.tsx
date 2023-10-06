@@ -70,7 +70,7 @@ export default function InventoryGrid() {
       )}
       {!isLoading && !isValidating && inventory && inventory.length === 0 && (
         <div className="flex h-full items-center">
-          <h3 className="text-gray text-lg text-center basis-full">
+          <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
             No items found
           </h3>
         </div>

@@ -31,7 +31,7 @@ export default function FormSelect(props: Props) {
       </label>
       <span className="flex items-center">
         <select
-          className="appearance-none border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 flex-1"
+          className="appearance-none px-4 py-2.5 bg-input rounded-xl mt-1 w-full flex-1 text-gray-600 focus:outline-gray-400 focus:bg-input-focus dark:bg-neutral-500 dark:focus:bg-neutral-400 dark:focus:outline-neutral-600 dark:placeholder-neutral-400 dark:text-neutral-100"
           value={selected}
           onChange={(e) => handelSelect(e.target.value)}
         >

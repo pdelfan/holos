@@ -19,14 +19,14 @@ export default function Home() {
           height={60}
           className="animate-fade-down animate-duration-700 animate-delay-100"
         />
-        <h1 className="text-header-1 text-4xl sm:text-5xl font-medium mt-3 animate-fade-down animate-duration-700 animate-delay-150">
+        <h1 className="text-header-1 text-4xl sm:text-5xl font-medium mt-3 animate-fade-down animate-duration-700 animate-delay-150 dark:text-white">
           Head into the wild, <em>prepared</em>
         </h1>
-        <h2 className="text-header-2 text-md sm:text-lg font-medium mt-3 max-w-full sm:max-w-lg animate-fade-down animate-duration-700 animate-delay-150">
+        <h2 className="text-header-2 text-md sm:text-lg font-medium mt-3 max-w-full sm:max-w-lg animate-fade-down animate-duration-700 animate-delay-150 dark:text-neutral-400">
           Plan your hikes with confidence. Organize your gear essentials,
           prioritize must-haves, and build the perfect pack for every trek.
         </h2>
-        <div className="flex gap-3 mt-6 animate-fade-up animate-duration-700 animate-delay-200">
+        <div className="flex gap-3 mt-6 animate-fade-up animate-duration-700 animate-delay-200 ">
           <Link
             href="/signUp"
             className="group bg-orange text-white text-md font-medium px-5 py-3 rounded-full hover:bg-orange-dark"
@@ -51,10 +51,10 @@ export default function Home() {
         />
       </section>
       <section className="flex flex-col flex-wrap gap-5 p-3 mt-10 max-w-7xl animate-delay-1000 animate-fade-up">
-        <div className="bg-[#F7F7F7] p-6 rounded-xl flex flex-wrap xl:flex-nowrap gap-3">
+        <div className="bg-[#F7F7F7] p-6 rounded-xl flex flex-wrap xl:flex-nowrap gap-3 dark:bg-neutral-800">
           <div className="w-full sm:max-w-sm">
-            <h3 className="font-semibold text-2xl text-header-1">Packs</h3>
-            <p className="font-medium  text-md text-header-2 mt-3">
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Packs</h3>
+            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Create your own pack and see how much you should be packing for
               your next trip.
             </p>
@@ -67,9 +67,9 @@ export default function Home() {
           />
         </div>
         <div className="flex flex-wrap gap-5">
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
-            <h3 className="font-semibold text-2xl text-header-1">Inventory</h3>
-            <p className="font-medium  text-md text-header-2 mt-3">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Inventory</h3>
+            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Collect all your items in one place so you’ll know what you can
               bring with you.
             </p>
@@ -80,9 +80,9 @@ export default function Home() {
               width={350}
             />
           </div>
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
-            <h3 className="font-semibold text-2xl text-header-1">Trips</h3>
-            <p className="font-medium  text-md text-header-2 mt-3">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Trips</h3>
+            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Look back on your journeys to find out how much you should be
               packing for your next trip.
             </p>
@@ -95,10 +95,10 @@ export default function Home() {
           </div>
         </div>
         <div className="flex flex-wrap gap-5">
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
             <div>
-              <h3 className="font-semibold text-2xl text-header-1">Wishlist</h3>
-              <p className="font-medium  text-md text-header-2 mt-3">
+              <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Wishlist</h3>
+              <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
                 Save your favourite items for later, when you want to go
                 shopping.
               </p>
@@ -110,13 +110,13 @@ export default function Home() {
               width={460}
             />
           </div>
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%]">
-            <h3 className="font-semibold text-2xl text-header-1">Privacy</h3>
-            <p className="font-medium  text-md text-header-2 mt-3">
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Privacy</h3>
+            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Holos is developed by hikers like you for free and will remain
               free. Your data is yours and can be exported at any time.
             </p>
-            <p className="font-medium  text-md text-header-2 mt-3">
+            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               If you enjoy using Holos, please consider supporting us. Your
               contribution will help us maintain and run the servers, work on
               new features, and improve your experience.{" "}

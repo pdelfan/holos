@@ -6,6 +6,8 @@ import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
 import { updateIventoryData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
+import Input from "@/components/inputs/Input/Input";
+import TextArea from "@/components/inputs/textarea/Textarea";
 
 interface Props {
   onClose: () => void;
@@ -59,7 +61,7 @@ export default function InventoryForm(props: Props) {
   return (
     <div
       ref={ref}
-      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[70vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200"
+      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[70vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border-2 border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200 dark:bg-neutral-700 dark:border-neutral-600"
     >
       <form onSubmit={onAddItem} className="gap-y-8 flex flex-col">
         <div className="flex flex-wrap justify-between gap-8">
@@ -67,14 +69,13 @@ export default function InventoryForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Title
             </label>
-            <input
+            <Input
               autoFocus
               required
               maxLength={80}
               type="text"
               placeholder="Title"
               aria-label="Title"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
@@ -83,11 +84,10 @@ export default function InventoryForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Description
             </label>
-            <textarea
+            <TextArea
               placeholder="Description"
               aria-label="Description"
-              maxLength={120}
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
+              maxLength={120}              
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -100,13 +100,12 @@ export default function InventoryForm(props: Props) {
               <label className="text-md font-medium text-gray-900 dark:text-white">
                 Price
               </label>
-              <input
+              <Input
                 required
                 type="number"
                 step="0.01"
                 placeholder="0"
                 aria-label="Price of the item"
-                className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
                 value={price}
                 onChange={(e) => setPrice(parseFloat(e.target.value))}
               />
@@ -122,13 +121,12 @@ export default function InventoryForm(props: Props) {
               <label className="text-md font-medium text-gray-900 dark:text-white">
                 Weight
               </label>
-              <input
+              <Input
                 required
                 type="number"
                 step="0.01"
                 placeholder="0"
                 aria-label="Weight of the item"
-                className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
                 value={weight}
                 onChange={(e) => setWeight(parseFloat(e.target.value))}
               />
@@ -148,11 +146,10 @@ export default function InventoryForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Item URL
             </label>
-            <input
+            <Input
               type="url"
               placeholder="https://"
               aria-label="Image URL"
-              className="w-full  border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={url ?? ""}
               onChange={(e) => {
                 setURL(e.target.value);
@@ -163,11 +160,10 @@ export default function InventoryForm(props: Props) {
             <label className="text-md font-medium text-gray-900 dark:text-white">
               Image URL
             </label>
-            <input
+            <Input
               type="url"
               placeholder="https://"
               aria-label="Image URL"
-              className="w-full border border-solid border-slate-200 rounded-xl px-4 py-2 mt-2 outline-none focus:bg-zinc-100 placeholder:text-sm"
               value={imageURL ?? ""}
               onChange={(e) => {
                 setImageURL(e.target.value);

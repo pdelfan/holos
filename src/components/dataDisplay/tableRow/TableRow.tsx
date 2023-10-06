@@ -45,14 +45,14 @@ function TableRow(props: Props) {
   return (
     <>
       <tr
-        className={`bg-table-row border-y-2 align-middle`}
+        className={`bg-table-row border-y-2 align-middle dark:bg-neutral-800 dark:border-neutral-700`}
         ref={setNodeRef}
         style={style}
       >
         {!shareMode && (
           <td className="text-center pl-1">
             <button
-              className="p-2 hover:bg-button-hover rounded-lg"
+              className="p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
               style={{ cursor: isDragging ? "grabbing" : "grab" }}
               {...listeners}
               {...attributes}
@@ -71,7 +71,7 @@ function TableRow(props: Props) {
         <td className="py-3">
           {image && (
             <Image
-              className="bg-white border p-1 rounded-lg mx-auto min-w-[3rem] w-[3rem] h-[3.2rem] object-contain"
+              className="border p-1 rounded-lg mx-auto min-w-[3rem] w-[3rem] h-[3.2rem] object-contain dark:border-neutral-400 bg-white"
               src={image}
               alt="Item image"
               height={40}
@@ -80,11 +80,15 @@ function TableRow(props: Props) {
           )}
         </td>
         <td className="text-center p-3">
-          {title && <span className="text-sm">{title}</span>}
+          {title && (
+            <span className="text-sm dark:text-neutral-300">{title}</span>
+          )}
         </td>
         <td className="text-center p-3">
           {description && (
-            <span className="inline-block text-sm max-w-xs">{description}</span>
+            <span className="inline-block text-sm max-w-xs dark:text-neutral-300">
+              {description}
+            </span>
           )}
         </td>
         <td className="text-center p-3">
@@ -100,15 +104,15 @@ function TableRow(props: Props) {
         </td>
         <td className="p-3">{type && <Tag title={type} />}</td>
         <td className="text-center p-3">
-          <span className="text-sm">${price}</span>
+          <span className="text-sm dark:text-neutral-300">${price}</span>
         </td>
         <td className="text-center p-3">
-          <span className="text-sm">
+          <span className="text-sm dark:text-neutral-300">
             {weight} {weight_unit}
           </span>
         </td>
         <td className="text-center p-3">
-          <span className="text-sm">{quantity}</span>
+          <span className="text-sm dark:text-neutral-300">{quantity}</span>
         </td>
         {!shareMode && (
           <td>

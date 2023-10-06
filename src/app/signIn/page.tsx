@@ -7,6 +7,7 @@ import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import { useRouter } from "next/navigation";
+import Input from "@/components/inputs/Input/Input";
 
 export default function SignIn() {
   const supabase = createClientComponentClient<Database>();
@@ -37,18 +38,18 @@ export default function SignIn() {
     }
   };
   return (
-    <section className="bg-white border rounded-2xl max-w-xs p-5">
+    <section className="bg-white border rounded-2xl max-w-xs p-5 dark:bg-neutral-700 dark:border-neutral-600">
       <Link
         href="/"
         className="flex h-10 w-10 items-center justify-center font-medium text-lg bg-button p-2 rounded-full hover:bg-button-hover"
       >
         {"<-"}
       </Link>
-      <h1 className="text-xl font-semibold text-gray-800 mb-1 mt-3">
+      <h1 className="text-xl font-semibold text-gray-800 mb-1 mt-3 dark:text-neutral-100">
         Welcome Back
       </h1>
-      <h2 className="text-sm font-medium text-gray-500">
-        Forgot password?
+      <h2 className="text-sm font-medium text-gray-500 dark:text-neutral-400">
+        Forgot password? {""}
         <Link href="/resetPassword">
           <u>Click here</u>
         </Link>
@@ -63,12 +64,11 @@ export default function SignIn() {
         <label htmlFor="email" className="text-gray-light">
           Email
         </label>
-        <input
+        <Input
           autoFocus
           required
           type="email"
           name="email"
-          className="px-4 py-2.5 bg-input rounded-xl mt-1 w-full text-gray-600 focus:outline-gray-400"
           placeholder="you@email.com"
           value={email}
           onChange={(e) => {
@@ -79,11 +79,10 @@ export default function SignIn() {
         <label htmlFor="password" className="inline-block text-gray-light mt-3">
           Password
         </label>
-        <input
+        <Input
           required
           type="password"
           name="password"
-          className="px-4 py-2.5 bg-input rounded-xl mt-1 w-full text-gray-600 focus:outline-gray-400"
           placeholder="password"
           value={password}
           onChange={(e) => {
@@ -92,7 +91,7 @@ export default function SignIn() {
           }}
         />
         {error && (
-          <small className="block text-red-500 font-medium mt-1 animate-fade">
+          <small className="block text-red-500 font-medium mt-1 animate-fade dark:text-red-400">
             {error}
           </small>
         )}

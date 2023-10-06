@@ -30,7 +30,7 @@ function ChartSummary(props: Props) {
                     width: `${barWidth}%`,
                   }}
                 >
-                  <div className="absolute max-w-xs text-center mt-8 opacity-0 group-hover:opacity-100 bg-gray-800 text-white whitespace-nowrap font-medium text-sm border border-gray-900 rounded-lg p-2 shadow-lg right-0">
+                  <div className="absolute max-w-xs text-center mt-8 opacity-0 group-hover:opacity-100 bg-gray-800 text-white whitespace-nowrap font-medium text-sm border border-gray-900 rounded-lg p-2 shadow-lg right-0 dark:bg-neutral-700">
                     <span>{`${datum.weight} ${datum.weight_unit}`}</span>
                   </div>
                 </div>
@@ -46,7 +46,7 @@ function ChartSummary(props: Props) {
                   className="h-3 w-3"
                   style={{ backgroundColor: CHART_COLOURS[index] }}
                 />
-                <span className="text-sm">{datum.group}</span>
+                <span className="text-sm dark:text-neutral-200">{datum.group}</span>
               </div>
             ))}
           </div>

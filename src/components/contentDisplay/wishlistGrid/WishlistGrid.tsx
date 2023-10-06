@@ -49,7 +49,7 @@ export default function WishlistGrid() {
       )}
       {!isLoading && !isValidating && wishlist && wishlist.length === 0 && (
         <div className="flex h-full items-center">
-          <h3 className="text-gray text-lg text-center basis-full">
+          <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
             No items found
           </h3>
         </div>
