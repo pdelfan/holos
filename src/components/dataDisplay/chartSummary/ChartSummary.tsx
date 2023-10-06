@@ -13,7 +13,9 @@ function ChartSummary(props: Props) {
   return (
     <>
       {data.length === 0 && (
-        <p className="dark:text-neutral-300">Add items to see a visual breakdown of your pack.</p>
+        <p className="dark:text-neutral-300">
+          Add items to see a visual breakdown of your pack.
+        </p>
       )}
       {data.length > 0 && (
         <div className="flex flex-col grow max-w-6xl">
@@ -24,7 +26,7 @@ function ChartSummary(props: Props) {
               return (
                 <div
                   key={datum.group_id}
-                  className="h-6 rounded-sm group hover:ring-2 hover:ring-gray relative"
+                  className="h-6 rounded-sm group hover:ring-2 hover:ring-gray relative dark:hover:ring-gray-500"
                   style={{
                     backgroundColor: CHART_COLOURS[index],
                     width: `${barWidth}%`,
@@ -46,7 +48,9 @@ function ChartSummary(props: Props) {
                   className="h-3 w-3"
                   style={{ backgroundColor: CHART_COLOURS[index] }}
                 />
-                <span className="text-sm dark:text-neutral-200">{datum.group}</span>
+                <span className="text-sm dark:text-neutral-200">
+                  {datum.group}
+                </span>
               </div>
             ))}
           </div>
