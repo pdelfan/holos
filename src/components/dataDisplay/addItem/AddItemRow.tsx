@@ -18,8 +18,8 @@ export default function AddItemRow(props: Props) {
         <td className="text-center p-3">
           {!viewMode && (
             <Button
-              bgColor="bg-button dark:bg-neutral-400"
-              textColor="text-button-text dark:text-neutral-600"
+              bgColor="bg-button dark:bg-neutral-500"
+              textColor="text-button-text dark:text-neutral-300"
               onClick={() => onAdd(true)}
             >
               Add
