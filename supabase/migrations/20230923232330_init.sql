@@ -276,3 +276,16 @@ using ( true );
 create policy "Everyone can select pack item" on public.pack_item
 for select
 using ( true );
+
+-- fuzzy text search for inventory
+
+CREATE OR REPLACE FUNCTION public.search_inventory(search_term text)
+RETURNS SETOF inventory
+AS $$
+BEGIN
+    RETURN QUERY
+        SELECT *
+        FROM inventory i 
+        WHERE search_term % ANY(STRING_TO_ARRAY(i.title, ' '));
+END;
+$$ LANGUAGE plpgsql; 
