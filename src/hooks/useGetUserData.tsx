@@ -2,27 +2,32 @@ import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 
-export default function useGetUsername() {
+interface UserData {
+  name: string | null;
+  avatar_url: string | null;
+}
+
+export default function useGetUserData() {
   const supabase = createClientComponentClient<Database>();
-  const [name, setName] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData>();
 
   useEffect(() => {
-    const getUsername = async () => {
+    const getUserData = async () => {
       const { data } = await supabase.auth.getSession();
       if (!data.session?.user.email) return;
 
       const { data: user } = await supabase
         .from("user")
-        .select("name")
+        .select("name, avatar_url")
         .eq("id", data.session.user.id);
 
       if (user) {
-        setName(user[0].name);
+        setUserData(user[0]);
       }
     };
 
-    getUsername();
+    getUserData();
   }, [supabase]);
 
-  return { name, setName };
+  return { userData, setUserData };
 }

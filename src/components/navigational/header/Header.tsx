@@ -11,11 +11,13 @@ import { Database } from "@/lib/database.types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import useGetUser from "@/hooks/useGetUser";
+import useGetUserData from "@/hooks/useGetUserData";
 
 function Header() {
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   const { user } = useGetUser();
+  const { userData } = useGetUserData();
 
   const onSignOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -34,7 +36,7 @@ function Header() {
         <Image src={Logo} alt="HOLOS logo" width={40} />
       </Link>
       <Navbar />
-      <Dropdown button={<Avatar name={user?.email ?? null} />}>
+      <Dropdown button={<Avatar name={user?.email ?? null} image={userData?.avatar_url} />}>
         <DropdownItem onClick={navigateToSettings}>Settings</DropdownItem>
         <DropdownItem onClick={onSignOut}>Sign Out</DropdownItem>
       </Dropdown>

@@ -4,7 +4,7 @@ import { formatUsername } from "@/utils/textUtils";
 
 interface Props {
   name: string | null;
-  image?: string;
+  image?: string | null;
   size?: "small" | "large";
 }
 

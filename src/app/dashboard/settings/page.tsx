@@ -10,7 +10,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import FormSelect from "@/components/forms/formSelect/FormSelect";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
-import useGetUsername from "@/hooks/useGetUsername";
+import useGetUserData from "@/hooks/useGetUserData";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
 
@@ -24,8 +24,9 @@ export default function Settings() {
   const [preferredCurrency, setPreferredCurrency] = useState("$");
   const { user } = useGetUser();
   const router = useRouter();
-  const { name, setName } = useGetUsername();
-  const [username, setUsername] = useState(name);
+  const { userData, setUserData } = useGetUserData();
+  const [username, setUsername] = useState(userData?.name);
+  const [avatar, setAvatar] = useState<string | null>(null);
 
   const onUpdateEmail = async () => {
     if (newEmail === user?.email) {
@@ -101,8 +102,34 @@ export default function Settings() {
       return;
     }
 
-    setName(data[0].name);
+    setUserData((prev) => ({
+      ...prev!,
+      name: data?.[0].name,
+      avatar_url: prev?.avatar_url ?? null,
+    }));
+
     toast.success("Updated name.");
+  };
+
+  const onUpdateAvatar = async () => {
+    if (!user || !avatar) return;
+    const { error } = await supabase
+      .from("user")
+      .update({ avatar_url: avatar })
+      .eq("id", user.id);
+
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+
+    setUserData((prev) => ({
+      ...prev!,
+      name: prev?.name ?? null,
+      avatar_url: avatar,
+    }));
+
+    toast.success("Updated avatar.");
   };
 
   return (
@@ -114,10 +141,10 @@ export default function Settings() {
           </h1>
           <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
             <div className="flex flex-col items-center gap-2">
-              <Avatar name={user?.email ?? null} size="large" />
-              {name && (
+              <Avatar name={user?.email ?? null} image={userData?.avatar_url} size="large" />
+              {userData?.name && (
                 <h2 className="font-medium text-lg text-gray-dark dark:text-neutral-100">
-                  {name}
+                  {userData.name}
                 </h2>
               )}
               {user && (
@@ -144,7 +171,7 @@ export default function Settings() {
                   id="name"
                   name="name"
                   type="text"
-                  placeholder={name ?? ""}
+                  placeholder={userData?.name ?? ""}
                   value={username ?? ""}
                   onChange={(e) => {
                     setUsername(e.target.value);
@@ -159,6 +186,43 @@ export default function Settings() {
                     aria-disabled={loading}
                   >
                     Update Name
+                  </Button>
+                </span>
+              </form>
+            </div>
+
+            <div className="max-w-xs">
+              <h2 className="font-medium dark:text-neutral-100">Avatar</h2>
+              <p className="mt-1 mb-4 dark:text-neutral-400">
+                Enter the address of the image you have chosen for you avatar.
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  onUpdateAvatar();
+                }}
+              >
+                <Label htmlFor="profile_image">Image URL</Label>
+                <Input
+                  required
+                  id="avatar"
+                  name="avatar"
+                  type="url"
+                  placeholder={avatar ?? "https://"}
+                  value={avatar ?? ""}
+                  onChange={(e) => {
+                    setAvatar(e.target.value);
+                  }}
+                />
+                <span className="block mt-3">
+                  <Button
+                    bgColor="bg-button dark:bg-neutral-700"
+                    textColor="text-button-text dark:text-neutral-300"
+                    type="submit"
+                    disabled={loading}
+                    aria-disabled={loading}
+                  >
+                    Update Avatar
                   </Button>
                 </span>
               </form>
