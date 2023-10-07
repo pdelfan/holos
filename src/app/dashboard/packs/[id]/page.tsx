@@ -17,7 +17,6 @@ import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
 import ViewIcon from "@/assets/icons/viewIcon.svg";
-import ViewOffIcon from "@/assets/icons/viewOffIcon.svg";
 import EditIcon from "@/assets/icons/editIcon.svg";
 import {
   DndContext,
@@ -239,7 +238,7 @@ export default function Pack(props: Props) {
               <Button
                 bgColor="bg-button dark:bg-neutral-700"
                 textColor="text-button-text dark:text-neutral-300"
-                icon={viewMode ?  EditIcon : ViewIcon}
+                icon={viewMode ? EditIcon : ViewIcon}
                 onClick={() => setViewMode(!viewMode)}
               >
                 {viewMode ? "Edit" : "View"}
@@ -291,13 +290,16 @@ export default function Pack(props: Props) {
           </section>
 
           <section className="mt-5">
-            <Button
-              bgColor="bg-button dark:bg-neutral-700"
-              textColor="text-button-text dark:text-neutral-200"
-              onClick={() => setShowAddGroupModal(!showAddGroupModal)}
-            >
-              Add Group
-            </Button>
+            {!viewMode && (
+              <Button
+                bgColor="bg-button dark:bg-neutral-700"
+                textColor="text-button-text dark:text-neutral-200"
+                onClick={() => setShowAddGroupModal(!showAddGroupModal)}
+              >
+                Add Group
+              </Button>
+            )}
+
             {showAddGroupModal && (
               <Modal>
                 <GroupForm
