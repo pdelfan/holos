@@ -38,7 +38,9 @@ function Header() {
       <Navbar />
       <Dropdown
         button={
-          <Avatar name={user?.email ?? null} image={userData?.avatar_url} />
+          <span className="hover:brightness-95">
+            <Avatar name={user?.email ?? null} image={userData?.avatar_url} />
+          </span>
         }
       >
         <DropdownItem onClick={navigateToSettings}>Settings</DropdownItem>
