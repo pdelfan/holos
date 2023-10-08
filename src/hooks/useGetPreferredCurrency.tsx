@@ -19,7 +19,7 @@ export default function useGetPreferredCurrency() {
       if (currency) {
         setCurrency(currency[0].preferred_currency);
       } else {
-        setCurrency("$");
+        setCurrency("USD");
       }
     }
   );

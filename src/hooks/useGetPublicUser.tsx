@@ -13,7 +13,7 @@ export default function useGetPublicUser(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const [user, setUser] = useState<string | null>(null);
   const [avatar, setAvatar] = useState<string | null>(null);
-  const [preferredCurrency, setPreferredCurrency] = useState<string>("$");
+  const [preferredCurrency, setPreferredCurrency] = useState<string>("USD");
 
   useEffect(() => {
     const getUser = async () => {
@@ -39,7 +39,7 @@ export default function useGetPublicUser(props: Props) {
         setAvatar(user[0].user.avatar_url);
       }
 
-      setPreferredCurrency(user[0]?.user?.preferred_currency ?? "$");
+      setPreferredCurrency(user[0]?.user?.preferred_currency ?? "USD");
     };
 
     getUser();

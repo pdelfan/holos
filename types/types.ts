@@ -144,7 +144,13 @@ interface GroupData {
   total_weight: number;
   weight_unit: string;
   total_quantity: number;
-  total_price: number;  
+  total_price: number;
   pack_item: PackItem[];
   position: number;
+}
+
+interface Currency {
+  currency: string;
+  abbreviation: string;
+  symbol: string;
 }

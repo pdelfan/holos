@@ -47,6 +47,13 @@ export const CHART_COLOURS = [
   "#d7658b",
   "#466964",
   "#3c4e4b",
+  "#2f4f4f",
+  "#556b2f",
+  "#8b4513",
+  "#a52a2a",
+  "#228b22",
+  "#808000",
+  "#778899",
 ];
 
 export const generateRandomColour = () => {

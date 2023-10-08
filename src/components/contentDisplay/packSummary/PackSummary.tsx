@@ -3,6 +3,7 @@ import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
 import CostIcon from "@/assets/icons/costIcon.svg";
 import ItemsIcon from "@/assets/icons/itemsIcon.svg";
 import Image from "next/image";
+import { getCurrencySymbol } from "@/utils/currencyUtils";
 
 interface Props {
   data: PackSummary;
@@ -22,7 +23,9 @@ function PackSummary(props: Props) {
     <div>
       <ul className="flex flex-wrap gap-6 justify-between">
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">Base weight</h4>
+          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">
+            Base weight
+          </h4>
           <span className="flex flex-wrap gap-1">
             <Image
               src={BaseWeightIcon}
@@ -37,7 +40,9 @@ function PackSummary(props: Props) {
           </span>
         </li>
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">Total weight</h4>
+          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">
+            Total weight
+          </h4>
           <span className="flex flex-wrap gap-1">
             <Image
               src={TotalWeightIcon}
@@ -52,17 +57,21 @@ function PackSummary(props: Props) {
           </span>
         </li>
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">Total cost</h4>
+          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">
+            Total cost
+          </h4>
           <span className="flex flex-wrap gap-1">
             <Image src={CostIcon} alt="Cost icon" className="w-[20px]" />
             <h5 className="text-gray font-medium dark:text-neutral-200">
-              {currency}
+              {getCurrencySymbol(currency)} 
               {total_cost.toFixed(2)}
             </h5>
           </span>
         </li>
         <li className="flex flex-col items-center">
-          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">Total items</h4>
+          <h4 className="text-gray-light font-medium text-sm dark:text-neutral-400">
+            Total items
+          </h4>
           <span className="flex flex-wrap gap-1">
             <Image
               src={ItemsIcon}
@@ -71,7 +80,9 @@ function PackSummary(props: Props) {
               height={20}
               style={{ width: "auto" }}
             />
-            <h5 className="text-gray font-medium dark:text-neutral-200">{total_items}</h5>
+            <h5 className="text-gray font-medium dark:text-neutral-200">
+              {total_items}
+            </h5>
           </span>
         </li>
       </ul>

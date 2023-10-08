@@ -28,7 +28,7 @@ export const Default: Story = {
   //     total_cost: 900,
   //     total_items: 10,
   //   },
-  //   currency: "$",
+  //   currency: "USD",
   //   onEdit: () => {},
   //   onDelete: () => {},
   // },

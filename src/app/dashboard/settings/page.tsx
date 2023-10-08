@@ -13,6 +13,7 @@ import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import useGetUserData from "@/hooks/useGetUserData";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
+import { CURRENCIES } from "@/utils/currencyUtils";
 
 type Action =
   | "emailUpdate"
@@ -32,7 +33,7 @@ export default function Settings() {
   const [resetSuccess, setResetSuccess] = useState(false);
   const { currency } = useGetPreferredCurrency();
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [preferredCurrency, setPreferredCurrency] = useState("$");
+  const [preferredCurrency, setPreferredCurrency] = useState("USD");
   const { user } = useGetUser();
   const router = useRouter();
   const { userData, setUserData } = useGetUserData();
@@ -290,19 +291,7 @@ export default function Settings() {
                   <FormSelect
                     label="Currency"
                     initialValue={currency}
-                    options={[
-                      "$",
-                      "€",
-                      "¥",
-                      "£",
-                      "CHF",
-                      "₽",
-                      "₩",
-                      "₹",
-                      "R",
-                      "฿",
-                      "₺",
-                    ]}
+                    options={Object.keys(CURRENCIES)}
                     onChange={setPreferredCurrency}
                   />
                 </span>
