@@ -1,12 +1,12 @@
 "use client";
 
+import React, { useState } from "react";
 import Avatar from "@/components/dataDisplay/avatar/Avatar";
 import Button from "@/components/actions/button/Button";
 import useGetUser from "@/hooks/useGetUser";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import toast from "react-hot-toast";
 import FormSelect from "@/components/forms/formSelect/FormSelect";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
@@ -14,9 +14,20 @@ import useGetUserData from "@/hooks/useGetUserData";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
 
+type Action =
+  | "emailUpdate"
+  | "passwordReset"
+  | "currencyUpdate"
+  | "nameUpdate"
+  | "avatarUpdate";
+
+interface LoadingState {
+  [key: string]: boolean;
+}
+
 export default function Settings() {
   const supabase = createClientComponentClient<Database>();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<LoadingState>({});
   const [newEmail, setNewEmail] = useState("");
   const [resetSuccess, setResetSuccess] = useState(false);
   const { currency } = useGetPreferredCurrency();
@@ -28,16 +39,24 @@ export default function Settings() {
   const [username, setUsername] = useState(userData?.name);
   const [avatar, setAvatar] = useState<string | null>(null);
 
+  const startLoading = (action: Action) => {
+    setLoading((prev) => ({ ...prev, [action]: true }));
+  };
+
+  const stopLoading = (action: Action) => {
+    setLoading((prev) => ({ ...prev, [action]: false }));
+  };
+
   const onUpdateEmail = async () => {
     if (newEmail === user?.email) {
       toast.error("New email cannot be the same as your current email.");
       return;
     }
 
-    setLoading(true);
+    startLoading("emailUpdate");
 
     try {
-      const { data: user, error } = await supabase.auth.updateUser({
+      const { data: updatedUser, error } = await supabase.auth.updateUser({
         email: newEmail,
       });
 
@@ -45,18 +64,18 @@ export default function Settings() {
         toast.error("Couldn't update email.");
       }
 
-      if (user) {
+      if (updatedUser) {
         toast.success("Updated email. Please confirm your new email.");
       }
     } finally {
-      setLoading(false);
+      stopLoading("emailUpdate");
     }
   };
 
   const onResetPassword = async () => {
     if (!user?.email) return;
 
-    setLoading(true);
+    startLoading("passwordReset");
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(user?.email, {
@@ -70,14 +89,14 @@ export default function Settings() {
 
       setResetSuccess(true);
     } finally {
-      setLoading(false);
+      stopLoading("passwordReset");
     }
   };
 
   const onUpdatePreferredCurrency = async () => {
     if (!user) return;
 
-    setLoading(true);
+    startLoading("currencyUpdate");
 
     try {
       const { error } = await supabase
@@ -92,14 +111,14 @@ export default function Settings() {
 
       toast.success("Updated preferred currency.");
     } finally {
-      setLoading(false);
+      stopLoading("currencyUpdate");
     }
   };
 
   const onUpdateName = async () => {
     if (!user) return;
 
-    setLoading(true);
+    startLoading("nameUpdate");
 
     try {
       const { data, error } = await supabase
@@ -121,29 +140,35 @@ export default function Settings() {
 
       toast.success("Updated name.");
     } finally {
-      setLoading(false);
+      stopLoading("nameUpdate");
     }
   };
 
   const onUpdateAvatar = async () => {
     if (!user || !avatar) return;
-    const { error } = await supabase
-      .from("user")
-      .update({ avatar_url: avatar })
-      .eq("id", user.id);
+    startLoading("avatarUpdate");
 
-    if (error) {
-      toast.error(error.message);
-      return;
+    try {
+      const { error } = await supabase
+        .from("user")
+        .update({ avatar_url: avatar })
+        .eq("id", user.id);
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      setUserData((prev) => ({
+        ...prev!,
+        name: prev?.name ?? null,
+        avatar_url: avatar,
+      }));
+
+      toast.success("Updated avatar.");
+    } finally {
+      stopLoading("avatarUpdate");
     }
-
-    setUserData((prev) => ({
-      ...prev!,
-      name: prev?.name ?? null,
-      avatar_url: avatar,
-    }));
-
-    toast.success("Updated avatar.");
   };
 
   return (
@@ -200,10 +225,10 @@ export default function Settings() {
                     bgColor="bg-button dark:bg-neutral-700"
                     textColor="text-button-text dark:text-neutral-300"
                     type="submit"
-                    disabled={loading}
-                    aria-disabled={loading}
+                    disabled={loading["nameUpdate"]}
+                    aria-disabled={loading["nameUpdate"]}
                   >
-                    Update Name
+                    {loading["nameUpdate"] ? "Updating name..." : "Update Name"}
                   </Button>
                 </span>
               </form>
@@ -237,10 +262,12 @@ export default function Settings() {
                     bgColor="bg-button dark:bg-neutral-700"
                     textColor="text-button-text dark:text-neutral-300"
                     type="submit"
-                    disabled={loading}
-                    aria-disabled={loading}
+                    disabled={loading["avatarUpdate"]}
+                    aria-disabled={loading["avatarUpdate"]}
                   >
-                    Update Avatar
+                    {loading["avatarUpdate"]
+                      ? "Updating avatar..."
+                      : "Update Avatar"}
                   </Button>
                 </span>
               </form>
@@ -283,10 +310,12 @@ export default function Settings() {
                   type="submit"
                   bgColor="bg-button dark:bg-neutral-700"
                   textColor="text-button-text dark:text-neutral-300"
-                  disabled={loading}
-                  aria-disabled={loading}
+                  disabled={loading["currencyUpdate"]}
+                  aria-disabled={loading["currencyUpdate"]}
                 >
-                  Save Currency
+                  {loading["currencyUpdate"]
+                    ? "Updating currency..."
+                    : "Update Currency"}
                 </Button>
               </form>
             </div>
@@ -320,13 +349,15 @@ export default function Settings() {
                 />
                 <span className="block mt-3">
                   <Button
-                    disabled={loading}
-                    aria-disabled={loading}
+                    disabled={loading["emailUpdate"]}
+                    aria-disabled={loading["emailUpdate"]}
                     type="submit"
                     bgColor="bg-button dark:bg-neutral-700"
                     textColor="text-button-text dark:text-neutral-300"
                   >
-                    Update Email
+                    {loading["emailUpdate"]
+                      ? "Updating email..."
+                      : "Update Email"}
                   </Button>
                 </span>
               </form>
@@ -340,13 +371,15 @@ export default function Settings() {
                 You will receive a link to reset your password in your email.
               </p>
               <Button
-                disabled={loading || resetSuccess}
-                aria-disabled={loading || resetSuccess}
+                disabled={loading["passwordReset"] || resetSuccess}
+                aria-disabled={loading["passwordReset"] || resetSuccess}
                 bgColor="bg-button dark:bg-neutral-700"
                 textColor="text-button-text dark:text-neutral-300"
                 onClick={onResetPassword}
               >
-                Reset Password
+                {loading["passwordReset"]
+                  ? "Sending email..."
+                  : "Reset Password"}
               </Button>
               {resetSuccess && (
                 <small className="block text-green-600 font-medium mt-1 animate-fade">

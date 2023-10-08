@@ -15,8 +15,8 @@ export async function middleware(req: NextRequest) {
   // retrieve authorization code from the query parameter
   const nextQueryParam = new URL(req.url).searchParams.get("code");
 
-  // If the user is not in the update password flow and is trying to access /updatePassword, redirect them to /
-  if (!nextQueryParam && req.nextUrl.pathname === "/updatePassword") {
+  // If user is not in the update password flow and is trying to access /updatePassword, redirect them to /
+  if (!nextQueryParam && req.nextUrl.pathname.includes("/updatePassword")) {
     return NextResponse.redirect(new URL("/", req.url)); // Redirect to the home page
   }
 
@@ -26,7 +26,11 @@ export async function middleware(req: NextRequest) {
   }
 
   // If user is not signed in and the current path is not /signUp or /signIn, redirect to /
-  if (!user && !req.nextUrl.pathname.includes("sign" || "dashboard")) {
+  if (
+    !user &&
+    !nextQueryParam &&
+    !req.nextUrl.pathname.includes("sign" || "dashboard")
+  ) {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
