@@ -76,39 +76,53 @@ export default function Settings() {
 
   const onUpdatePreferredCurrency = async () => {
     if (!user) return;
-    const { error } = await supabase
-      .from("user")
-      .update({ preferred_currency: preferredCurrency })
-      .eq("id", user.id);
 
-    if (error) {
-      toast.error(error.message);
-      return;
+    setLoading(true);
+
+    try {
+      const { error } = await supabase
+        .from("user")
+        .update({ preferred_currency: preferredCurrency })
+        .eq("id", user.id);
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      toast.success("Updated preferred currency.");
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Updated preferred currency.");
   };
 
   const onUpdateName = async () => {
     if (!user) return;
-    const { data, error } = await supabase
-      .from("user")
-      .update({ name: username })
-      .eq("id", user.id)
-      .select("name");
 
-    if (error) {
-      toast.error(error.message);
-      return;
+    setLoading(true);
+
+    try {
+      const { data, error } = await supabase
+        .from("user")
+        .update({ name: username })
+        .eq("id", user.id)
+        .select("name");
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      setUserData((prev) => ({
+        ...prev!,
+        name: data?.[0].name,
+        avatar_url: prev?.avatar_url ?? null,
+      }));
+
+      toast.success("Updated name.");
+    } finally {
+      setLoading(false);
     }
-
-    setUserData((prev) => ({
-      ...prev!,
-      name: data?.[0].name,
-      avatar_url: prev?.avatar_url ?? null,
-    }));
-
-    toast.success("Updated name.");
   };
 
   const onUpdateAvatar = async () => {
@@ -141,7 +155,11 @@ export default function Settings() {
           </h1>
           <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
             <div className="flex flex-col items-center gap-2">
-              <Avatar name={user?.email ?? null} image={userData?.avatar_url} size="large" />
+              <Avatar
+                name={user?.email ?? null}
+                image={userData?.avatar_url}
+                size="large"
+              />
               {userData?.name && (
                 <h2 className="font-medium text-lg text-gray-dark dark:text-neutral-100">
                   {userData.name}
@@ -202,7 +220,7 @@ export default function Settings() {
                   onUpdateAvatar();
                 }}
               >
-                <Label htmlFor="profile_image">Image URL</Label>
+                <Label htmlFor="avatar">Image URL</Label>
                 <Input
                   required
                   id="avatar"
@@ -265,6 +283,8 @@ export default function Settings() {
                   type="submit"
                   bgColor="bg-button dark:bg-neutral-700"
                   textColor="text-button-text dark:text-neutral-300"
+                  disabled={loading}
+                  aria-disabled={loading}
                 >
                   Save Currency
                 </Button>
