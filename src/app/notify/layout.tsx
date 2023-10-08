@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen flex items-center justify-center bg-stone-100 animate-fade animate-duration-200">
+    <main className="min-h-[100svh] flex items-center justify-center bg-stone-100 animate-fade animate-duration-200">
       {children}
     </main>
   );

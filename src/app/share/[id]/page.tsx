@@ -148,7 +148,7 @@ export default function SharedPack(props: Props) {
       {isLoadingPackData && <PackSkeleton />}
 
       {!isLoadingPackData && pack && !pack.is_public && (
-        <section className="flex flex-col items-center justify-center p-3 h-[85vh]">
+        <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
           <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1 dark:text-neutral-100">
             The pack you are looking for could not be found.
           </h1>
