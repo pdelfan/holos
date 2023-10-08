@@ -79,9 +79,9 @@ interface WishlistItem {
   created_at: string;
   id: number;
   url: string;
-  title: string;
-  image_url: string;
-  logo_url: string;
+  title: string | null;
+  image_url: string | null;
+  logo_url: string | null;
   user_id: string;
 }
 
