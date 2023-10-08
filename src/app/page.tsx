@@ -53,10 +53,15 @@ export default function Home() {
       <section className="flex flex-col flex-wrap gap-5 p-3 mt-10 max-w-7xl animate-delay-1000 animate-fade-up">
         <div className="bg-[#F7F7F7] p-6 rounded-xl flex flex-wrap xl:flex-nowrap gap-3 dark:bg-neutral-800">
           <div className="w-full sm:max-w-sm">
-            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Packs</h3>
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
+              Packs
+            </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Create your own pack and see how much you should be packing for
-              your next trip.
+              your next trip. 
+            </p>
+            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
+              Share your packs with your others to help them prepare for their next trip.
             </p>
           </div>
           <Image
@@ -68,7 +73,9 @@ export default function Home() {
         </div>
         <div className="flex flex-wrap gap-5">
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
-            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Inventory</h3>
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
+              Inventory
+            </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Collect all your items in one place so you’ll know what you can
               bring with you.
@@ -81,7 +88,9 @@ export default function Home() {
             />
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
-            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Trips</h3>
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
+              Trips
+            </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Look back on your journeys to find out how much you should be
               packing for your next trip.
@@ -97,7 +106,9 @@ export default function Home() {
         <div className="flex flex-wrap gap-5">
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
             <div>
-              <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Wishlist</h3>
+              <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
+                Wishlist
+              </h3>
               <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
                 Save your favourite items for later, when you want to go
                 shopping.
@@ -111,7 +122,9 @@ export default function Home() {
             />
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
-            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">Privacy</h3>
+            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
+              Privacy
+            </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Holos is developed by hikers like you for free and will remain
               free. Your data is yours and can be exported at any time.

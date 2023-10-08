@@ -31,7 +31,7 @@ export default function Settings() {
   const [loading, setLoading] = useState<LoadingState>({});
   const [newEmail, setNewEmail] = useState("");
   const [resetSuccess, setResetSuccess] = useState(false);
-  const { currency } = useGetPreferredCurrency();
+  const { currency } = useGetPreferredCurrency({ showAbbreviation: true });
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [preferredCurrency, setPreferredCurrency] = useState("USD");
   const { user } = useGetUser();

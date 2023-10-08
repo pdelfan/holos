@@ -33,7 +33,6 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { calculateChangedItems } from "@/utils/dndUtils";
-import Button from "@/components/actions/button/Button";
 import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
@@ -61,7 +60,7 @@ function Table(props: Props) {
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(true);  
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -296,8 +295,9 @@ function Table(props: Props) {
                         .map((item) => (
                           <TableRow
                             key={item.id}
-                            item={item}
+                            item={item}                            
                             viewMode={viewMode}
+                            currency={currency}
                             onSelect={() => setSelectedItem(item)}
                             onEdit={setShowEditItemModal}
                           />

@@ -53,7 +53,7 @@ function InventoryCard(props: Props) {
           {price !== 0 && (
             <span className="flex items-center gap-1 text-sm font-medium text-stone-500 border-stone-300 dark:text-stone-400">
               <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
-              {currency}
+              {currency} 
               {price}
             </span>
           )}

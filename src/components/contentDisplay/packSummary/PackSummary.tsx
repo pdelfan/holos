@@ -3,7 +3,6 @@ import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
 import CostIcon from "@/assets/icons/costIcon.svg";
 import ItemsIcon from "@/assets/icons/itemsIcon.svg";
 import Image from "next/image";
-import { getCurrencySymbol } from "@/utils/currencyUtils";
 
 interface Props {
   data: PackSummary;
@@ -63,7 +62,7 @@ function PackSummary(props: Props) {
           <span className="flex flex-wrap gap-1">
             <Image src={CostIcon} alt="Cost icon" className="w-[20px]" />
             <h5 className="text-gray font-medium dark:text-neutral-200">
-              {getCurrencySymbol(currency)} 
+              {currency} 
               {total_cost.toFixed(2)}
             </h5>
           </span>

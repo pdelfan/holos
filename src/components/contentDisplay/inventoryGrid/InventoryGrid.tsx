@@ -26,7 +26,7 @@ export default function InventoryGrid() {
   const sortFilter = useAtomValue(sortFilterAtom);
   const [currentIventoryItem, setCurrentInventoryItem] =
     useState<InventoryItem | null>(null);
-  const { currency } = useGetPreferredCurrency();
+  const { currency } = useGetPreferredCurrency({});  
   const { inventory, setInventory, error, isLoading, isValidating } =
     useGetInventory();
 

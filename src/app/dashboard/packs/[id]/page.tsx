@@ -44,7 +44,7 @@ export default function Pack(props: Props) {
   const { pack } = useGetPack({
     packID: params.id,
   });
-  const { currency } = useGetPreferredCurrency();
+  const { currency } = useGetPreferredCurrency({});
   const [viewMode, setViewMode] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);

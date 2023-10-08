@@ -14,6 +14,7 @@ import useGetSharedPackData from "@/hooks/useGetSharedPackData";
 import useGetPublicUser from "@/hooks/useGetPublicUser";
 import Avatar from "@/components/dataDisplay/avatar/Avatar";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
+import { getCurrencySymbol } from "@/utils/currencyUtils";
 
 interface Props {
   params: { id: string };
@@ -31,7 +32,10 @@ export default function SharedPack(props: Props) {
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
-  const { user, avatar, preferredCurrency } = useGetPublicUser({ shareID: params.id });
+  const { user, avatar, preferredCurrency } = useGetPublicUser({
+    shareID: params.id,
+  });
+  const currencySymbol = getCurrencySymbol(preferredCurrency);
 
   const onDeleteGroup = async (id: number) => {
     if (!packData) return;
@@ -98,7 +102,7 @@ export default function SharedPack(props: Props) {
   // get total base weight, total weight, total price, total quantity
   const total: PackSummary = {
     weight_unit: pack?.weight_unit ?? "kg",
-    currency: preferredCurrency,
+    currency: currencySymbol,
     base_weight: packStats.reduce(
       (acc, group: PackStats) =>
         acc +
@@ -169,7 +173,7 @@ export default function SharedPack(props: Props) {
               </h2>
             </div>
             {user && (
-              <div className="flex flex-wrap gap-3 items-center">
+              <div className="flex flex-wrap gap-2 items-center">
                 <div className="flex flex-col flex-wrap">
                   <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">
                     Created by
@@ -198,7 +202,7 @@ export default function SharedPack(props: Props) {
                   onUpdateGroup={setPackData}
                   onDeleteGroup={() => onDeleteGroup(group.id)}
                   setPackStats={setPackStats}
-                  currency={preferredCurrency}
+                  currency={currencySymbol}
                   packWeightUnit={pack.weight_unit}
                 />
               ))}

@@ -10,12 +10,13 @@ import { CSS } from "@dnd-kit/utilities";
 interface Props {
   item: PackItem;
   viewMode?: boolean;
+  currency: string;
   onEdit: (showEditItemModal: SetStateAction<boolean>) => void;
   onSelect: (item: SetStateAction<[] | PackItem>) => void;
 }
 
 function TableRow(props: Props) {
-  const { item, viewMode, onEdit, onSelect } = props;
+  const { item, viewMode, currency, onEdit, onSelect } = props;
   const { id, quantity, type } = item;
   const {
     title,
@@ -105,7 +106,10 @@ function TableRow(props: Props) {
         </td>
         <td className="p-3">{type && <Tag title={type} />}</td>
         <td className="text-center p-3">
-          <span className="text-sm dark:text-neutral-300">${price}</span>
+          <span className="text-sm dark:text-neutral-300">
+            {currency}
+            {price}
+          </span>
         </td>
         <td className="text-center p-3">
           <span className="text-sm dark:text-neutral-300">
