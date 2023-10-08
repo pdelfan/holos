@@ -12,13 +12,14 @@ export default function useGetPublicUser(props: Props) {
   const { shareID } = props;
   const supabase = createClientComponentClient<Database>();
   const [user, setUser] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(null);
   const [preferredCurrency, setPreferredCurrency] = useState<string>("$");
 
   useEffect(() => {
     const getUser = async () => {
       const { data: user, error } = await supabase
         .from("pack")
-        .select("user (email, name, preferred_currency)")
+        .select("user (email, name, avatar_url, preferred_currency)")
         .eq("share_id", shareID);
 
       if (error) {
@@ -34,11 +35,15 @@ export default function useGetPublicUser(props: Props) {
         setUser(extractUsername(user[0].user.email));
       }
 
+      if (user && user[0]?.user?.avatar_url) {
+        setAvatar(user[0].user.avatar_url);
+      }
+
       setPreferredCurrency(user[0]?.user?.preferred_currency ?? "$");
     };
 
     getUser();
   }, [shareID, supabase]);
 
-  return { user, preferredCurrency };
+  return { user, avatar, preferredCurrency };
 }

@@ -31,7 +31,7 @@ export default function SharedPack(props: Props) {
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
-  const { user, preferredCurrency } = useGetPublicUser({ shareID: params.id });
+  const { user, avatar, preferredCurrency } = useGetPublicUser({ shareID: params.id });
 
   const onDeleteGroup = async (id: number) => {
     if (!packData) return;
@@ -178,7 +178,7 @@ export default function SharedPack(props: Props) {
                     {user}
                   </span>
                 </div>
-                <Avatar size="small" name={user} />
+                <Avatar size="small" name={user} image={avatar} />
               </div>
             )}
           </section>
