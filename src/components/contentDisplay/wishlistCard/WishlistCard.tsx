@@ -7,9 +7,9 @@ import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 
 interface Props {
   url: string;
-  title?: string;
-  logo_url?: string;
-  image_url?: string;
+  title: string | null;
+  logo_url: string | null;
+  image_url: string | null;
   viewMode: string;
   onDelete: () => void;
 }
