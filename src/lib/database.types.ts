@@ -314,18 +314,27 @@ export interface Database {
         Row: {
           created_at: string
           id: number
+          image_url: string | null
+          logo_url: string | null
+          title: string | null
           url: string
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
+          image_url?: string | null
+          logo_url?: string | null
+          title?: string | null
           url: string
           user_id: string
         }
         Update: {
           created_at?: string
           id?: number
+          image_url?: string | null
+          logo_url?: string | null
+          title?: string | null
           url?: string
           user_id?: string
         }
@@ -343,51 +352,23 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      gtrgm_compress: {
+      search_inventory: {
         Args: {
-          "": unknown
+          search_term: string
         }
-        Returns: unknown
-      }
-      gtrgm_decompress: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      gtrgm_in: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      gtrgm_options: {
-        Args: {
-          "": unknown
-        }
-        Returns: undefined
-      }
-      gtrgm_out: {
-        Args: {
-          "": unknown
-        }
-        Returns: unknown
-      }
-      set_limit: {
-        Args: {
-          "": number
-        }
-        Returns: number
-      }
-      show_limit: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      show_trgm: {
-        Args: {
-          "": string
-        }
-        Returns: unknown
+        Returns: {
+          created_at: string
+          description: string | null
+          id: number
+          image_url: string | null
+          price: number
+          season: string
+          title: string
+          url: string | null
+          user_id: string
+          weight: number
+          weight_unit: string
+        }[]
       }
     }
     Enums: {

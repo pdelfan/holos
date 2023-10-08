@@ -7,6 +7,7 @@ import { updateWishlistData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
+import { getSiteMetadata } from "@/utils/linkUtils";
 
 interface Props {
   onClose: () => void;
@@ -15,6 +16,7 @@ interface Props {
 export default function WishlistForm(props: Props) {
   const { onClose } = props;
   const [url, setUrl] = useState("");
+  const [loading, setLoading] = useState(false);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
 
@@ -26,18 +28,31 @@ export default function WishlistForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase
-      .from("wishlist")
-      .insert([{ url: url, user_id: user.session.user.id }]);
+    setLoading(true);
 
-    if (error) {
-      toast.error("Couldn't add item to wishlist.");
-      return;
+    try {
+      const metadata: Metadata = await getSiteMetadata(url);
+      const { error } = await supabase.from("wishlist").insert([
+        {
+          url: url,
+          title: metadata.title ?? null,
+          logo_url: metadata.logo ?? null,
+          image_url: metadata.image ?? null,
+          user_id: user.session.user.id,
+        },
+      ]);
+
+      if (error) {
+        toast.error("Couldn't add item to wishlist.");
+        return;
+      }
+
+      toast.success("Added item to wishlist.");
+      onClose();
+      updateWishlistData();
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Added item to wishlist.");
-    onClose();
-    updateWishlistData();
   };
 
   return (
@@ -66,8 +81,10 @@ export default function WishlistForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
+            aria-disabled={loading}
+            disabled={loading}
           >
-            Add Item
+            {loading ? "Adding item..." : "Add Item"}
           </Button>
         </div>
       </form>

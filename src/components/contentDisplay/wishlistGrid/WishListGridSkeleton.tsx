@@ -1,4 +1,4 @@
-import Skeleton from "@/components/contentDisplay/wishlistCard/Skeleton";
+import Skeleton from "@/components/contentDisplay/wishlistCard/WishlistCardSkeleton";
 
 export default function WishlistGridSkeleton() {  
   return (

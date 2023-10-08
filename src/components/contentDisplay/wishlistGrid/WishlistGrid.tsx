@@ -7,7 +7,11 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import WishlistGridSkeleton from "./WishListGridSkeleton";
 import { useAtomValue } from "jotai";
-import { sortFilterAtom, viewFilterAtom, wishlistSearchAtom } from "@/store/store";
+import {
+  sortFilterAtom,
+  viewFilterAtom,
+  wishlistSearchAtom,
+} from "@/store/store";
 import { sortWishlist } from "@/utils/filterUtils";
 
 export default function WishlistGrid() {
@@ -30,7 +34,7 @@ export default function WishlistGrid() {
 
   return (
     <>
-      {isLoading && <WishlistGridSkeleton />}      
+      {isLoading && <WishlistGridSkeleton />}
       {!isLoading && !isValidating && (
         <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
           {!isLoading &&
@@ -38,9 +42,12 @@ export default function WishlistGrid() {
             sortWishlist(wishlist, sortFilter.text)
               .filter((item) => item.url.includes(wishlistSearch))
               .map((item) => (
-                <WishlistCard                  
+                <WishlistCard
                   key={item.id}
                   url={item.url}
+                  title={item.title}
+                  logo_url={item.logo_url}
+                  image_url={item.image_url}
                   viewMode={viewFilter.text}
                   onDelete={() => onDeleteBookmark(item.id)}
                 />
