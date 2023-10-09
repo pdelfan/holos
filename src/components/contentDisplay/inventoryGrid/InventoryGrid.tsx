@@ -27,8 +27,7 @@ export default function InventoryGrid() {
   const [currentIventoryItem, setCurrentInventoryItem] =
     useState<InventoryItem | null>(null);
   const { currency } = useGetPreferredCurrency({});
-  const { inventory, setInventory, error, isLoading, isValidating } =
-    useInventory();
+  const { inventory, setInventory, error, isLoading } = useInventory();
 
   const onDeleteInventoryItem = async (id: number) => {
     const { error } = await supabase.from("inventory").delete().eq("id", id);
@@ -43,32 +42,35 @@ export default function InventoryGrid() {
   return (
     <>
       {isLoading && <InventoryGridSkeleton />}
-      {!isLoading && !isValidating && (
-        <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
-          {!isLoading &&
-            inventory &&
-            sortInventory(inventory, sortFilter.text)
-              .filter((item) =>
-                item.title.toLowerCase().includes(inventorySearch.toLowerCase())
-              )
-              .filter((item) => {
-                if (seasonFilter.text === "Show All") return true;
-                return item.season === seasonFilter.text;
-              })
-              .map((item) => (
-                <InventoryCard
-                  key={item.id}
-                  data={item}
-                  currency={currency}
-                  onEdit={() => {
-                    setCurrentInventoryItem(item);
-                    setShowModal(true);
-                  }}
-                />
-              ))}
-        </section>
+      {!isLoading && (
+        <>
+          <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10">
+            {inventory &&
+              sortInventory(inventory, sortFilter.text)
+                .filter((item) =>
+                  item.title
+                    .toLowerCase()
+                    .includes(inventorySearch.toLowerCase())
+                )
+                .filter((item) => {
+                  if (seasonFilter.text === "Show All") return true;
+                  return item.season === seasonFilter.text;
+                })
+                .map((item) => (
+                  <InventoryCard
+                    key={item.id}
+                    data={item}
+                    currency={currency}
+                    onEdit={() => {
+                      setCurrentInventoryItem(item);
+                      setShowModal(true);
+                    }}
+                  />
+                ))}
+          </section>
+        </>
       )}
-      {!isLoading && !error && !isValidating && inventory && inventory.length === 0 && (
+      {!isLoading && !error && inventory && inventory.length === 0 && (
         <div className="flex h-full items-center">
           <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
             No items found

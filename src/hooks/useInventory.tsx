@@ -10,7 +10,7 @@ export default function useInventory() {
   const [inventory, setInventory] = useAtom(inventoryAtom);
   const [error, setError] = useState(false);
 
-  const { isLoading, isValidating } = useSWR("getInventory", async () => {
+  const { isLoading } = useSWR("getInventory", async () => {
     setError(false);
 
     const { data: user } = await supabase.auth.getSession();
@@ -27,5 +27,5 @@ export default function useInventory() {
     setInventory(inventory ?? []);
   });
 
-  return { inventory, setInventory, error, isLoading, isValidating };
+  return { inventory, setInventory, error, isLoading };
 }
