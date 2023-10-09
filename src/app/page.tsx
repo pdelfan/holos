@@ -5,20 +5,17 @@ import PackImage from "@/assets/images/packExample.png";
 import TripsImage from "@/assets/images/tripsExample.png";
 import InventoryImage from "@/assets/images/inventoryExample.png";
 import WishlistImage from "@/assets/images/wishlistExample.png";
-import PrivacyIcon from "@/assets/icons/lockIcon.svg";
+import DonateIcon from "@/assets/icons/donateIcon.svg";
 import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center">
       <section className="relative flex flex-col place-items-center justify-center text-center p-3 mt-5 animate-fade animate-duration-200">
-        <Image
-          src={Logo}
-          alt="Holos logo"
-          width={60}
-          height={60}
-          className="animate-fade-down animate-duration-700 animate-delay-100"
-        />
+        <span className="flex items-center gap-2 animate-fade-down animate-duration-700 animate-delay-100">
+          <Image src={Logo} alt="Holos logo" width={60} height={60} />
+          <span className="font-medium text-lg text-header-1">Holos</span>
+        </span>
         <h1 className="text-header-1 text-4xl sm:text-5xl font-medium mt-3 animate-fade-down animate-duration-700 animate-delay-150 dark:text-white">
           Head into the wild, <em>prepared</em>
         </h1>
@@ -90,19 +87,21 @@ export default function Home() {
               width={660}
             />
           </div>
-          <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
-            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
-              Trips
-            </h3>
-            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Look back on your journeys to find out how much you should be
-              packing for your next trip.
-            </p>
+          <div className="bg-[#F7F7F7] p-6 rounded-xl flex  flex-col flex-1 min-w-[49%] dark:bg-neutral-800">
+            <div>
+              <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
+                Trips
+              </h3>
+              <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
+                Look back on your journeys to find out how much you should be
+                packing for your next trip.
+              </p>
+            </div>
             <Image
               className="mt-6 mx-auto"
               src={TripsImage}
-              alt="Two trip cards showing title of the trip"
-              width={350}
+              alt="Three trip cards showing title of the trip"
+              width={400}
             />
           </div>
         </div>
@@ -126,21 +125,20 @@ export default function Home() {
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
             <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
-              Privacy
+              Support
             </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Holos is developed by hikers like you for free and will remain
-              free. Your data is yours and can be exported at any time.
+              Holos is developed by hikers like you for free. If you enjoy using
+              Holos, please consider supporting us.
             </p>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              If you enjoy using Holos, please consider supporting us. Your
-              contribution will help us maintain and run the servers, work on
-              new features, and improve your experience.{" "}
+              Your contribution will help maintain and run the servers, work on
+              new features, and improve your experience.
             </p>
             <Image
               className="animate-fade-up mt-12 mx-auto"
-              src={PrivacyIcon}
-              alt="Illustration of hikers on a path that is made up of the letters H-O-L-O-S"
+              src={DonateIcon}
+              alt="Donate icon showing a hand receiving a heart."
               width={120}
             />
           </div>
