@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
 import Toggle from "@/components/inputs/toggle/Toggle";
 import Button from "@/components/actions/button/Button";
-import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
+import { useClipboard } from "use-clipboard-copy";
 
 interface Props {
   pack: Pack;
@@ -18,7 +18,7 @@ export default function ShareForm(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const [isPublic, setIsPublic] = useState<boolean | null>(null); // Use null as an initial value
   const [isLoading, setIsLoading] = useState(false);
-  const [value, copy] = useCopyToClipboard();
+  const clipboard = useClipboard({ copiedTimeout: 1500 });
 
   useEffect(() => {
     // fetch the latest is_public value from the server when the modal is opened
@@ -96,15 +96,10 @@ export default function ShareForm(props: Props) {
             <input
               defaultValue={`${process.env.NEXT_PUBLIC_SITE_URL}/share/${pack.share_id}`}
               className="px-4 py-2 bg-input rounded-xl w-full text-gray-600 focus:outline-gray-400 focus:bg-input-focus"
+              ref={clipboard.target}
             />
-            <Button
-              onClick={() =>
-                copy(
-                  `${process.env.NEXT_PUBLIC_SITE_URL}/share/${pack.share_id}`
-                )
-              }
-            >
-              Copy
+            <Button onClick={clipboard.copy}>
+              {clipboard.copied ? "Copied" : "Copy"}
             </Button>
           </div>
         </div>

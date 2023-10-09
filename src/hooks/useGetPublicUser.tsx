@@ -13,6 +13,7 @@ export default function useGetPublicUser(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const [user, setUser] = useState<string | null>(null);
   const [avatar, setAvatar] = useState<string | null>(null);
+  const [error, setError] = useState(false);
   const [preferredCurrency, setPreferredCurrency] = useState<string>("USD");
 
   useEffect(() => {
@@ -22,8 +23,8 @@ export default function useGetPublicUser(props: Props) {
         .select("user (email, name, avatar_url, preferred_currency)")
         .eq("share_id", shareID);
 
-      if (error) {
-        toast.error("Couldn't get user.");
+      if (error) {        
+        setError(true);
         return;
       }
 
@@ -40,10 +41,11 @@ export default function useGetPublicUser(props: Props) {
       }
 
       setPreferredCurrency(user[0]?.user?.preferred_currency ?? "USD");
+      setError(false);
     };
 
     getUser();
   }, [shareID, supabase]);
 
-  return { user, avatar, preferredCurrency };
+  return { user, error, avatar, preferredCurrency };
 }
