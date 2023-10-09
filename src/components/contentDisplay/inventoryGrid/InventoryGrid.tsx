@@ -11,7 +11,7 @@ import {
   sortFilterAtom,
 } from "@/store/store";
 import { sortInventory } from "@/utils/filterUtils";
-import useGetInventory from "@/hooks/useGetInventory";
+import useInventory from "@/hooks/useInventory";
 import InventoryCard from "@/components/contentDisplay/inventoryCard/InventoryCard";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { useState } from "react";
@@ -26,9 +26,9 @@ export default function InventoryGrid() {
   const sortFilter = useAtomValue(sortFilterAtom);
   const [currentIventoryItem, setCurrentInventoryItem] =
     useState<InventoryItem | null>(null);
-  const { currency } = useGetPreferredCurrency({});  
+  const { currency } = useGetPreferredCurrency({});
   const { inventory, setInventory, error, isLoading, isValidating } =
-    useGetInventory();
+    useInventory();
 
   const onDeleteInventoryItem = async (id: number) => {
     const { error } = await supabase.from("inventory").delete().eq("id", id);
@@ -68,13 +68,21 @@ export default function InventoryGrid() {
               ))}
         </section>
       )}
-      {!isLoading && !isValidating && inventory && inventory.length === 0 && (
+      {!isLoading && !error && !isValidating && inventory && inventory.length === 0 && (
         <div className="flex h-full items-center">
           <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
             No items found
           </h3>
         </div>
       )}
+      {!isLoading && error && (
+        <div className="flex h-full items-center">
+          <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
+            Could not load inventory
+          </h3>
+        </div>
+      )}
+
       {showModal && currentIventoryItem && (
         <Modal>
           <EditInventoryForm

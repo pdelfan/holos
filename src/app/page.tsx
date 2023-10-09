@@ -14,7 +14,9 @@ export default function Home() {
       <section className="relative flex flex-col place-items-center justify-center text-center p-3 mt-5 animate-fade animate-duration-200">
         <span className="flex items-center gap-2 animate-fade-down animate-duration-700 animate-delay-100">
           <Image src={Logo} alt="Holos logo" width={60} height={60} />
-          <span className="font-medium text-lg text-header-1">Holos</span>
+          <span className="font-medium text-lg text-header-1 dark:text-neutral-100">
+            Holos
+          </span>
         </span>
         <h1 className="text-header-1 text-4xl sm:text-5xl font-medium mt-3 animate-fade-down animate-duration-700 animate-delay-150 dark:text-white">
           Head into the wild, <em>prepared</em>
@@ -125,11 +127,11 @@ export default function Home() {
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
             <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
-              Support
+              Support Us
             </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Holos is developed by hikers like you for free. If you enjoy using
-              Holos, please consider supporting us.
+              Holos is developed for free. If you enjoy using Holos, please
+              consider supporting us.
             </p>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Your contribution will help maintain and run the servers, work on
@@ -144,6 +146,18 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <footer className="w-full p-3 animate-delay-1000 animate-fade-up">
+        <ul className="flex justify-between">
+          <li className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
+            {new Date().getFullYear()} · Pouria Delfan
+          </li>
+          <span className="flex gap-2">
+            <li className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
+              Contact
+            </li>
+          </span>
+        </ul>
+      </footer>
     </main>
   );
 }

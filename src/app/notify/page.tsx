@@ -17,7 +17,7 @@ export default function Notify({
   }
 
   return (
-    <main className="flex flex-col items-center justify-center p-3 h-screen">
+    <main className="flex flex-col items-center justify-center p-3 h-[100svh]">
       <Image src={Logo} alt="Holos logo" width={60} height={60} />
       <h1 className="text-header-1 text-center text-2xl sm:text-3xl font-medium mt-3">
         {message === "deleted"
