@@ -9,7 +9,7 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "gentypes": "npx supabase gen types typescript --local > ./src/lib/database.types.ts",
+    "genTypes": "npx supabase gen types typescript --local > ./src/lib/database.types.ts",
     "startDB": "npx supabase start",
     "stopDB": "npx supabase stop --backup",
     "resetDB": "npx supabase db reset --debug"
