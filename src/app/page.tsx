@@ -58,10 +58,11 @@ export default function Home() {
             </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Create your own pack and see how much you should be packing for
-              your next trip. 
+              your next trip.
             </p>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Share your packs with your others to help them prepare for their next trip.
+              Share your packs with your others to help them prepare for their
+              next trip.
             </p>
           </div>
           <Image
@@ -73,18 +74,20 @@ export default function Home() {
         </div>
         <div className="flex flex-wrap gap-5">
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
-            <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
-              Inventory
-            </h3>
-            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Collect all your items in one place so you’ll know what you can
-              bring with you.
-            </p>
+            <div>
+              <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
+                Inventory
+              </h3>
+              <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
+                Collect all your items in one place so you’ll know what you can
+                bring with you.
+              </p>
+            </div>
             <Image
-              className="mt-6 mx-auto"
+              className="border-2 border-gray-200 rounded-xl mt-6 mx-auto"
               src={InventoryImage}
               alt="Two inventory cards showing jackets along with their price and weight"
-              width={350}
+              width={660}
             />
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
@@ -115,10 +118,10 @@ export default function Home() {
               </p>
             </div>
             <Image
-              className="border-2 border-gray-200 rounded-xl mt-6 mx-auto"
+              className="mt-6 mx-auto"
               src={WishlistImage}
-              alt="Wishlist page showing several items with their title and website link."
-              width={460}
+              alt="Four wishlist items with their title and website link."
+              width={660}
             />
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
