@@ -34,6 +34,7 @@ export default function useFetchDB<T extends Record<string, any>>(
   useEffect(() => {
     const getData = async () => {
       setError(false);
+      setIsLoading(true)
 
       const from = pageIndex * itemPerPage;
       const to = from + itemPerPage - 1; // adjust the range to exclude the extra item
