@@ -127,7 +127,7 @@ export default function EditInventoryForm(props: Props) {
                 onChange={(e) => setPrice(parseFloat(e.target.value))}
               />
             </div>
-            <div className="1">
+            <div>
               <FormSelect
                 initialValue={season}
                 label="Season"

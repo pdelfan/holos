@@ -181,9 +181,9 @@ export default function ItemForm(props: Props) {
 
         {selectedItem && (
           <div>
-            <p className="text-md font-medium text-gray-900 dark:text-white">
+            <Label>
               Selected Item
-            </p>
+            </Label>
             <div className="flex flex-col justify-center flex-wrap items-center gap-2 mt-1">
               {selectedItem.image_url && (
                 <Image

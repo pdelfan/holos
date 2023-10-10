@@ -107,7 +107,7 @@ export default function InventoryForm(props: Props) {
                 onChange={(e) => setPrice(parseFloat(e.target.value))}
               />
             </div>
-            <div className="1">
+            <div>
               <FormSelect
                 label="Season"
                 options={["3-Season", "Winter"]}

@@ -28,7 +28,7 @@ function WishlistCard(props: Props) {
           window.open(url, "_blank");
         }}
       >
-        {viewMode !== "Compact" && (
+        {viewMode !== "Compact" && image_url && (
           <Image
             className={`rounded-lg ml-auto mr-auto mb-6 bg-white ${
               viewMode === "Large" ? "h-40 w-40" : "h-28 w-28"
@@ -42,12 +42,14 @@ function WishlistCard(props: Props) {
         )}
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 flex-wrap items-center">
-            <Image
-              src={logo_url ?? PlaceholderIcon}
-              alt={"Website Favicon"}
-              width={20}
-              height={20}
-            />
+            {logo_url && (
+              <Image
+                src={logo_url}
+                alt={"Website Favicon"}
+                width={20}
+                height={20}
+              />
+            )}
             <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400">
               {getShortAddress(url)}
             </h2>
