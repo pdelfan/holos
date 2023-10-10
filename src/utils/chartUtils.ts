@@ -1,12 +1,8 @@
-import { Database } from "@/lib/database.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import toast from "react-hot-toast";
-
 export const CHART_COLOURS = [
   "#FF047D",
   "#1E9500",
   "#8F00FF",
-  "#6F0000",
+  "#D30000",
   "#808080",
   "#009987",
   "#BBB400",
