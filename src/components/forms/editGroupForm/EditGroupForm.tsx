@@ -19,6 +19,7 @@ export default function EditGroupForm(props: Props) {
   const [title, setTitle] = useState(group.title);
   const [weightUnit, setWeightUnit] = useState(group.weight_unit);
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const supabase = createClientComponentClient<Database>();
 
   const onUpdateGroup = async (e: FormEvent) => {
@@ -32,29 +33,35 @@ export default function EditGroupForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase
-      .from("group")
-      .update({
-        title: title,
-        weight_unit: weightUnit,
-      })
-      .match({ id: group.id, user_id: user.session.user.id });
-    if (error) {
-      toast.error("Couldn't update group.");
-      return;
-    }
+    setLoading(true);
 
-    toast.success("Updated group.");
-    onClose();
-    onUpdate((prev) => {
-      if (!prev) return prev;
-      return prev.map((item) => {
-        if (item.id === group.id) {
-          return { ...item, title: title, weight_unit: weightUnit };
-        }
-        return item;
+    try {
+      const { error } = await supabase
+        .from("group")
+        .update({
+          title: title,
+          weight_unit: weightUnit,
+        })
+        .match({ id: group.id, user_id: user.session.user.id });
+      if (error) {
+        toast.error("Couldn't update group.");
+        return;
+      }
+
+      toast.success("Updated group.");
+      onClose();
+      onUpdate((prev) => {
+        if (!prev) return prev;
+        return prev.map((item) => {
+          if (item.id === group.id) {
+            return { ...item, title: title, weight_unit: weightUnit };
+          }
+          return item;
+        });
       });
-    });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -95,8 +102,10 @@ export default function EditGroupForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
+            aria-disabled={loading}
+            disabled={loading}
           >
-            Update Group
+            {loading ? "Updating Group..." : "Update Group"}
           </Button>
         </div>
       </form>

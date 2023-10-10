@@ -27,7 +27,7 @@ export default function ItemForm(props: Props) {
   const { onClose, onAddItem, groupID, newPosition } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
-
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [type, setType] = useState("General");
   const [quantity, setQuantity] = useState(1);
@@ -74,44 +74,50 @@ export default function ItemForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("pack_item")
-      .insert([
-        {
-          position: newPosition,
-          quantity: quantity,
-          group_id: groupID,
-          inventory_id: selectedItem?.id,
-          type: type,
-        },
-      ])
-      .select(
-        "*, inventory ( id, title, description, image_url, url, price, weight, weight_unit )"
-      );
+    setLoading(true);
 
-    if (error) {
-      toast.error("Couldn't add item to group.");
-      return;
+    try {
+      const { data, error } = await supabase
+        .from("pack_item")
+        .insert([
+          {
+            position: newPosition,
+            quantity: quantity,
+            group_id: groupID,
+            inventory_id: selectedItem?.id,
+            type: type,
+          },
+        ])
+        .select(
+          "*, inventory ( id, title, description, image_url, url, price, weight, weight_unit )"
+        );
+
+      if (error) {
+        toast.error("Couldn't add item to group.");
+        return;
+      }
+
+      onAddItem((prev) => {
+        if (!prev) return prev;
+        const group = prev.find((group) => group.id === groupID);
+        if (!group || !data) return prev;
+        return [
+          ...prev.filter((group) => group.id !== groupID),
+          {
+            ...group,
+            pack_item: [
+              ...group.pack_item,
+              { ...data[0], inventory: selectedItem },
+            ],
+          },
+        ];
+      });
+
+      toast.success("Added item to group.");
+      onClose();
+    } finally {
+      setLoading(false);
     }
-
-    onAddItem((prev) => {
-      if (!prev) return prev;
-      const group = prev.find((group) => group.id === groupID);
-      if (!group || !data) return prev;
-      return [
-        ...prev.filter((group) => group.id !== groupID),
-        {
-          ...group,
-          pack_item: [
-            ...group.pack_item,
-            { ...data[0], inventory: selectedItem },
-          ],
-        },
-      ];
-    });
-
-    toast.success("Added item to group.");
-    onClose();
   };
 
   return (
@@ -181,9 +187,7 @@ export default function ItemForm(props: Props) {
 
         {selectedItem && (
           <div>
-            <Label>
-              Selected Item
-            </Label>
+            <Label>Selected Item</Label>
             <div className="flex flex-col justify-center flex-wrap items-center gap-2 mt-1">
               {selectedItem.image_url && (
                 <Image
@@ -229,11 +233,12 @@ export default function ItemForm(props: Props) {
           </Button>
           <Button
             type="submit"
-            disabled={selectedItem ? false : true}
+            disabled={loading ? true : selectedItem ? false : true}
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
+            aria-disabled={loading}
           >
-            Add Item
+            {loading ? "Adding Item..." : "Add Item"}
           </Button>
         </div>
       </form>

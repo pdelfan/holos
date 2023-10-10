@@ -191,7 +191,7 @@ export default function WishlistForm(props: Props) {
             aria-disabled={loadingManual}
             disabled={loadingManual}
           >
-            {loadingManual ? "Adding item..." : "Add Item"}
+            {loadingManual ? "Adding Item..." : "Add Item"}
           </Button>
         </div>
       </form>

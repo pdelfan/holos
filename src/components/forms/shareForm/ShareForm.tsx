@@ -18,7 +18,7 @@ export default function ShareForm(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const [isPublic, setIsPublic] = useState<boolean | null>(null); // Use null as an initial value
   const [isLoading, setIsLoading] = useState(false);
-  const clipboard = useClipboard({ copiedTimeout: 1500 });
+  const clipboard = useClipboard({ copiedTimeout: 3500 });
 
   useEffect(() => {
     // fetch the latest is_public value from the server when the modal is opened
@@ -99,7 +99,7 @@ export default function ShareForm(props: Props) {
               ref={clipboard.target}
             />
             <Button onClick={clipboard.copy}>
-              {clipboard.copied ? "Copied" : "Copy"}
+              {clipboard.copied ? "Copied!" : "Copy"}
             </Button>
           </div>
         </div>

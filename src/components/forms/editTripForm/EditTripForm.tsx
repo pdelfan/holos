@@ -20,6 +20,7 @@ export default function EditTripForm(props: Props) {
   const { tripItem, onDelete, onClose } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState(tripItem.title);
   const [date, setDate] = useState(tripItem.date);
   const [elevation, setElevation] = useState<number>(tripItem.elevation);
@@ -54,35 +55,41 @@ export default function EditTripForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("trip")
-      .update({
-        title: title,
-        date: date,
-        elevation: elevation ?? 0,
-        elevation_unit: elevationUnit,
-        distance: distance ?? 0,
-        distance_unit: distanceUnit,
-        base_weight: baseWeight ?? 0,
-        total_weight: totalWeight ?? 0,
-        weight_unit: weightUnit,
-      })
-      .match({ id: tripItem.id, user_id: user.session.user.id })
-      .select();
+    setLoading(true);
 
-    if (error) {
-      toast.error("Couldn't update trip.");
-      return;
+    try {
+      const { data, error } = await supabase
+        .from("trip")
+        .update({
+          title: title,
+          date: date,
+          elevation: elevation ?? 0,
+          elevation_unit: elevationUnit,
+          distance: distance ?? 0,
+          distance_unit: distanceUnit,
+          base_weight: baseWeight ?? 0,
+          total_weight: totalWeight ?? 0,
+          weight_unit: weightUnit,
+        })
+        .match({ id: tripItem.id, user_id: user.session.user.id })
+        .select();
+
+      if (error) {
+        toast.error("Couldn't update trip.");
+        return;
+      }
+
+      toast.success("Updated trip.");
+      onClose();
+      setTrip((trips) => {
+        const index = trips.findIndex((item) => item.id === tripItem.id);
+        const newTrips = [...trips];
+        newTrips[index] = data[0];
+        return newTrips;
+      });
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Updated trip.");
-    onClose();
-    setTrip((trips) => {
-      const index = trips.findIndex((item) => item.id === tripItem.id);
-      const newTrips = [...trips];
-      newTrips[index] = data[0];
-      return newTrips;
-    });
   };
 
   return (
@@ -223,8 +230,10 @@ export default function EditTripForm(props: Props) {
               type="submit"
               bgColor="bg-zinc-600 dark:bg-zinc-800"
               textColor="text-gray-100"
+              aria-disabled={loading}
+              disabled={loading}
             >
-              Update Trip
+              {loading ? "Updating Trip..." : "Update Trip"}
             </Button>
           </div>
         </div>

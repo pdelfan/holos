@@ -18,6 +18,7 @@ export default function TripForm(props: Props) {
   const { onClose } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState<string>("");
   const [elevation, setElevation] = useState<number>(0);
@@ -37,32 +38,38 @@ export default function TripForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("trip")
-      .insert([
-        {
-          title: title,
-          date: date,
-          elevation: elevation ?? 0,
-          elevation_unit: elevationUnit,
-          distance: distance ?? 0,
-          distance_unit: distanceUnit,
-          base_weight: baseWeight ?? 0,
-          total_weight: totalWeight ?? 0,
-          weight_unit: weightUnit,
-          user_id: user.session.user.id,
-        },
-      ])
-      .select();
+    setLoading(true);
 
-    if (error) {
-      toast.error("Couldn't add trip.");
-      return;
+    try {
+      const { data, error } = await supabase
+        .from("trip")
+        .insert([
+          {
+            title: title,
+            date: date,
+            elevation: elevation ?? 0,
+            elevation_unit: elevationUnit,
+            distance: distance ?? 0,
+            distance_unit: distanceUnit,
+            base_weight: baseWeight ?? 0,
+            total_weight: totalWeight ?? 0,
+            weight_unit: weightUnit,
+            user_id: user.session.user.id,
+          },
+        ])
+        .select();
+
+      if (error) {
+        toast.error("Couldn't add trip.");
+        return;
+      }
+
+      toast.success("Added trip.");
+      onClose();
+      setTrip((trips) => [...trips, data[0]]);
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Added trip.");
-    onClose();
-    setTrip((trips) => [...trips, data[0]]);
   };
 
   return (
@@ -186,8 +193,10 @@ export default function TripForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
+            aria-disabled={loading}
+            disabled={loading}
           >
-            Add Trip
+            {loading ? "Adding Trip..." : "Add Trip"}
           </Button>
         </div>
       </form>

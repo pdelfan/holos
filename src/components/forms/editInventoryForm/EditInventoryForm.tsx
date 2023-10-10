@@ -21,6 +21,7 @@ export default function EditInventoryForm(props: Props) {
   const { onClose, onDelete, inventoryItem } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState(inventoryItem.title);
   const [description, setDescription] = useState(inventoryItem.description);
   const [price, setPrice] = useState<number>(inventoryItem.price ?? 0);
@@ -53,32 +54,38 @@ export default function EditInventoryForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("inventory")
-      .update({
-        title: title,
-        description: description ?? "",
-        image_url: imageURL === "" ? null : imageURL,
-        url: url === "" ? null : url,
-        price: Number.parseFloat(price.toFixed(2)),
-        weight: Number.parseFloat(weight.toFixed(2)) ?? 0,
-        weight_unit: weightUnit,
-        season: season,
-      })
-      .match({ id: inventoryItem.id, user_id: user.session.user.id })
-      .select();
-    if (error) {
-      toast.error("Couldn't update item.");
-      return;
-    }
+    setLoading(true);
 
-    toast.success("Updated item.");
-    onClose();
-    setInventory((prev) => {
-      const index = prev.findIndex((item) => item.id === inventoryItem.id);
-      prev[index] = data[0];
-      return prev;
-    });
+    try {
+      const { data, error } = await supabase
+        .from("inventory")
+        .update({
+          title: title,
+          description: description ?? "",
+          image_url: imageURL === "" ? null : imageURL,
+          url: url === "" ? null : url,
+          price: Number.parseFloat(price.toFixed(2)),
+          weight: Number.parseFloat(weight.toFixed(2)) ?? 0,
+          weight_unit: weightUnit,
+          season: season,
+        })
+        .match({ id: inventoryItem.id, user_id: user.session.user.id })
+        .select();
+      if (error) {
+        toast.error("Couldn't update item.");
+        return;
+      }
+
+      toast.success("Updated item.");
+      onClose();
+      setInventory((prev) => {
+        const index = prev.findIndex((item) => item.id === inventoryItem.id);
+        prev[index] = data[0];
+        return prev;
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -205,8 +212,10 @@ export default function EditInventoryForm(props: Props) {
               type="submit"
               bgColor="bg-zinc-600 dark:bg-zinc-800"
               textColor="text-gray-100"
+              aria-disabled={loading}
+              disabled={loading}
             >
-              Update Item
+              {loading ? "Updating Item..." : "Update Item"}
             </Button>
           </div>
         </div>

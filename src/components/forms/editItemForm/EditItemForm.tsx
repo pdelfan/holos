@@ -19,7 +19,7 @@ export default function EditItemForm(props: Props) {
   const { onClose, onUpdate, onDelete, item } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
-
+  const [loading, setLoading] = useState(false);
   const [type, setType] = useState(item.type);
   const [quantity, setQuantity] = useState(item.quantity);
 
@@ -31,43 +31,49 @@ export default function EditItemForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase
-      .from("pack_item")
-      .update({
-        type: type,
-        quantity: quantity,
-      })
-      .eq("id", item.id);
+    setLoading(true);
 
-    if (error) {
-      toast.error("Couldn't update item.");
-      return;
+    try {
+      const { error } = await supabase
+        .from("pack_item")
+        .update({
+          type: type,
+          quantity: quantity,
+        })
+        .eq("id", item.id);
+
+      if (error) {
+        toast.error("Couldn't update item.");
+        return;
+      }
+
+      toast.success("Updated item.");
+
+      // filter out the item and replace its data
+      onUpdate((prev) => {
+        if (!prev) return prev;
+        const group = prev.find((group) => group.id === item.group_id);
+        if (!group) return prev;
+        return [
+          ...prev.filter((group) => group.id !== item.group_id),
+          {
+            ...group,
+            pack_item: [
+              ...group.pack_item.filter((packItem) => packItem.id !== item.id),
+              {
+                ...item,
+                type: type,
+                quantity: quantity,
+              },
+            ],
+          },
+        ];
+      });
+
+      onClose();
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Updated item.");
-
-    // filter out the item and replace its data
-    onUpdate((prev) => {
-      if (!prev) return prev;
-      const group = prev.find((group) => group.id === item.group_id);
-      if (!group) return prev;
-      return [
-        ...prev.filter((group) => group.id !== item.group_id),
-        {
-          ...group,
-          pack_item: [
-            ...group.pack_item.filter((packItem) => packItem.id !== item.id),
-            {
-              ...item,
-              type: type,
-              quantity: quantity,
-            },
-          ],
-        },
-      ];
-    });
-
-    onClose();
   };
 
   return (
@@ -119,8 +125,10 @@ export default function EditItemForm(props: Props) {
               type="submit"
               bgColor="bg-zinc-600 dark:bg-zinc-800"
               textColor="text-gray-100"
+              aria-disabled={loading}
+              disabled={loading}
             >
-              Update Item
+              {loading ? "Updating Item..." : "Update Item"}
             </Button>
           </div>
         </div>

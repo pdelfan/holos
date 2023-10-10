@@ -21,6 +21,7 @@ export default function PackForm(props: Props) {
   const [description, setDescription] = useState("");
   const [weightUnit, setWeightUnit] = useState("kg");
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const supabase = createClientComponentClient<Database>();
   const setPacks = useSetAtom(packsAtom);
 
@@ -32,31 +33,36 @@ export default function PackForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("pack")
-      .insert([
-        {
-          title: title,
-          description: description,
-          base_weight: 0,
-          total_weight: 0,
-          weight_unit: weightUnit,
-          total_cost: 0,
-          total_items: 0,
-          user_id: user.session.user.id,
-          is_public: false,
-        },
-      ])
-      .select();
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("pack")
+        .insert([
+          {
+            title: title,
+            description: description,
+            base_weight: 0,
+            total_weight: 0,
+            weight_unit: weightUnit,
+            total_cost: 0,
+            total_items: 0,
+            user_id: user.session.user.id,
+            is_public: false,
+          },
+        ])
+        .select();
 
-    if (error) {
-      toast.error("Couldn't add pack.");
-      return;
+      if (error) {
+        toast.error("Couldn't add pack.");
+        return;
+      }
+
+      toast.success("Added pack.");
+      onClose();
+      setPacks((prev) => [...prev, data[0]]);
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Added pack.");
-    onClose();
-    setPacks((prev) => [...prev, data[0]]);
   };
 
   return (
@@ -106,8 +112,10 @@ export default function PackForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
+            aria-disabled={loading}
+            disabled={loading}
           >
-            Add Pack
+            {loading ? "Adding Pack..." : "Add Pack"}
           </Button>
         </div>
       </form>

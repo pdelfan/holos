@@ -19,6 +19,7 @@ export default function InventoryForm(props: Props) {
   const { onClose } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number>(0);
@@ -37,28 +38,37 @@ export default function InventoryForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase.from("inventory").insert([
-      {
-        title: title,
-        description: description ?? "",
-        image_url: imageURL === "" ? null : imageURL,
-        url: url === "" ? null : url,
-        price: price,
-        weight: weight ?? 0,
-        weight_unit: weightUnit,
-        season: season,
-        user_id: user.session.user.id,
-      },
-    ]).select();
+    setLoading(true);
 
-    if (error) {
-      toast.error("Couldn't add item to inventory.");
-      return;
+    try {
+      const { data, error } = await supabase
+        .from("inventory")
+        .insert([
+          {
+            title: title,
+            description: description ?? "",
+            image_url: imageURL === "" ? null : imageURL,
+            url: url === "" ? null : url,
+            price: price,
+            weight: weight ?? 0,
+            weight_unit: weightUnit,
+            season: season,
+            user_id: user.session.user.id,
+          },
+        ])
+        .select();
+
+      if (error) {
+        toast.error("Couldn't add item to inventory.");
+        return;
+      }
+
+      toast.success("Added item to inventory.");
+      onClose();
+      setInventory((prev) => [...prev, data[0]]);
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Added item to inventory.");
-    onClose();
-    setInventory((prev) => [...prev, data[0]]);
   };
 
   return (
@@ -171,8 +181,10 @@ export default function InventoryForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
+            aria-disabled={loading}
+            disabled={loading}
           >
-            Add Item
+            {loading ? "Adding Item..." : "Add Item"}
           </Button>
         </div>
       </form>

@@ -21,6 +21,7 @@ export default function EditPackForm(props: Props) {
   const { onDelete, onClose, pack } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState(pack.title);
   const [description, setDescription] = useState(pack.description);
   const [weightUnit, setWeightUnit] = useState(pack.weight_unit);
@@ -39,27 +40,33 @@ export default function EditPackForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("pack")
-      .update({
-        title: title,
-        description: description,
-        weight_unit: weightUnit,
-      })
-      .match({ id: pack.id, user_id: user.session.user.id })
-      .select();
-    if (error) {
-      toast.error("Couldn't update pack.");
-      return;
-    }
+    setLoading(true);
 
-    toast.success("Updated pack.");
-    onClose();
-    setPacks((prev) => {
-      const index = prev.findIndex((item) => item.id === pack.id);
-      prev[index] = data[0];
-      return [...prev];
-    });
+    try {
+      const { data, error } = await supabase
+        .from("pack")
+        .update({
+          title: title,
+          description: description,
+          weight_unit: weightUnit,
+        })
+        .match({ id: pack.id, user_id: user.session.user.id })
+        .select();
+      if (error) {
+        toast.error("Couldn't update pack.");
+        return;
+      }
+
+      toast.success("Updated pack.");
+      onClose();
+      setPacks((prev) => {
+        const index = prev.findIndex((item) => item.id === pack.id);
+        prev[index] = data[0];
+        return [...prev];
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -122,8 +129,10 @@ export default function EditPackForm(props: Props) {
               type="submit"
               bgColor="bg-zinc-600 dark:bg-zinc-800"
               textColor="text-gray-100"
+              aria-disabled={loading}
+              disabled={loading}
             >
-              Update Pack
+              {loading ? "Updating Pack..." : "Update Pack"}
             </Button>
           </div>
         </div>

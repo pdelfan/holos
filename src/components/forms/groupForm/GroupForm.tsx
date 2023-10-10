@@ -20,6 +20,7 @@ export default function GroupForm(props: Props) {
   const [title, setTitle] = useState("");
   const [weightUnit, setWeightUnit] = useState("g");
   const ref = useOutsideSelect({ callback: () => onClose() });
+  const [loading, setLoading] = useState(false);
   const supabase = createClientComponentClient<Database>();
 
   const onAddGroup = async (e: FormEvent) => {
@@ -30,39 +31,45 @@ export default function GroupForm(props: Props) {
       return;
     }
 
-    const { data, error } = await supabase
-      .from("group")
-      .insert({
-        title: title,
-        total_base_weight: 0,
-        total_weight: 0,
-        weight_unit: weightUnit,
-        total_price: 0,
-        total_quantity: 0,
-        user_id: user.session.user.id,
-        pack_id: packID,
-        position: newPosition,
-      })
-      .select("*");
+    setLoading(true);
 
-    if (error) {
-      toast.error("Couldn't add this group to pack.");
-      return;
+    try {
+      const { data, error } = await supabase
+        .from("group")
+        .insert({
+          title: title,
+          total_base_weight: 0,
+          total_weight: 0,
+          weight_unit: weightUnit,
+          total_price: 0,
+          total_quantity: 0,
+          user_id: user.session.user.id,
+          pack_id: packID,
+          position: newPosition,
+        })
+        .select("*");
+
+      if (error) {
+        toast.error("Couldn't add this group to pack.");
+        return;
+      }
+
+      toast.success("Added group to pack.");
+      onUpdate((prev) => {
+        if (!prev) return prev;
+
+        return [
+          ...prev,
+          {
+            ...data[0],
+            pack_item: [],
+          },
+        ];
+      });
+      onClose();
+    } finally {
+      setLoading(false);
     }
-
-    toast.success("Added group to pack.");
-    onUpdate((prev) => {
-      if (!prev) return prev;
-
-      return [
-        ...prev,
-        {
-          ...data[0],
-          pack_item: [],
-        },
-      ];
-    });
-    onClose();
   };
 
   return (
@@ -102,8 +109,10 @@ export default function GroupForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
+            aria-disabled={loading}
+            disabled={loading}
           >
-            Add Group
+            {loading ? "Adding Group..." : "Add Group"}
           </Button>
         </div>
       </form>
