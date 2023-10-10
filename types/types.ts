@@ -154,3 +154,10 @@ interface Currency {
   abbreviation: string;
   symbol: string;
 }
+
+interface UserData {
+  name: string | null;
+  avatar_url: string | null;
+  email: string;
+  id: string;
+}

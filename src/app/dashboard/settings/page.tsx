@@ -61,6 +61,14 @@ export default function Settings() {
       return;
     }
 
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      router.push("/");
+      return;
+    }
+
     startLoading("emailUpdate");
 
     try {
@@ -82,6 +90,14 @@ export default function Settings() {
 
   const onResetPassword = async () => {
     if (!user?.email) return;
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      router.push("/");
+      return;
+    }
 
     startLoading("passwordReset");
 
@@ -110,6 +126,14 @@ export default function Settings() {
       return;
     }
 
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      router.push("/");
+      return;
+    }
+
     startLoading("currencyUpdate");
 
     try {
@@ -133,6 +157,14 @@ export default function Settings() {
     if (!user) return;
     if (username === userData?.name) {
       toast.error("New name cannot be the same as your current name.");
+      return;
+    }
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      router.push("/");
       return;
     }
 
@@ -169,6 +201,14 @@ export default function Settings() {
       return;
     }
 
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      router.push("/");
+      return;
+    }
+
     startLoading("avatarUpdate");
 
     try {
@@ -195,6 +235,15 @@ export default function Settings() {
 
   const onRemoveAvatar = async () => {
     if (!user || !avatar) return;
+
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
+      router.push("/");
+      return;
+    }
+
     startLoading("avatarRemove");
 
     try {
@@ -221,7 +270,7 @@ export default function Settings() {
 
   return (
     <>
-      {user && currency && (
+      {userData && currency && (
         <>
           <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
             Settings
@@ -229,7 +278,7 @@ export default function Settings() {
           <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
             <div className="flex flex-col items-center gap-2">
               <Avatar
-                name={user?.email ?? null}
+                name={userData?.email ?? null}
                 image={userData?.avatar_url}
                 size="large"
               />
@@ -238,9 +287,9 @@ export default function Settings() {
                   {userData.name}
                 </h2>
               )}
-              {user && (
+              {userData && (
                 <h2 className="font-medium text-md text-gray-500 dark:text-gray-400">
-                  {user.email}
+                  {userData.email}
                 </h2>
               )}
             </div>

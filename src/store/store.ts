@@ -7,6 +7,8 @@ import ALphabetIcon from "@/assets/icons/alphabetIcon.svg";
 import WinterIcon from "@/assets/icons/winterIcon.svg";
 import AllIcon from "@/assets/icons/allIcon.svg";
 
+export const userDataAtom = atom<UserData | null>(null);
+
 export const currencyAtom = atom<string>("");
 
 export const packAtom = atom<Pack | null>(null);

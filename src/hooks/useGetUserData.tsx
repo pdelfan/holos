@@ -1,15 +1,12 @@
 import { Database } from "@/lib/database.types";
+import { userDataAtom } from "@/store/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState } from "react";
-
-interface UserData {
-  name: string | null;
-  avatar_url: string | null;
-}
+import { useAtom } from "jotai";
+import { useEffect } from "react";
 
 export default function useGetUserData() {
   const supabase = createClientComponentClient<Database>();
-  const [userData, setUserData] = useState<UserData>();
+  const [userData, setUserData] = useAtom(userDataAtom);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -18,7 +15,7 @@ export default function useGetUserData() {
 
       const { data: user } = await supabase
         .from("user")
-        .select("name, avatar_url")
+        .select("name, avatar_url, email, id")
         .eq("id", data.session.user.id);
 
       if (user) {
@@ -27,7 +24,7 @@ export default function useGetUserData() {
     };
 
     getUserData();
-  }, [supabase]);
+  }, [setUserData, supabase]);
 
   return { userData, setUserData };
 }
