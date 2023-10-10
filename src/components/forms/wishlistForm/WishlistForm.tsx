@@ -21,6 +21,7 @@ export default function WishlistForm(props: Props) {
   const [title, setTitle] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingManual, setLoadingManual] = useState(false);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
   const setWishlist = useSetAtom(wishlistAtom);
@@ -71,7 +72,7 @@ export default function WishlistForm(props: Props) {
       return;
     }
 
-    setLoading(true);
+    setLoadingManual(true);
 
     try {
       const { data, error } = await supabase
@@ -96,7 +97,7 @@ export default function WishlistForm(props: Props) {
       onClose();
       setWishlist((wishlist) => [...wishlist, data[0]]);
     } finally {
-      setLoading(false);
+      setLoadingManual(false);
     }
   };
 
@@ -187,10 +188,10 @@ export default function WishlistForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
-            aria-disabled={loading}
-            disabled={loading}
+            aria-disabled={loadingManual}
+            disabled={loadingManual}
           >
-            {loading ? "Adding item..." : "Add Item"}
+            {loadingManual ? "Adding item..." : "Add Item"}
           </Button>
         </div>
       </form>
