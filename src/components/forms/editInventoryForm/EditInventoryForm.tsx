@@ -4,11 +4,12 @@ import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
-import { updateIventoryData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import Textarea from "@/components/inputs/textarea/Textarea";
 import Label from "@/components/inputs/label/Label";
+import { useSetAtom } from "jotai";
+import { inventoryAtom } from "@/store/store";
 
 interface Props {
   inventoryItem: InventoryItem;
@@ -32,6 +33,7 @@ export default function EditInventoryForm(props: Props) {
     inventoryItem.image_url
   );
   const [url, setURL] = useState<string | null>(inventoryItem.url);
+  const setInventory = useSetAtom(inventoryAtom);
 
   const onUpdateInventoryItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -51,7 +53,7 @@ export default function EditInventoryForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("inventory")
       .update({
         title: title,
@@ -63,7 +65,8 @@ export default function EditInventoryForm(props: Props) {
         weight_unit: weightUnit,
         season: season,
       })
-      .match({ id: inventoryItem.id, user_id: user.session.user.id });
+      .match({ id: inventoryItem.id, user_id: user.session.user.id })
+      .select();
     if (error) {
       toast.error("Couldn't update item.");
       return;
@@ -71,7 +74,11 @@ export default function EditInventoryForm(props: Props) {
 
     toast.success("Updated item.");
     onClose();
-    updateIventoryData();
+    setInventory((prev) => {
+      const index = prev.findIndex((item) => item.id === inventoryItem.id);
+      prev[index] = data[0];
+      return prev;
+    });
   };
 
   return (

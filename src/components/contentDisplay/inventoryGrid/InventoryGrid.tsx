@@ -4,19 +4,21 @@ import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import InventoryGridSkeleton from "./InventoryGridSkeleton";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import {
+  inventoryAtom,
   inventorySearchAtom,
   seasonFilterAtom,
   sortFilterAtom,
 } from "@/store/store";
 import { sortInventory } from "@/utils/filterUtils";
-import useInventory from "@/hooks/useInventory";
 import InventoryCard from "@/components/contentDisplay/inventoryCard/InventoryCard";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { useState } from "react";
 import Modal from "@/components/feedback/modal/Modal";
 import EditInventoryForm from "@/components/forms/editInventoryForm/EditInventoryForm";
+import Pagination from "@/components/navigational/pagination/Pagination";
+import useFetchDB from "@/hooks/useFetchDB";
 
 export default function InventoryGrid() {
   const supabase = createClientComponentClient<Database>();
@@ -27,7 +29,14 @@ export default function InventoryGrid() {
   const [currentIventoryItem, setCurrentInventoryItem] =
     useState<InventoryItem | null>(null);
   const { currency } = useGetPreferredCurrency({});
-  const { inventory, setInventory, error, isLoading } = useInventory();
+  const [inventory, setInventory] = useAtom(inventoryAtom);
+  const { pageIndex, setPageIndex, totalItems, itemPerPage, error, isLoading } =
+    useFetchDB({
+      itemPerPage: 13,
+      table: "inventory",
+      data: inventory,
+      setData: setInventory,
+    });
 
   const onDeleteInventoryItem = async (id: number) => {
     const { error } = await supabase.from("inventory").delete().eq("id", id);
@@ -68,21 +77,28 @@ export default function InventoryGrid() {
                   />
                 ))}
           </section>
+          {!isLoading && !error && inventory && inventory.length === 0 && (
+            <div className="flex h-full items-center">
+              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
+                No items found
+              </h3>
+            </div>
+          )}
+          {!isLoading && error && (
+            <div className="flex h-full items-center">
+              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
+                Could not get inventory items
+              </h3>
+            </div>
+          )}
+          {totalItems && (
+            <Pagination
+              totalPages={Math.ceil(totalItems / itemPerPage)}
+              pageIndex={pageIndex}
+              onChange={setPageIndex}
+            />
+          )}
         </>
-      )}
-      {!isLoading && !error && inventory && inventory.length === 0 && (
-        <div className="flex h-full items-center">
-          <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-            No items found
-          </h3>
-        </div>
-      )}
-      {!isLoading && error && (
-        <div className="flex h-full items-center">
-          <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-            Could not load inventory
-          </h3>
-        </div>
       )}
 
       {showModal && currentIventoryItem && (

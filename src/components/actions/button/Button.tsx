@@ -27,7 +27,8 @@ export default function Button(props: Props) {
       className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium text-sm ${
         bgColor ? bgColor : "bg-button"
       } ${textColor ? textColor : "text-button-text"} ${
-        disabled && "contrast-50 cursor-not-allowed"
+        disabled &&
+        "opacity-30 contrast-75 hover:brightness-100 cursor-not-allowed"
       } hover:brightness-95 disabled:cursor-not-allowed`}
       disabled={disabled}
       type={type}

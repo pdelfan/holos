@@ -4,10 +4,11 @@ import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
-import { updateTripData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
+import { useSetAtom } from "jotai";
+import { tripsAtom } from "@/store/store";
 
 interface Props {
   tripItem: TripItem;
@@ -32,6 +33,7 @@ export default function EditTripForm(props: Props) {
   const [baseWeight, setBaseWeight] = useState<number>(tripItem.base_weight);
   const [totalWeight, setTotalWeight] = useState<number>(tripItem.total_weight);
   const [weightUnit, setWeightUnit] = useState<string>(tripItem.weight_unit);
+  const setTrip = useSetAtom(tripsAtom);
 
   const onUpdateTrip = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -52,7 +54,7 @@ export default function EditTripForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("trip")
       .update({
         title: title,
@@ -65,7 +67,8 @@ export default function EditTripForm(props: Props) {
         total_weight: totalWeight ?? 0,
         weight_unit: weightUnit,
       })
-      .match({ id: tripItem.id, user_id: user.session.user.id });
+      .match({ id: tripItem.id, user_id: user.session.user.id })
+      .select();
 
     if (error) {
       toast.error("Couldn't update trip.");
@@ -74,7 +77,12 @@ export default function EditTripForm(props: Props) {
 
     toast.success("Updated trip.");
     onClose();
-    updateTripData();
+    setTrip((trips) => {
+      const index = trips.findIndex((item) => item.id === tripItem.id);
+      const newTrips = [...trips];
+      newTrips[index] = data[0];
+      return newTrips;
+    });
   };
 
   return (

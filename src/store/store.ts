@@ -66,7 +66,7 @@ export const sortFilterOptions: SelectOption[] = [
   },
 ];
 
-export const sortFilterAtom = atom<SelectOption>(sortFilterOptions[0]);
+export const sortFilterAtom = atom<SelectOption>(sortFilterOptions[1]);
 
 export const tabs = [
   { id: "packs", title: "PACKS", href: "/dashboard/packs" },

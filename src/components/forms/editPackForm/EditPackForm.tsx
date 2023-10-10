@@ -4,11 +4,12 @@ import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
-import { updatePackData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import TextArea from "@/components/inputs/textarea/Textarea";
 import Label from "@/components/inputs/label/Label";
+import { packsAtom } from "@/store/store";
+import { useSetAtom } from "jotai";
 
 interface Props {
   pack: Pack;
@@ -23,6 +24,7 @@ export default function EditPackForm(props: Props) {
   const [title, setTitle] = useState(pack.title);
   const [description, setDescription] = useState(pack.description);
   const [weightUnit, setWeightUnit] = useState(pack.weight_unit);
+  const setPacks = useSetAtom(packsAtom);
 
   const onUpdatePack = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -37,14 +39,15 @@ export default function EditPackForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("pack")
       .update({
         title: title,
         description: description,
         weight_unit: weightUnit,
       })
-      .match({ id: pack.id, user_id: user.session.user.id });
+      .match({ id: pack.id, user_id: user.session.user.id })
+      .select();
     if (error) {
       toast.error("Couldn't update pack.");
       return;
@@ -52,7 +55,11 @@ export default function EditPackForm(props: Props) {
 
     toast.success("Updated pack.");
     onClose();
-    updatePackData();
+    setPacks((prev) => {
+      const index = prev.findIndex((item) => item.id === pack.id);
+      prev[index] = data[0];
+      return [...prev];
+    });
   };
 
   return (

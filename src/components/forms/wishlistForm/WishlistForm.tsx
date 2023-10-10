@@ -3,11 +3,12 @@ import useOutsideSelect from "@/hooks/useOutsideSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
-import { updateWishlistData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
 import { getSiteMetadata } from "@/utils/linkUtils";
+import { useSetAtom } from "jotai";
+import { wishlistAtom } from "@/store/store";
 
 interface Props {
   onClose: () => void;
@@ -19,6 +20,7 @@ export default function WishlistForm(props: Props) {
   const [loading, setLoading] = useState(false);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
+  const setWishlist = useSetAtom(wishlistAtom);
 
   const onAddBookmark = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -32,15 +34,18 @@ export default function WishlistForm(props: Props) {
 
     try {
       const metadata: Metadata = await getSiteMetadata(url);
-      const { error } = await supabase.from("wishlist").insert([
-        {
-          url: url,
-          title: metadata.title ?? null,
-          logo_url: metadata.logo ?? null,
-          image_url: metadata.image ?? null,
-          user_id: user.session.user.id,
-        },
-      ]);
+      const { data, error } = await supabase
+        .from("wishlist")
+        .insert([
+          {
+            url: url,
+            title: metadata.title ?? null,
+            logo_url: metadata.logo ?? null,
+            image_url: metadata.image ?? null,
+            user_id: user.session.user.id,
+          },
+        ])
+        .select();
 
       if (error) {
         toast.error("Couldn't add item to wishlist.");
@@ -49,7 +54,7 @@ export default function WishlistForm(props: Props) {
 
       toast.success("Added item to wishlist.");
       onClose();
-      updateWishlistData();
+      setWishlist((wishlist) => [...wishlist, data[0]]);
     } finally {
       setLoading(false);
     }

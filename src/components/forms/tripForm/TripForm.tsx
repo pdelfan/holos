@@ -4,10 +4,11 @@ import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
-import { updateTripData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
+import { useSetAtom } from "jotai";
+import { tripsAtom } from "@/store/store";
 
 interface Props {
   onClose: () => void;
@@ -26,6 +27,7 @@ export default function TripForm(props: Props) {
   const [baseWeight, setBaseWeight] = useState<number>(0);
   const [totalWeight, setTotalWeight] = useState<number>(0);
   const [weightUnit, setWeightUnit] = useState<string>("kg");
+  const setTrip = useSetAtom(tripsAtom);
 
   const onAddTrip = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -35,20 +37,23 @@ export default function TripForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase.from("trip").insert([
-      {
-        title: title,
-        date: date,
-        elevation: elevation ?? 0,
-        elevation_unit: elevationUnit,
-        distance: distance ?? 0,
-        distance_unit: distanceUnit,
-        base_weight: baseWeight ?? 0,
-        total_weight: totalWeight ?? 0,
-        weight_unit: weightUnit,
-        user_id: user.session.user.id,
-      },
-    ]);
+    const { data, error } = await supabase
+      .from("trip")
+      .insert([
+        {
+          title: title,
+          date: date,
+          elevation: elevation ?? 0,
+          elevation_unit: elevationUnit,
+          distance: distance ?? 0,
+          distance_unit: distanceUnit,
+          base_weight: baseWeight ?? 0,
+          total_weight: totalWeight ?? 0,
+          weight_unit: weightUnit,
+          user_id: user.session.user.id,
+        },
+      ])
+      .select();
 
     if (error) {
       toast.error("Couldn't add trip.");
@@ -57,7 +62,7 @@ export default function TripForm(props: Props) {
 
     toast.success("Added trip.");
     onClose();
-    updateTripData();
+    setTrip((trips) => [...trips, data[0]]);
   };
 
   return (

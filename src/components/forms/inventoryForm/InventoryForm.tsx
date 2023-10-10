@@ -4,11 +4,12 @@ import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import toast from "react-hot-toast";
-import { updateIventoryData } from "@/utils/fetchUtils";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import TextArea from "@/components/inputs/textarea/Textarea";
 import Label from "@/components/inputs/label/Label";
+import { inventoryAtom } from "@/store/store";
+import { useSetAtom } from "jotai";
 
 interface Props {
   onClose: () => void;
@@ -26,6 +27,7 @@ export default function InventoryForm(props: Props) {
   const [season, setSeason] = useState<string>("3-Season");
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [url, setURL] = useState<string | null>(null);
+  const setInventory = useSetAtom(inventoryAtom);
 
   const onAddItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -35,7 +37,7 @@ export default function InventoryForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase.from("inventory").insert([
+    const { data, error } = await supabase.from("inventory").insert([
       {
         title: title,
         description: description ?? "",
@@ -47,7 +49,7 @@ export default function InventoryForm(props: Props) {
         season: season,
         user_id: user.session.user.id,
       },
-    ]);
+    ]).select();
 
     if (error) {
       toast.error("Couldn't add item to inventory.");
@@ -56,7 +58,7 @@ export default function InventoryForm(props: Props) {
 
     toast.success("Added item to inventory.");
     onClose();
-    updateIventoryData();
+    setInventory((prev) => [...prev, data[0]]);
   };
 
   return (

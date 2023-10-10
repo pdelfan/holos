@@ -3,12 +3,13 @@ import useOutsideSelect from "@/hooks/useOutsideSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "react-hot-toast";
 import { Database } from "@/lib/database.types";
-import { updatePackData } from "@/utils/fetchUtils";
 import FormSelect from "../formSelect/FormSelect";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import TextArea from "@/components/inputs/textarea/Textarea";
 import Label from "@/components/inputs/label/Label";
+import { packsAtom } from "@/store/store";
+import { useSetAtom } from "jotai";
 
 interface Props {
   onClose: () => void;
@@ -21,6 +22,7 @@ export default function PackForm(props: Props) {
   const [weightUnit, setWeightUnit] = useState("kg");
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
+  const setPacks = useSetAtom(packsAtom);
 
   const onAddPack = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -30,19 +32,22 @@ export default function PackForm(props: Props) {
       return;
     }
 
-    const { error } = await supabase.from("pack").insert([
-      {
-        title: title,
-        description: description,
-        base_weight: 0,
-        total_weight: 0,
-        weight_unit: weightUnit,
-        total_cost: 0,
-        total_items: 0,
-        user_id: user.session.user.id,
-        is_public: false,
-      },
-    ]);
+    const { data, error } = await supabase
+      .from("pack")
+      .insert([
+        {
+          title: title,
+          description: description,
+          base_weight: 0,
+          total_weight: 0,
+          weight_unit: weightUnit,
+          total_cost: 0,
+          total_items: 0,
+          user_id: user.session.user.id,
+          is_public: false,
+        },
+      ])
+      .select();
 
     if (error) {
       toast.error("Couldn't add pack.");
@@ -51,7 +56,7 @@ export default function PackForm(props: Props) {
 
     toast.success("Added pack.");
     onClose();
-    updatePackData();
+    setPacks((prev) => [...prev, data[0]]);
   };
 
   return (
