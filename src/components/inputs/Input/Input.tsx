@@ -6,6 +6,7 @@ interface Props {
   name?: string;
   placeholder?: string;
   value: string | number;
+  max?: string;
   maxLength?: number;
   step?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -20,6 +21,7 @@ export default function Input(props: Props) {
     name,
     placeholder,
     value,
+    max,
     maxLength,
     step,
     onChange,
@@ -32,6 +34,7 @@ export default function Input(props: Props) {
       id={id}
       name={name}
       type={type}
+      max={max}
       maxLength={maxLength}
       placeholder={placeholder}
       value={value}

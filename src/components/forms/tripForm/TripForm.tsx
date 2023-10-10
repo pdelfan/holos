@@ -91,6 +91,7 @@ export default function TripForm(props: Props) {
               required
               type="date"
               aria-label="Date of the trip"
+              max={new Date().toISOString().split("T")[0]}
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
