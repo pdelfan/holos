@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@/components/dataDisplay/avatar/Avatar";
 import Button from "@/components/actions/button/Button";
 import useGetUser from "@/hooks/useGetUser";
@@ -20,7 +20,8 @@ type Action =
   | "passwordReset"
   | "currencyUpdate"
   | "nameUpdate"
-  | "avatarUpdate";
+  | "avatarUpdate"
+  | "avatarRemove";
 
 interface LoadingState {
   [key: string]: boolean;
@@ -39,6 +40,12 @@ export default function Settings() {
   const { userData, setUserData } = useGetUserData();
   const [username, setUsername] = useState(userData?.name);
   const [avatar, setAvatar] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (userData?.avatar_url) {
+      setAvatar(userData.avatar_url);
+    }
+  }, [userData?.avatar_url]);
 
   const startLoading = (action: Action) => {
     setLoading((prev) => ({ ...prev, [action]: true }));
@@ -96,6 +103,12 @@ export default function Settings() {
 
   const onUpdatePreferredCurrency = async () => {
     if (!user) return;
+    if (preferredCurrency === currency) {
+      toast.error(
+        "New preferred currency cannot be the same as your current preferred currency."
+      );
+      return;
+    }
 
     startLoading("currencyUpdate");
 
@@ -118,6 +131,10 @@ export default function Settings() {
 
   const onUpdateName = async () => {
     if (!user) return;
+    if (username === userData?.name) {
+      toast.error("New name cannot be the same as your current name.");
+      return;
+    }
 
     startLoading("nameUpdate");
 
@@ -147,6 +164,11 @@ export default function Settings() {
 
   const onUpdateAvatar = async () => {
     if (!user || !avatar) return;
+    if (avatar === userData?.avatar_url) {
+      toast.error("New avatar cannot be the same as your current avatar.");
+      return;
+    }
+
     startLoading("avatarUpdate");
 
     try {
@@ -162,13 +184,38 @@ export default function Settings() {
 
       setUserData((prev) => ({
         ...prev!,
-        name: prev?.name ?? null,
         avatar_url: avatar,
       }));
 
       toast.success("Updated avatar.");
     } finally {
       stopLoading("avatarUpdate");
+    }
+  };
+
+  const onRemoveAvatar = async () => {
+    if (!user || !avatar) return;
+    startLoading("avatarRemove");
+
+    try {
+      const { error } = await supabase
+        .from("user")
+        .update({ avatar_url: null })
+        .eq("id", user.id);
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      setUserData((prev) => ({
+        ...prev!,
+        avatar_url: null,
+      }));
+
+      toast.success("Removed avatar.");
+    } finally {
+      stopLoading("avatarRemove");
     }
   };
 
@@ -258,7 +305,7 @@ export default function Settings() {
                     setAvatar(e.target.value);
                   }}
                 />
-                <span className="block mt-3">
+                <span className="flex flex-wrap gap-3 mt-3">
                   <Button
                     bgColor="bg-button dark:bg-neutral-700"
                     textColor="text-button-text dark:text-neutral-300"
@@ -269,6 +316,20 @@ export default function Settings() {
                     {loading["avatarUpdate"]
                       ? "Updating avatar..."
                       : "Update Avatar"}
+                  </Button>
+                  <Button
+                    bgColor="bg-button dark:bg-neutral-700"
+                    textColor="text-button-text dark:text-neutral-300"
+                    type="button"
+                    onClick={onRemoveAvatar}
+                    disabled={loading["avatarRemove"] || !userData?.avatar_url}
+                    aria-disabled={
+                      loading["avatarRemove"] || !userData?.avatar_url
+                    }
+                  >
+                    {loading["avatarRemove"]
+                      ? "Removing avatar..."
+                      : "Remove Avatar"}
                   </Button>
                 </span>
               </form>

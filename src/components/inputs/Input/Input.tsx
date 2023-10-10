@@ -6,6 +6,7 @@ interface Props {
   name?: string;
   placeholder?: string;
   value: string | number;
+  spellCheck?: boolean;
   max?: string;
   maxLength?: number;
   step?: string;
@@ -21,6 +22,7 @@ export default function Input(props: Props) {
     name,
     placeholder,
     value,
+    spellCheck = false,
     max,
     maxLength,
     step,
@@ -38,6 +40,7 @@ export default function Input(props: Props) {
       maxLength={maxLength}
       placeholder={placeholder}
       value={value}
+      spellCheck={spellCheck}
       step={step}
       onChange={onChange}
     />
