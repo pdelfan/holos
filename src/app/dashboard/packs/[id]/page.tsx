@@ -67,7 +67,7 @@ export default function Pack(props: Props) {
       return;
     }
 
-    toast.success("Updated new positions");
+    // toast.success("Updated new positions");
   };
 
   const handleDragEnd = (event: any) => {
@@ -128,7 +128,7 @@ export default function Pack(props: Props) {
     setPackData(packData.filter((item) => item.id !== id));
     setPackStats(packStats.filter((item) => item.group_id !== id));
 
-    toast.success("Deleted group.");
+    // toast.success("Deleted group.");
   };
 
   useEffect(() => {

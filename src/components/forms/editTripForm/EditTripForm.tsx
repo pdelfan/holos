@@ -79,7 +79,7 @@ export default function EditTripForm(props: Props) {
         return;
       }
 
-      toast.success("Updated trip.");
+      // toast.success("Updated trip.");
       onClose();
       setTrip((trips) => {
         const index = trips.findIndex((item) => item.id === tripItem.id);

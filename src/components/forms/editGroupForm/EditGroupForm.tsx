@@ -48,7 +48,7 @@ export default function EditGroupForm(props: Props) {
         return;
       }
 
-      toast.success("Updated group.");
+      // toast.success("Updated group.");
       onClose();
       onUpdate((prev) => {
         if (!prev) return prev;

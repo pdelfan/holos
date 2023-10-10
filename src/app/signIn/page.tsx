@@ -28,8 +28,7 @@ export default function SignIn() {
         password,
       });
 
-      if (error) {
-        console.log(error);
+      if (error) {        
         setError(error.message);
       } else {
         router.push("/dashboard/packs");

@@ -34,7 +34,7 @@ export default function TripGrid() {
       return;
     }
     setTrips(trips.filter((item) => item.id !== id));
-    toast.success("Deleted item from trips.");
+    // toast.success("Deleted item from trips.");
   };
 
   return (

@@ -44,7 +44,7 @@ export default function InventoryGrid() {
       return;
     }
     setInventory(inventory.filter((item) => item.id !== id));
-    toast.success("Deleted item from inventory.");
+    // toast.success("Deleted item from inventory.");
   };
 
   return (

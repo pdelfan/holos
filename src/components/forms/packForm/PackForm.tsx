@@ -57,7 +57,7 @@ export default function PackForm(props: Props) {
         return;
       }
 
-      toast.success("Added pack.");
+      // toast.success("Added pack.");
       onClose();
       setPacks((prev) => [...prev, data[0]]);
     } finally {

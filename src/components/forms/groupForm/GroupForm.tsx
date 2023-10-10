@@ -54,7 +54,7 @@ export default function GroupForm(props: Props) {
         return;
       }
 
-      toast.success("Added group to pack.");
+      // toast.success("Added group to pack.");
       onUpdate((prev) => {
         if (!prev) return prev;
 

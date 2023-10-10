@@ -35,7 +35,7 @@ export default function PackGrid() {
       return;
     }
     setPacks(packs.filter((item) => item.id !== id));
-    toast.success("Deleted pack.");
+    // toast.success("Deleted pack.");
   };
 
   return (

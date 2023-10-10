@@ -56,7 +56,7 @@ export default function WishlistForm(props: Props) {
         return;
       }
 
-      toast.success("Added item to wishlist.");
+      // toast.success("Added item to wishlist.");
       onClose();
       setWishlist((wishlist) => [...wishlist, data[0]]);
     } finally {
@@ -93,7 +93,7 @@ export default function WishlistForm(props: Props) {
         return;
       }
 
-      toast.success("Added item to wishlist.");
+      // toast.success("Added item to wishlist.");
       onClose();
       setWishlist((wishlist) => [...wishlist, data[0]]);
     } finally {

@@ -64,7 +64,7 @@ export default function TripForm(props: Props) {
         return;
       }
 
-      toast.success("Added trip.");
+      // toast.success("Added trip.");
       onClose();
       setTrip((trips) => [...trips, data[0]]);
     } finally {

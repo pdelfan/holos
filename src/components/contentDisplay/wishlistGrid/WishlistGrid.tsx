@@ -35,7 +35,7 @@ export default function WishlistGrid() {
       return;
     }
     setWishlist(wishlist.filter((item) => item.id !== id));
-    toast.success("Deleted item from wishlist.");
+    // toast.success("Deleted item from wishlist.");
   };
 
   return (

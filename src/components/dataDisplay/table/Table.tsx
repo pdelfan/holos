@@ -60,7 +60,7 @@ function Table(props: Props) {
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
-  const [isExpanded, setIsExpanded] = useState(true);  
+  const [isExpanded, setIsExpanded] = useState(true);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -80,7 +80,6 @@ function Table(props: Props) {
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
-    filter: isDragging ? "contrast(0.9)" : "contrast(1)",
     touchAction: "none",
   };
 
@@ -92,7 +91,7 @@ function Table(props: Props) {
       return;
     }
 
-    toast.success("Updated new positions");
+    // toast.success("Updated new positions");
   };
 
   const handleDragEnd = (event: any) => {
@@ -189,7 +188,7 @@ function Table(props: Props) {
       ];
     });
 
-    toast.success("Deleted item from gorup.");
+    // toast.success("Deleted item from gorup.");
   };
 
   return (
@@ -295,7 +294,7 @@ function Table(props: Props) {
                         .map((item) => (
                           <TableRow
                             key={item.id}
-                            item={item}                            
+                            item={item}
                             viewMode={viewMode}
                             currency={currency}
                             onSelect={() => setSelectedItem(item)}
