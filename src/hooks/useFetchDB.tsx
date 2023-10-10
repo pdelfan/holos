@@ -21,6 +21,10 @@ export default function useFetchDB<T extends Record<string, any>>(
   useEffect(() => {
     const getCount = async () => {
       const { data: user } = await supabase.auth.getSession();
+      if (!user.session) {
+        return;
+      }
+      
       const { count } = await supabase
         .from(table)
         .select("*", { count: "exact", head: true })

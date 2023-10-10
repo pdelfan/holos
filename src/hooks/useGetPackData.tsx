@@ -17,6 +17,10 @@ export default function useGetPackData(props: Props) {
     async () => {
       if (packID === "") return;
       const { data: user } = await supabase.auth.getSession();
+      if (!user.session) {
+        return;
+      }
+
       const { data: groups } = await supabase
         .from("group")
         .select("*, pack_item(*, inventory(*))")

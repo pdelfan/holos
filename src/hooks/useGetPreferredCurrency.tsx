@@ -5,7 +5,9 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useAtom } from "jotai";
 import useSWR from "swr";
 
-export default function useGetPreferredCurrency(props: { showAbbreviation?: boolean }) {
+export default function useGetPreferredCurrency(props: {
+  showAbbreviation?: boolean;
+}) {
   const { showAbbreviation = false } = props;
 
   const supabase = createClientComponentClient<Database>();
@@ -15,6 +17,10 @@ export default function useGetPreferredCurrency(props: { showAbbreviation?: bool
     "getPreferredCurrency",
     async () => {
       const { data: user } = await supabase.auth.getSession();
+      if (!user.session) {
+        return;
+      }
+
       const { data: currency } = await supabase
         .from("user")
         .select("preferred_currency")

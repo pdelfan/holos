@@ -10,6 +10,10 @@ export default function useGetPacks() {
 
   const { error, isLoading, isValidating } = useSWR("getPacks", async () => {
     const { data: user } = await supabase.auth.getSession();
+    if (!user.session) {
+      return;
+    }
+    
     const { data: packs } = await supabase
       .from("pack")
       .select("*")

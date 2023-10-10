@@ -14,6 +14,10 @@ export default function useGetGroups(props: Props) {
   useEffect(() => {
     const getGroupData = async () => {
       const { data: user } = await supabase.auth.getSession();
+      if (!user.session) {
+        return;
+      }
+      
       const { data: groups } = await supabase
         .from("group")
         .select("*")

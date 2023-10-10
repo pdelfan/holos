@@ -44,6 +44,11 @@ export default function ShareForm(props: Props) {
   }, [pack.id, supabase]);
 
   const onToggle = async () => {
+    const { data: user } = await supabase.auth.getSession();
+    if (!user.session) {
+      return;
+    }
+
     if (isLoading) return;
     setIsLoading(true);
 

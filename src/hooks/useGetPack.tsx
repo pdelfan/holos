@@ -14,6 +14,9 @@ export default function useGetPack(props: Props) {
   useEffect(() => {
     const getPack = async () => {
       const { data: user } = await supabase.auth.getSession();
+      if (!user.session) {
+        return;
+      }
       const { data } = await supabase
         .from("pack")
         .select("*")
