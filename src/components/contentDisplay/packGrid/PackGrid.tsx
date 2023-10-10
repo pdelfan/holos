@@ -21,11 +21,10 @@ export default function PackGrid() {
   const [showModal, setShowModal] = useState(false);
   const [currentPack, setCurrentPack] = useState<Pack | null>(null);
   const [packs, setPacks] = useAtom(packsAtom);
-  const { pageIndex, setPageIndex, totalItems, itemPerPage, error, isLoading } =
+  const { pageIndex, setPageIndex, totalPages, error, isLoading } =
     useFetchDB({
       itemPerPage: 18,
-      table: "pack",
-      data: packs,
+      table: "pack",      
       setData: setPacks,
     });
 
@@ -77,9 +76,9 @@ export default function PackGrid() {
               </h3>
             </div>
           )}
-          {totalItems && (
+          {totalPages > 1 && (
             <Pagination
-              totalPages={Math.ceil(totalItems / itemPerPage)}
+              totalPages={totalPages}
               pageIndex={pageIndex}
               onChange={setPageIndex}
             />

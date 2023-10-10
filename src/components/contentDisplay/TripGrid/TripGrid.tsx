@@ -21,13 +21,11 @@ export default function TripGrid() {
   const [showModal, setShowModal] = useState(false);
   const [currentTrip, setCurrentTrip] = useState<TripItem | null>(null);
   const [trips, setTrips] = useAtom(tripsAtom);
-  const { pageIndex, setPageIndex, totalItems, itemPerPage, error, isLoading } =
-    useFetchDB({
-      itemPerPage: 18,
-      table: "trip",
-      data: trips,
-      setData: setTrips,
-    });
+  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
+    itemPerPage: 18,
+    table: "trip",
+    setData: setTrips,
+  });
 
   const onDeleteTrip = async (id: number) => {
     const { error } = await supabase.from("trip").delete().eq("id", id);
@@ -85,9 +83,9 @@ export default function TripGrid() {
               </h3>
             </div>
           )}
-          {totalItems && (
+          {totalPages > 1 && (
             <Pagination
-              totalPages={Math.ceil(totalItems / itemPerPage)}
+              totalPages={totalPages}
               pageIndex={pageIndex}
               onChange={setPageIndex}
             />

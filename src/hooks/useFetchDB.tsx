@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 interface Props<T> {
   itemPerPage: number;
-  data: T;
   setData: (value: T) => void;
   table: string;
 }
@@ -12,7 +11,7 @@ interface Props<T> {
 export default function useFetchDB<T extends Record<string, any>>(
   props: Props<T>
 ) {
-  const { table, itemPerPage, data, setData } = props;
+  const { table, itemPerPage, setData } = props;
   const supabase = createClientComponentClient<Database>();
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -23,18 +22,18 @@ export default function useFetchDB<T extends Record<string, any>>(
     const getCount = async () => {
       const { data: user } = await supabase.auth.getSession();
       const { count } = await supabase
-        .from("inventory")
+        .from(table)
         .select("*", { count: "exact", head: true })
         .eq("user_id", user.session?.user.id);
       setTotalItems(count ?? 0);
     };
     getCount();
-  }, [supabase]);
+  }, [supabase, table]);
 
   useEffect(() => {
     const getData = async () => {
       setError(false);
-      setIsLoading(true)
+      setIsLoading(true);
 
       const from = pageIndex * itemPerPage;
       const to = from + itemPerPage - 1; // adjust the range to exclude the extra item
@@ -51,16 +50,18 @@ export default function useFetchDB<T extends Record<string, any>>(
         setIsLoading(false);
         return;
       }
-
       setData(fetchedData as unknown as T);
       setIsLoading(false);
     };
     getData();
   }, [itemPerPage, pageIndex, setData, supabase, table]);
 
+  const totalPages = Math.ceil(totalItems / itemPerPage);
+
   return {
     totalItems,
     itemPerPage,
+    totalPages,
     pageIndex,
     setPageIndex,
     error,

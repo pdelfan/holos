@@ -30,11 +30,10 @@ export default function InventoryGrid() {
     useState<InventoryItem | null>(null);
   const { currency } = useGetPreferredCurrency({});
   const [inventory, setInventory] = useAtom(inventoryAtom);
-  const { pageIndex, setPageIndex, totalItems, itemPerPage, error, isLoading } =
+  const { pageIndex, setPageIndex, totalPages, error, isLoading } =
     useFetchDB({
-      itemPerPage: 13,
-      table: "inventory",
-      data: inventory,
+      itemPerPage: 18,
+      table: "inventory",      
       setData: setInventory,
     });
 
@@ -91,9 +90,9 @@ export default function InventoryGrid() {
               </h3>
             </div>
           )}
-          {totalItems && (
+          {totalPages > 1 && (
             <Pagination
-              totalPages={Math.ceil(totalItems / itemPerPage)}
+              totalPages={totalPages}
               pageIndex={pageIndex}
               onChange={setPageIndex}
             />

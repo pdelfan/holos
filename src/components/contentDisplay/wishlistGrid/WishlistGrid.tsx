@@ -22,13 +22,11 @@ export default function WishlistGrid() {
   const viewFilter = useAtomValue(viewFilterAtom);
   const sortFilter = useAtomValue(sortFilterAtom);
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
-  const { pageIndex, setPageIndex, totalItems, itemPerPage, error, isLoading } =
-    useFetchDB({
-      itemPerPage: 18,
-      table: "wishlist",
-      data: wishlist,
-      setData: setWishlist,
-    });
+  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
+    itemPerPage: 18,
+    table: "wishlist",
+    setData: setWishlist,
+  });
 
   const onDeleteBookmark = async (id: number) => {
     const { error } = await supabase.from("wishlist").delete().eq("id", id);
@@ -76,9 +74,9 @@ export default function WishlistGrid() {
               </h3>
             </div>
           )}
-          {totalItems && (
+          {totalPages > 1 && (
             <Pagination
-              totalPages={Math.ceil(totalItems / itemPerPage)}
+              totalPages={totalPages}
               pageIndex={pageIndex}
               onChange={setPageIndex}
             />

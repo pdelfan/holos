@@ -5,7 +5,7 @@ import { SetStateAction, useState } from "react";
 
 interface Props {
   onChange: (value: SetStateAction<number>) => void;
-  totalPages: number;
+  totalPages: number;  
   pageIndex: number;
 }
 
@@ -24,6 +24,8 @@ export default function Pagination(props: Props) {
     <div className="flex max-w-fit mx-auto items-center justify-center gap-3 p-2 mt-5 border-2 dark:border-neutral-700 rounded-full">
       <select
         className="appearance-none text-center px-3 py-1 border-2 text-neutral-500 dark:text-neutral-300 dark:border-neutral-700 dark:bg-neutral-800 rounded-full"
+        // for Safari, see https://bugs.webkit.org/show_bug.cgi?id=40216
+        style={{ textAlignLast: "center" }}
         onChange={(e: React.FormEvent<HTMLSelectElement>) =>
           handlePageChange(Number(e.currentTarget.value) - 1)
         }
@@ -46,7 +48,7 @@ export default function Pagination(props: Props) {
           bgColor="bg-button dark:bg-neutral-700"
           textColor="text-button-text dark:text-neutral-300"
           icon={LeftArrowIcon}
-          onClick={() => handlePageChange(page - 1)}          
+          onClick={() => handlePageChange(page - 1)}
           disabled={page === 0}
         />
         <Button
@@ -55,7 +57,6 @@ export default function Pagination(props: Props) {
           icon={RightArrowIcon}
           onClick={() => handlePageChange(page + 1)}
           disabled={page === totalPages - 1}
-
         />
       </div>
     </div>
