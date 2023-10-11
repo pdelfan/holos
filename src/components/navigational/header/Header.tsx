@@ -10,20 +10,19 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import useGetUserData from "@/hooks/useGetUserData";
-import { useSetAtom } from "jotai";
-import { userDataAtom } from "@/store/store";
 
-function Header() {
+interface Props {
+  user: UserData | null;
+}
+
+function Header(props: Props) {
+  const { user: userData } = props;
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
-  const { userData } = useGetUserData();
-  const setUserData = useSetAtom(userDataAtom);
 
   const onSignOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      setUserData(null);
       window.location.reload();
     }
   };
@@ -41,10 +40,7 @@ function Header() {
       <Dropdown
         button={
           <span className="hover:brightness-95">
-            <Avatar
-              name={userData?.email ?? null}
-              image={userData?.avatar_url}
-            />
+            <Avatar name={userData?.email} image={userData?.avatar_url} />
           </span>
         }
       >

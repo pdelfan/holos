@@ -3,7 +3,7 @@ import AvatarSkeleton from "./AvatarSkeleton";
 import { formatUsername } from "@/utils/textUtils";
 
 interface Props {
-  name: string | null;
+  name: string | undefined;
   image?: string | null;
   size?: "small" | "large";
 }
