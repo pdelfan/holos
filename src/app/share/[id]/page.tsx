@@ -48,8 +48,6 @@ export default function SharedPack(props: Props) {
     }
     setPackData(packData.filter((item) => item.id !== id));
     setPackStats(packStats.filter((item) => item.group_id !== id));
-
-    // toast.success("Deleted group.");
   };
 
   useEffect(() => {

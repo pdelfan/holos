@@ -63,7 +63,6 @@ export default function InventoryForm(props: Props) {
         return;
       }
 
-      // toast.success("Added item to inventory.");
       onClose();
       setInventory((prev) => [...prev, data[0]]);
     } finally {

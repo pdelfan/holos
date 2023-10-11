@@ -90,8 +90,6 @@ function Table(props: Props) {
       toast.error("Couldn't update new positions.");
       return;
     }
-
-    // toast.success("Updated new positions");
   };
 
   const handleDragEnd = (event: any) => {
@@ -187,8 +185,6 @@ function Table(props: Props) {
         },
       ];
     });
-
-    // toast.success("Deleted item from gorup.");
   };
 
   return (

@@ -42,7 +42,6 @@ export default function InventoryGrid(props: Props) {
       return;
     }
     setInventory(inventory.filter((item) => item.id !== id));
-    // toast.success("Deleted item from inventory.");
   };
 
   return (
@@ -54,9 +53,7 @@ export default function InventoryGrid(props: Props) {
             {inventory &&
               sortInventory(inventory, sortFilter.text)
                 .filter((item) =>
-                  item.title
-                    .toLowerCase()
-                    .includes(search.toLowerCase())
+                  item.title.toLowerCase().includes(search.toLowerCase())
                 )
                 .filter((item) => {
                   if (seasonFilter.text === "Show All") return true;

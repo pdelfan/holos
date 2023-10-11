@@ -57,7 +57,6 @@ export default function EditPackForm(props: Props) {
         return;
       }
 
-      // toast.success("Updated pack.");
       onClose();
       setPacks((prev) => {
         const index = prev.findIndex((item) => item.id === pack.id);

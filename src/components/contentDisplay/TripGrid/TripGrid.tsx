@@ -38,7 +38,6 @@ export default function TripGrid(props: Props) {
       return;
     }
     setTrips(trips.filter((item) => item.id !== id));
-    // toast.success("Deleted item from trips.");
   };
 
   return (

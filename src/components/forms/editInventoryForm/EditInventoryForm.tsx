@@ -76,7 +76,6 @@ export default function EditInventoryForm(props: Props) {
         return;
       }
 
-      // toast.success("Updated item.");
       onClose();
       setInventory((prev) => {
         const index = prev.findIndex((item) => item.id === inventoryItem.id);

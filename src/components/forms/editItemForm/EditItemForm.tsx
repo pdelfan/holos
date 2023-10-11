@@ -47,8 +47,6 @@ export default function EditItemForm(props: Props) {
         return;
       }
 
-      // toast.success("Updated item.");
-
       // filter out the item and replace its data
       onUpdate((prev) => {
         if (!prev) return prev;

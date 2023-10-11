@@ -113,7 +113,6 @@ export default function ItemForm(props: Props) {
         ];
       });
 
-      // toast.success("Added item to group.");
       onClose();
     } finally {
       setLoading(false);

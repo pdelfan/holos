@@ -34,7 +34,6 @@ export default function WishlistGrid(props: Props) {
       return;
     }
     setWishlist(wishlist.filter((item) => item.id !== id));
-    // toast.success("Deleted item from wishlist.");
   };
 
   return (

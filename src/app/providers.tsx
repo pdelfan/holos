@@ -32,8 +32,10 @@ export default function Providers(props: Props) {
 
   return (
     <AuthProvider>
-      <Toaster />
-      <Provider>{children}</Provider>
+      <Provider>
+        <Toaster />
+        {children}
+      </Provider>
     </AuthProvider>
   );
 }
