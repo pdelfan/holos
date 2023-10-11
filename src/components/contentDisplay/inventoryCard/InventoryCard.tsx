@@ -5,15 +5,13 @@ import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
 import CostIcon from "@/assets/icons/costIcon.svg";
 
 interface Props {
-  data: InventoryItem;
+  item: InventoryItem;
   currency: string;
   onEdit: () => void;
 }
 
 function InventoryCard(props: Props) {
-  const { data, currency, onEdit } = props;
-  const { title, image_url, url, description, price, weight, weight_unit } =
-    data;
+  const { item, currency, onEdit } = props;
 
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
@@ -23,14 +21,14 @@ function InventoryCard(props: Props) {
     <article
       className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
       onClick={() => {
-        if (!url) return;
-        window.open(url, "_blank");
+        if (!item.url) return;
+        window.open(item.url, "_blank");
       }}
     >
-      {image_url && (
+      {item.image_url && (
         <Image
           className="rounded-lg ml-auto mr-auto mb-6 h-28 w-28 object-contain bg-white"
-          src={image_url}
+          src={item.image_url}
           alt="Item image"
           width={80}
           height={80}
@@ -41,23 +39,23 @@ function InventoryCard(props: Props) {
       <div className="flex flex-col items-start">
         <div className="flex flex-col gap-1">
           <h2 className="text-stone-600 font-medium leading-5 dark:text-stone-300">
-            {title}
+            {item.title}
           </h2>
-          {description && (
+          {item.description && (
             <h3 className="break-words overflow-clip text-sm text-stone-400">
-              {description}
+              {item.description}
             </h3>
           )}
         </div>
         <div className="flex justify-between gap-4 mt-4 items-center">
-          {price !== 0 && (
+          {item.price !== 0 && (
             <span className="flex items-center gap-1 text-sm font-medium text-stone-500 border-stone-300 dark:text-stone-400">
               <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
               {currency} 
-              {price}
+              {item.price}
             </span>
           )}
-          {weight !== 0 && (
+          {item.weight !== 0 && (
             <span className="flex items-center gap-1 text-sm font-medium text-stone-500 border-stone-300 dark:text-stone-400">
               <Image
                 src={TotalWeightIcon}
@@ -65,7 +63,7 @@ function InventoryCard(props: Props) {
                 width={20}
                 height={20}
               />
-              {weight} {weight_unit}
+              {item.weight} {item.weight_unit}
             </span>
           )}
         </div>

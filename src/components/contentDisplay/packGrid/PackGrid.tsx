@@ -49,14 +49,12 @@ export default function PackGrid(props: Props) {
             {packs &&
               sortPacks(packs, sortFilter.text)
                 .filter((item) =>
-                  item.title
-                    .toLowerCase()
-                    .includes(search.trim().toLowerCase())
+                  item.title.toLowerCase().includes(search.trim().toLowerCase())
                 )
                 .map((item) => (
                   <PackCard
                     key={item.id}
-                    data={item}
+                    item={item}
                     onEdit={() => {
                       setCurrentPack(item);
                       setShowModal(true);

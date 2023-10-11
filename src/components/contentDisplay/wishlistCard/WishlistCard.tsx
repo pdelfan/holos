@@ -5,16 +5,13 @@ import { useCallback } from "react";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 
 interface Props {
-  url: string;
-  title: string | null;
-  logo_url: string | null;
-  image_url: string | null;
+  item: WishlistItem;
   viewMode: string;
   onDelete: () => void;
 }
 
 function WishlistCard(props: Props) {
-  const { url, title, logo_url, image_url, viewMode, onDelete } = props;
+  const { item, viewMode, onDelete } = props;
   const imageLoader = useCallback(({ src }: { src: string }) => {
     return src;
   }, []);
@@ -24,16 +21,16 @@ function WishlistCard(props: Props) {
       <article
         className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
         onClick={() => {
-          window.open(url, "_blank");
+          window.open(item.url, "_blank");
         }}
       >
-        {viewMode !== "Compact" && image_url && (
+        {viewMode !== "Compact" && item.image_url && (
           <Image
             className={`rounded-lg ml-auto mr-auto mb-6 bg-white ${
               viewMode === "Large" ? "h-40 w-40" : "h-28 w-28"
             } object-contain`}
             loader={imageLoader}
-            src={image_url ?? PlaceholderImage}
+            src={item.image_url ?? PlaceholderImage}
             alt="Wishlist item"
             width={120}
             height={130}
@@ -41,21 +38,21 @@ function WishlistCard(props: Props) {
         )}
         <div className="flex flex-col gap-1">
           <div className="flex gap-1 flex-wrap items-center">
-            {logo_url && (
+            {item.logo_url && (
               <Image
-                src={logo_url}
+                src={item.logo_url}
                 alt={"Website Favicon"}
                 width={20}
                 height={20}
               />
             )}
             <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400">
-              {getShortAddress(url)}
+              {getShortAddress(item.url)}
             </h2>
           </div>
           {viewMode !== "Medium" && (
             <h3 className="text-stone-600 font-medium leading-5 dark:text-neutral-300">
-              {title}
+              {item.title}
             </h3>
           )}
         </div>

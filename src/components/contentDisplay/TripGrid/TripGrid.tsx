@@ -54,15 +54,7 @@ export default function TripGrid(props: Props) {
                 .map((item) => (
                   <TripCard
                     key={item.id}
-                    title={item.title}
-                    date={item.date}
-                    elevation={item.elevation}
-                    elevationUnit={item.elevation_unit}
-                    distance={item.distance}
-                    distanceUnit={item.distance_unit}
-                    baseWeight={item.base_weight}
-                    totalWeight={item.total_weight}
-                    weightUnit={item.weight_unit}
+                    item={item}
                     onEdit={() => {
                       setCurrentTrip(item);
                       setShowModal(true);

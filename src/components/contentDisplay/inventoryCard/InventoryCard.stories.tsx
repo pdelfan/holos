@@ -13,7 +13,7 @@ type Story = StoryObj<typeof InventoryCard>;
 export const Default: Story = {
   args: {
     currency: "CAD$",
-    data: {
+    item: {
       id: 0,
       created_at: "2021-08-01T00:00:00.000Z",
       title: "Baltoro 75L Pack",

@@ -97,7 +97,7 @@ export default function Pack(props: Props) {
 
         return [
           ...prev.slice(0, indexToUpdate), // items before the updated item
-          { ...prev[indexToUpdate], position: newIndex }, // updated item
+          { ...prev, ...prev[indexToUpdate], position: newIndex }, // updated item
           ...prev.slice(indexToUpdate + 1), // items after the updated item
         ];
       });

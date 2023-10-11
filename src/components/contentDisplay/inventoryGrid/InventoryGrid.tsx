@@ -62,7 +62,7 @@ export default function InventoryGrid(props: Props) {
                 .map((item) => (
                   <InventoryCard
                     key={item.id}
-                    data={item}
+                    item={item}
                     currency={currency}
                     onEdit={() => {
                       setCurrentInventoryItem(item);

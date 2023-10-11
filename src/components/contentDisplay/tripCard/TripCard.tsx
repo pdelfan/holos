@@ -2,38 +2,19 @@ import Image from "next/image";
 import MoreIcon from "@/assets/icons/moreIcon.svg";
 
 interface Props {
-  title: string;
-  date: string;
-  elevation: number;
-  elevationUnit: string;
-  distance: number;
-  distanceUnit: string;
-  baseWeight: number;
-  totalWeight: number;
-  weightUnit: string;
+  item: TripItem;
   onEdit: () => void;
 }
 
 function TripCard(props: Props) {
-  const {
-    title,
-    date,
-    elevation,
-    elevationUnit,
-    distance,
-    distanceUnit,
-    baseWeight,
-    totalWeight,
-    weightUnit,
-    onEdit,
-  } = props;
+  const { item, onEdit } = props;
 
   const gradient = {
     background:
       "radial-gradient(50% 50.00% at 50% 50.00%, #4B5A54 0%, #A3B3AD 100%)",
   };
 
-  const formattedDate = new Date(date).toLocaleString("default", {
+  const formattedDate = new Date(item.date).toLocaleString("default", {
     month: "short",
     year: "numeric",
     day: "numeric",
@@ -47,7 +28,7 @@ function TripCard(props: Props) {
     >
       <div className="flex flex-col flex-wrap gap-1">
         <h2 className="text-lg text-white font-medium break-words overflow-clip leading-5">
-          {title}
+          {item.title}
         </h2>
         <h3 className="text-sm text-white font-medium break-words overflow-clip">
           {formattedDate}
@@ -59,7 +40,7 @@ function TripCard(props: Props) {
             Elevation
           </span>
           <span className="text-white text-lg font-medium">
-            {elevation} {elevationUnit}
+            {item.elevation} {item.elevation_unit}
           </span>
         </li>
         <li className="flex flex-col">
@@ -67,7 +48,7 @@ function TripCard(props: Props) {
             Distance
           </span>
           <span className="text-white text-lg font-medium">
-            {distance} {distanceUnit}
+            {item.distance} {item.distance_unit}
           </span>
         </li>
         <li className="flex flex-col">
@@ -75,7 +56,7 @@ function TripCard(props: Props) {
             Base Weight
           </span>
           <span className="text-white text-lg font-medium">
-            {baseWeight} {weightUnit}
+            {item.base_weight} {item.weight_unit}
           </span>
         </li>
         <li className="flex flex-col">
@@ -83,7 +64,7 @@ function TripCard(props: Props) {
             Total weight
           </span>
           <span className="text-white text-lg font-medium">
-            {totalWeight} {weightUnit}
+            {item.total_weight} {item.weight_unit}
           </span>
         </li>
       </ul>

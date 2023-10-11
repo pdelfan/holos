@@ -17,7 +17,7 @@ export const Default: Story = {
     },
   },
   args: {
-    data: {
+    item: {
       id: 0,
       created_at: "2021-08-01T00:00:00.000Z",
       user_id: "0",

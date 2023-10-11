@@ -49,10 +49,7 @@ export default function WishlistGrid(props: Props) {
                 .map((item) => (
                   <WishlistCard
                     key={item.id}
-                    url={item.url}
-                    title={item.title}
-                    logo_url={item.logo_url}
-                    image_url={item.image_url}
+                    item={item}
                     viewMode={viewFilter.text}
                     onDelete={() => onDeleteBookmark(item.id)}
                   />
