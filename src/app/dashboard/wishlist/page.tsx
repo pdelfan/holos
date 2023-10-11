@@ -13,7 +13,7 @@ import {
   viewFilterAtom,
   sortFilterAtom,
 } from "@/store/store";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useState } from "react";
 
 export default function Wishlist() {

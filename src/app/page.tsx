@@ -1,10 +1,5 @@
 import Image from "next/image";
-import LandingImage from "@/assets/images/landingImage.png";
 import Logo from "@/assets/logo.svg";
-import PackImage from "@/assets/images/packExample.png";
-import TripsImage from "@/assets/images/tripsExample.png";
-import InventoryImage from "@/assets/images/inventoryExample.png";
-import WishlistImage from "@/assets/images/wishlistExample.png";
 import DonateIcon from "@/assets/icons/donateIcon.svg";
 import Link from "next/link";
 
@@ -44,9 +39,10 @@ export default function Home() {
         </div>
         <Image
           className="animate-fade-up mt-12"
-          src={LandingImage}
+          src={"/screenshots/landingImage.png"}
           alt="Illustration of hikers on a path that is made up of the letters H-O-L-O-S"
           width={900}
+          height={400}
         />
       </section>
       <section className="flex flex-col flex-wrap gap-5 p-3 mt-10 max-w-7xl animate-delay-1000 animate-fade-up">
@@ -66,9 +62,10 @@ export default function Home() {
           </div>
           <Image
             className="border-2 border-gray-200 rounded-xl animate-fade-up mx-auto mt-6 xl:mt-0"
-            src={PackImage}
+            src={"/screenshots/packExample.png"}
             alt="Illustration of a pack with several items inside"
             width={900}
+            height={200}
           />
         </div>
         <div className="flex flex-wrap gap-5">
@@ -84,9 +81,10 @@ export default function Home() {
             </div>
             <Image
               className="border-2 border-gray-200 rounded-xl mt-6 mx-auto"
-              src={InventoryImage}
+              src={"/screenshots/inventoryExample.png"}
               alt="Two inventory cards showing jackets along with their price and weight"
               width={660}
+              height={400}
             />
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex  flex-col flex-1 min-w-[49%] dark:bg-neutral-800">
@@ -101,9 +99,10 @@ export default function Home() {
             </div>
             <Image
               className="mt-6 mx-auto"
-              src={TripsImage}
+              src={"/screenshots/tripsExample.png"}
               alt="Three trip cards showing title of the trip"
               width={400}
+              height={400}
             />
           </div>
         </div>
@@ -120,9 +119,10 @@ export default function Home() {
             </div>
             <Image
               className="mt-6 mx-auto"
-              src={WishlistImage}
+              src={"/screenshots/wishlistExample.png"}
               alt="Four wishlist items with their title and website link."
               width={660}
+              height={400}
             />
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
