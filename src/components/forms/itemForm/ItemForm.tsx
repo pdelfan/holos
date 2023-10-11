@@ -160,7 +160,7 @@ export default function ItemForm(props: Props) {
                       key={item.id}
                     >
                       <button
-                        className="flex items-center gap-2 p-2"
+                        className="flex items-center gap-2 p-2 w-full"
                         onClick={() => {
                           setSelectedItem(item);
                           setSearch("");
