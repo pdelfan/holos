@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import InventoryCard from "./InventoryCard";
+import InventoryCardSkeleton from "./InventoryCardSkeleton";
 
 const meta: Meta<typeof InventoryCard> = {
   title: "Content Display/Inventory Card",
@@ -26,4 +27,8 @@ export const Default: Story = {
         "https://www.mec.ca/_next/image?url=https%3A%2F%2Fcdn11.bigcommerce.com%2Fs-xw5rh7060c%2Fproducts%2F51635%2Fimages%2F231626%2F6020283_BK000__00667.1681376828.1280.1280.jpg%3Fc%3D1&w=1600&q=65",
     },
   },
+};
+
+export const Skeleton: Story = {
+  render: () => <InventoryCardSkeleton />,
 };

@@ -9,4 +9,11 @@ const meta: Meta<typeof AddItemRow> = {
 export default meta;
 type Story = StoryObj<typeof AddItemRow>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  args: {
+    viewMode: false,
+    total: { price: 120, weight: 3, quantity: 12 },
+    weightUnit: "kg",
+    currency: "$",
+  },
+};

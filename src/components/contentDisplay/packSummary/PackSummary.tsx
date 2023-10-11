@@ -30,8 +30,7 @@ function PackSummary(props: Props) {
               src={BaseWeightIcon}
               alt="Base icon"
               width={20}
-              height={20}
-              style={{ width: "auto" }}
+              height={20}              
             />
             <h5 className="text-gray font-medium dark:text-neutral-200">
               {base_weight.toFixed(2)} {weight_unit}
@@ -48,7 +47,6 @@ function PackSummary(props: Props) {
               alt="Total weight icon"
               width={20}
               height={20}
-              style={{ width: "auto" }}
             />
             <h5 className="text-gray font-medium dark:text-neutral-200">
               {total_weight.toFixed(2)} {weight_unit}
@@ -77,7 +75,6 @@ function PackSummary(props: Props) {
               alt="Items icon"
               width={20}
               height={20}
-              style={{ width: "auto" }}
             />
             <h5 className="text-gray font-medium dark:text-neutral-200">
               {total_items}
