@@ -27,7 +27,7 @@ function TripCard(props: Props) {
       tabIndex={0}
     >
       <div className="flex flex-col flex-wrap gap-1">
-        <h2 className="text-lg text-white font-medium break-words overflow-clip leading-5">
+        <h2 className="text-lg text-white font-medium break-words overflow-clip leading-5 max-w-[80%]">
           {item.title}
         </h2>
         <h3 className="text-sm text-white font-medium break-words overflow-clip">
