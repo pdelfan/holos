@@ -46,12 +46,12 @@ function WishlistCard(props: Props) {
                 height={20}
               />
             )}
-            <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400">
+            <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400 max-w-[80%]">
               {getShortAddress(item.url)}
             </h2>
           </div>
           {viewMode !== "Medium" && (
-            <h3 className="text-stone-600 font-medium leading-5 dark:text-neutral-300">
+            <h3 className="text-stone-600 font-medium leading-5 dark:text-neutral-300 max-w-[90%]">
               {item.title}
             </h3>
           )}
