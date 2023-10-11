@@ -1,6 +1,5 @@
 import Image from "next/image";
 import PlaceholderImage from "@/assets/images/imagePlaceholder.png";
-import PlaceholderIcon from "@/assets/images/iconPlaceholder.png";
 import { getShortAddress } from "@/utils/linkUtils";
 import { useCallback } from "react";
 import DeleteIcon from "@/assets/icons/deleteIcon.svg";

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import DropdownIcon from "@/assets/icons/dropdownIcon.svg";
 import Label from "@/components/inputs/label/Label";
 

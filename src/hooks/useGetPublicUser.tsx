@@ -2,7 +2,6 @@ import { Database } from "@/lib/database.types";
 import { extractUsername } from "@/utils/textUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 interface Props {
   shareID: string;
