@@ -20,7 +20,7 @@ export default function useGetUserData() {
 
       const { data: user } = await supabase
         .from("user")
-        .select("name, avatar_url, email, id")
+        .select("name, avatar_url, email, id, preferred_currency")
         .eq("id", data.session.user.id);
 
       if (user) {

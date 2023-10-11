@@ -18,7 +18,7 @@ import { useState } from "react";
 
 export default function Wishlist() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const setWishlistSearch = useSetAtom(wishlistSearchAtom);
+  const [wishlistSearch, setWishlistSearch] = useAtom(wishlistSearchAtom);
   const [viewFilter, setViewFilter] = useAtom(viewFilterAtom);
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
@@ -27,7 +27,9 @@ export default function Wishlist() {
 
   return (
     <>
-      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">Wishlist</h1>
+      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+        Wishlist
+      </h1>
       <section className="flex flex-wrap gap-3 justify-between items-center mt-3">
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar
@@ -50,7 +52,11 @@ export default function Wishlist() {
           />
         </div>
       </section>
-      <WishlistGrid />
+      <WishlistGrid
+        search={wishlistSearch}
+        sortFilter={sortFilter}
+        viewFilter={viewFilter}
+      />
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (

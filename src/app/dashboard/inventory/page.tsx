@@ -13,14 +13,13 @@ import {
   sortFilterAtom,
   sortFilterOptions,
 } from "@/store/store";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useState } from "react";
 
 export default function Inventory() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const setInventorySearch = useSetAtom(inventorySearchAtom);
+  const [inventorySearch, setInventorySearch] = useAtom(inventorySearchAtom);
   const [seasonFilter, setSeasonFilter] = useAtom(seasonFilterAtom);
-
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
     setInventorySearch(searchTerm);
@@ -28,7 +27,9 @@ export default function Inventory() {
 
   return (
     <>
-      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">Inventory</h1>
+      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+        Inventory
+      </h1>
       <section className="flex flex-wrap gap-3 justify-between items-center mt-3">
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for an item" onChange={handleSearch} />
@@ -48,7 +49,11 @@ export default function Inventory() {
           />
         </div>
       </section>
-      <InventoryGrid />
+      <InventoryGrid
+        search={inventorySearch}
+        seasonFilter={seasonFilter}
+        sortFilter={sortFilter}
+      />
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (

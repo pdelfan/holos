@@ -3,8 +3,8 @@
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
-import { useAtom, useAtomValue } from "jotai";
-import { packSearchAtom, packsAtom, sortFilterAtom } from "@/store/store";
+import { useAtom } from "jotai";
+import { packsAtom } from "@/store/store";
 import { sortPacks } from "@/utils/filterUtils";
 import PackGridSkeleton from "./PackGridSkeleton";
 import { useState } from "react";
@@ -14,19 +14,22 @@ import EditPackForm from "@/components/forms/editPackForm/EditPackForm";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 
-export default function PackGrid() {
+interface Props {
+  search: string;
+  sortFilter: SelectOption;
+}
+
+export default function PackGrid(props: Props) {
+  const { search, sortFilter } = props;
   const supabase = createClientComponentClient<Database>();
-  const packSearch = useAtomValue(packSearchAtom);
-  const sortFilter = useAtomValue(sortFilterAtom);
   const [showModal, setShowModal] = useState(false);
   const [currentPack, setCurrentPack] = useState<Pack | null>(null);
   const [packs, setPacks] = useAtom(packsAtom);
-  const { pageIndex, setPageIndex, totalPages, error, isLoading } =
-    useFetchDB({
-      itemPerPage: 18,
-      table: "pack",      
-      setData: setPacks,
-    });
+  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
+    itemPerPage: 18,
+    table: "pack",
+    setData: setPacks,
+  });
 
   const onDeletePack = async (id: number) => {
     const { error } = await supabase.from("pack").delete().eq("id", id);
@@ -49,7 +52,7 @@ export default function PackGrid() {
                 .filter((item) =>
                   item.title
                     .toLowerCase()
-                    .includes(packSearch.trim().toLowerCase())
+                    .includes(search.trim().toLowerCase())
                 )
                 .map((item) => (
                   <PackCard

@@ -11,19 +11,21 @@ import {
   sortFilterOptions,
   tripSearchAtom,
 } from "@/store/store";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useState } from "react";
 
 export default function Trips() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const setTripSearch = useSetAtom(tripSearchAtom);
+  const [tripSearch, setTripSearch] = useAtom(tripSearchAtom);
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
     setTripSearch(searchTerm);
   };
   return (
     <>
-      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">Trips</h1>
+      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+        Trips
+      </h1>
       <section className="flex flex-wrap gap-3 justify-between items-center mt-3">
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for a trip" onChange={handleSearch} />
@@ -37,7 +39,7 @@ export default function Trips() {
           />
         </div>
       </section>
-      <TripGrid />
+      <TripGrid search={tripSearch} sortFilter={sortFilter} />
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (

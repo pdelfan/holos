@@ -5,22 +5,21 @@ import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import WishlistGridSkeleton from "./WishListGridSkeleton";
-import { useAtom, useAtomValue } from "jotai";
-import {
-  sortFilterAtom,
-  viewFilterAtom,
-  wishlistAtom,
-  wishlistSearchAtom,
-} from "@/store/store";
+import { useAtom } from "jotai";
+import { wishlistAtom } from "@/store/store";
 import { sortWishlist } from "@/utils/filterUtils";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 
-export default function WishlistGrid() {
+interface Props {
+  search: string;
+  viewFilter: SelectOption;
+  sortFilter: SelectOption;
+}
+
+export default function WishlistGrid(props: Props) {
+  const { search, viewFilter, sortFilter } = props;
   const supabase = createClientComponentClient<Database>();
-  const wishlistSearch = useAtomValue(wishlistSearchAtom);
-  const viewFilter = useAtomValue(viewFilterAtom);
-  const sortFilter = useAtomValue(sortFilterAtom);
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
   const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
     itemPerPage: 18,
@@ -47,7 +46,7 @@ export default function WishlistGrid() {
             {!isLoading &&
               wishlist &&
               sortWishlist(wishlist, sortFilter.text)
-                .filter((item) => item.url.includes(wishlistSearch))
+                .filter((item) => item.url.includes(search))
                 .map((item) => (
                   <WishlistCard
                     key={item.id}

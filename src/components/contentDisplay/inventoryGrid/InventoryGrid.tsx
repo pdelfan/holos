@@ -4,13 +4,8 @@ import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import InventoryGridSkeleton from "./InventoryGridSkeleton";
-import { useAtom, useAtomValue } from "jotai";
-import {
-  inventoryAtom,
-  inventorySearchAtom,
-  seasonFilterAtom,
-  sortFilterAtom,
-} from "@/store/store";
+import { useAtom } from "jotai";
+import { inventoryAtom } from "@/store/store";
 import { sortInventory } from "@/utils/filterUtils";
 import InventoryCard from "@/components/contentDisplay/inventoryCard/InventoryCard";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
@@ -20,22 +15,25 @@ import EditInventoryForm from "@/components/forms/editInventoryForm/EditInventor
 import Pagination from "@/components/navigational/pagination/Pagination";
 import useFetchDB from "@/hooks/useFetchDB";
 
-export default function InventoryGrid() {
+interface Props {
+  search: string;
+  seasonFilter: SelectOption;
+  sortFilter: SelectOption;
+}
+
+export default function InventoryGrid(props: Props) {
+  const { search, seasonFilter, sortFilter } = props;
   const supabase = createClientComponentClient<Database>();
   const [showModal, setShowModal] = useState(false);
-  const inventorySearch = useAtomValue(inventorySearchAtom);
-  const seasonFilter = useAtomValue(seasonFilterAtom);
-  const sortFilter = useAtomValue(sortFilterAtom);
-  const [currentIventoryItem, setCurrentInventoryItem] =
+  const [currentInventoryItem, setCurrentInventoryItem] =
     useState<InventoryItem | null>(null);
   const { currency } = useGetPreferredCurrency({});
   const [inventory, setInventory] = useAtom(inventoryAtom);
-  const { pageIndex, setPageIndex, totalPages, error, isLoading } =
-    useFetchDB({
-      itemPerPage: 18,
-      table: "inventory",      
-      setData: setInventory,
-    });
+  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
+    itemPerPage: 18,
+    table: "inventory",
+    setData: setInventory,
+  });
 
   const onDeleteInventoryItem = async (id: number) => {
     const { error } = await supabase.from("inventory").delete().eq("id", id);
@@ -52,13 +50,13 @@ export default function InventoryGrid() {
       {isLoading && <InventoryGridSkeleton />}
       {!isLoading && (
         <>
-          <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10">
+          <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
             {inventory &&
               sortInventory(inventory, sortFilter.text)
                 .filter((item) =>
                   item.title
                     .toLowerCase()
-                    .includes(inventorySearch.toLowerCase())
+                    .includes(search.toLowerCase())
                 )
                 .filter((item) => {
                   if (seasonFilter.text === "Show All") return true;
@@ -100,11 +98,11 @@ export default function InventoryGrid() {
         </>
       )}
 
-      {showModal && currentIventoryItem && (
+      {showModal && currentInventoryItem && (
         <Modal>
           <EditInventoryForm
-            inventoryItem={currentIventoryItem}
-            onDelete={() => onDeleteInventoryItem(currentIventoryItem.id)}
+            inventoryItem={currentInventoryItem}
+            onDelete={() => onDeleteInventoryItem(currentInventoryItem.id)}
             onClose={() => setShowModal(false)}
           />
         </Modal>

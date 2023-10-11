@@ -3,8 +3,8 @@
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
-import { useAtom, useAtomValue } from "jotai";
-import { sortFilterAtom, tripSearchAtom, tripsAtom } from "@/store/store";
+import { useAtom } from "jotai";
+import { tripsAtom } from "@/store/store";
 import { sortTrips } from "@/utils/filterUtils";
 import TripCard from "@/components/contentDisplay/tripCard/TripCard";
 import TripGridSkeleton from "./TripGridSkeleton";
@@ -14,10 +14,14 @@ import Modal from "@/components/feedback/modal/Modal";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 
-export default function TripGrid() {
+interface Props {
+  search: string;
+  sortFilter: SelectOption;
+}
+
+export default function TripGrid(props: Props) {
+  const { search, sortFilter } = props;
   const supabase = createClientComponentClient<Database>();
-  const tripSearch = useAtomValue(tripSearchAtom);
-  const sortFilter = useAtomValue(sortFilterAtom);
   const [showModal, setShowModal] = useState(false);
   const [currentTrip, setCurrentTrip] = useState<TripItem | null>(null);
   const [trips, setTrips] = useAtom(tripsAtom);
@@ -46,9 +50,7 @@ export default function TripGrid() {
             {trips &&
               sortTrips(trips, sortFilter.text)
                 .filter((item) =>
-                  item.title
-                    .toLowerCase()
-                    .includes(tripSearch.trim().toLowerCase())
+                  item.title.toLowerCase().includes(search.trim().toLowerCase())
                 )
                 .map((item) => (
                   <TripCard

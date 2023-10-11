@@ -158,6 +158,7 @@ interface Currency {
 interface UserData {
   name: string | null;
   avatar_url: string | null;
+  preferred_currency: string;
   email: string;
   id: string;
 }
