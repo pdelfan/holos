@@ -153,7 +153,7 @@ export default function Home() {
           </li>
           <span className="flex gap-2">
             <li className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
-              Staging
+              Contact
             </li>
           </span>
         </ul>
