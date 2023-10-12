@@ -42,13 +42,17 @@ export default function ItemForm(props: Props) {
     async (query: string) => {
       if (query.trim() === "") return;
 
+      const { data: user } = await supabase.auth.getSession();
+      if (!user?.session) return;
+
       setIsLoading(true);
 
       const { data, error } = await supabase
         .from("inventory")
         .select()
         .limit(15)
-        .ilike("title", `%${query}%`);
+        .ilike("title", `%${query}%`)
+        .eq("user_id", user.session.user.id);
 
       if (error) {
         toast.error("Couldn't search inventory.");
