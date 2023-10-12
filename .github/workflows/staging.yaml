@@ -3,13 +3,13 @@ name: Deploy Migrations to Staging
 on:
   push:
     branches:
-      - develop
+      - preview
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: preview
 
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
