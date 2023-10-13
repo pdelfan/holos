@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
 import Logo from "@/assets/logo.svg";
 import Link from "next/link";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Holos — Shared Pack",
+  description: "Shared Pack",
+};
 
 export default function DashboardLayout({
   children,
