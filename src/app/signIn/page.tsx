@@ -21,20 +21,17 @@ export default function SignIn() {
 
   const handleSignIn = async () => {
     setLoading(true);
-    try {
-      // if it's called for an alraedy confirmed user, it will return 'User already registered'
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
 
-      if (error) {        
-        setError(error.message);
-      } else {
-        router.push("/dashboard/packs");
-      }
-    } finally {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
       setLoading(false);
+    } else {
+      router.push("/dashboard/packs");
     }
   };
   return (
