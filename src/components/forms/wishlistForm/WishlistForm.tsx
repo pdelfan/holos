@@ -20,6 +20,7 @@ export default function WishlistForm(props: Props) {
   const [manualURL, setManualURL] = useState("");
   const [title, setTitle] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingManual, setLoadingManual] = useState(false);
   const ref = useOutsideSelect({ callback: () => onClose() });
@@ -34,10 +35,22 @@ export default function WishlistForm(props: Props) {
       return;
     }
 
+    setError(false);
     setLoading(true);
 
     try {
-      const metadata: Metadata = await getSiteMetadata(url);
+      const metadata: Metadata | Error = await getSiteMetadata(url);
+      if (
+        metadata instanceof Error ||
+        !metadata.title ||
+        metadata.title.includes("404") ||
+        metadata.title.includes("Error") ||
+        metadata.title.includes("Denied") ||
+        !metadata.image
+      ) {
+        setError(true);
+        return;
+      }
       const { data, error } = await supabase
         .from("wishlist")
         .insert([
@@ -58,6 +71,8 @@ export default function WishlistForm(props: Props) {
 
       onClose();
       setWishlist((wishlist) => [...wishlist, data[0]]);
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -115,8 +130,18 @@ export default function WishlistForm(props: Props) {
           placeholder="https://"
           aria-label="Website address"
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => {
+            setError(false);
+            setUrl(e.target.value);
+          }}
         />
+
+        {error && (
+          <small className="text-red-500 dark:text-red-400">
+            Could not get product info for this website. Please try adding the
+            item manually.
+          </small>
+        )}
 
         <div className="flex flex-wrap gap-3 mt-5 justify-end">
           <Button type="button" onClick={onClose}>
