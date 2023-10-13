@@ -149,7 +149,7 @@ export default function Home() {
       <footer className="w-full p-3 animate-delay-1000 animate-fade-up max-w-7xl">
         <ul className="flex justify-between">
           <li className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
-            {new Date().getFullYear()} · Pouria Delfan
+            {new Date().getFullYear()} · Pouria Delfanazari
           </li>
           <span className="flex gap-2">
             <li className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
