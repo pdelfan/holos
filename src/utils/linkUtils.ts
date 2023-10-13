@@ -21,7 +21,11 @@ export function getShortAddress(url: string) {
 }
 
 export async function getSiteMetadata(url: string) {
-  const data = await fetch(`${process.env.NEXT_PUBLIC_SCRAPER}${url}`);
-  const result = await data.json();
-  return result;
+  try {
+    const data = await fetch(`${process.env.NEXT_PUBLIC_SCRAPER}${url}`);
+    const result = await data.json();
+    return result;
+  } catch (error) {
+    return error;
+  }
 }
