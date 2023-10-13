@@ -34,7 +34,7 @@ export default function Settings() {
   const [resetSuccess, setResetSuccess] = useState(false);
   const { currency } = useGetPreferredCurrency({ showAbbreviation: true });
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [preferredCurrency, setPreferredCurrency] = useState("USD");
+  const [preferredCurrency, setPreferredCurrency] = useState("");
   const { user } = useGetUser();
   const router = useRouter();
   const { userData, setUserData } = useGetUserData();
@@ -42,10 +42,8 @@ export default function Settings() {
   const [avatar, setAvatar] = useState<string | null>(null);
 
   useEffect(() => {
-    if (userData?.avatar_url) {
-      setAvatar(userData.avatar_url);
-    }
-  }, [userData?.avatar_url]);
+    setPreferredCurrency(currency);
+  }, [currency]);
 
   const startLoading = (action: Action) => {
     setLoading((prev) => ({ ...prev, [action]: true }));
@@ -234,7 +232,7 @@ export default function Settings() {
   };
 
   const onRemoveAvatar = async () => {
-    if (!user || !avatar) return;
+    if (!user) return;
 
     const {
       data: { session },
