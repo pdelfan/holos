@@ -22,7 +22,7 @@ export default function SignUp() {
     setLoading(true);
     try {
       // if it's called for an alraedy confirmed user, it will return 'User already registered'
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
