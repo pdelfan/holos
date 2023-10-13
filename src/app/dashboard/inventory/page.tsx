@@ -7,7 +7,6 @@ import Modal from "@/components/feedback/modal/Modal";
 import SearchBar from "@/components/search/searchBar/SearchBar";
 import Select from "@/components/forms/select/Select";
 import {
-  inventorySearchAtom,
   seasonFilterAtom,
   seasonFilterOptions,
   sortFilterAtom,
@@ -18,7 +17,7 @@ import { useState } from "react";
 
 export default function Inventory() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [inventorySearch, setInventorySearch] = useAtom(inventorySearchAtom);
+  const [inventorySearch, setInventorySearch] = useState("");
   const [seasonFilter, setSeasonFilter] = useAtom(seasonFilterAtom);
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
