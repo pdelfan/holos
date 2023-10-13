@@ -6,17 +6,13 @@ import Modal from "@/components/feedback/modal/Modal";
 import PackForm from "@/components/forms/packForm/PackForm";
 import Select from "@/components/forms/select/Select";
 import SearchBar from "@/components/search/searchBar/SearchBar";
-import {
-  packSearchAtom,
-  sortFilterAtom,
-  sortFilterOptions,
-} from "@/store/store";
+import { sortFilterAtom, sortFilterOptions } from "@/store/store";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
 export default function Packs() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [packSearch, setPackSearch] = useAtom(packSearchAtom);
+  const [packSearch, setPackSearch] = useState("");
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
     setPackSearch(searchTerm);

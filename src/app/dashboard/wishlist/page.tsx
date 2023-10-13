@@ -7,7 +7,6 @@ import SearchBar from "@/components/search/searchBar/SearchBar";
 import Select from "@/components/forms/select/Select";
 import WishlistForm from "@/components/forms/wishlistForm/WishlistForm";
 import {
-  wishlistSearchAtom,
   viewFilterOptions,
   sortFilterOptions,
   viewFilterAtom,
@@ -18,7 +17,7 @@ import { useState } from "react";
 
 export default function Wishlist() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [wishlistSearch, setWishlistSearch] = useAtom(wishlistSearchAtom);
+  const [wishlistSearch, setWishlistSearch] = useState("");
   const [viewFilter, setViewFilter] = useAtom(viewFilterAtom);
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
