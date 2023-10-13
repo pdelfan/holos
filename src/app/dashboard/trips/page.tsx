@@ -6,17 +6,13 @@ import Modal from "@/components/feedback/modal/Modal";
 import SearchBar from "@/components/search/searchBar/SearchBar";
 import Select from "@/components/forms/select/Select";
 import TripForm from "@/components/forms/tripForm/TripForm";
-import {
-  sortFilterAtom,
-  sortFilterOptions,
-  tripSearchAtom,
-} from "@/store/store";
+import { sortFilterAtom, sortFilterOptions } from "@/store/store";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
 export default function Trips() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [tripSearch, setTripSearch] = useAtom(tripSearchAtom);
+  const [tripSearch, setTripSearch] = useState("");
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
   const handleSearch = (searchTerm: string) => {
     setTripSearch(searchTerm);

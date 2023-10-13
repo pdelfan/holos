@@ -25,14 +25,6 @@ export const inventoryAtom = atom<InventoryItem[] | []>([]);
 
 export const wishlistAtom = atom<WishlistItem[] | []>([]);
 
-export const wishlistSearchAtom = atom<string>("");
-
-export const tripSearchAtom = atom<string>("");
-
-export const inventorySearchAtom = atom<string>("");
-
-export const packSearchAtom = atom<string>("");
-
 export const viewFilterOptions: SelectOption[] = [
   { text: "Large", icon: CardIcon },
   { text: "Medium", icon: mediumIcon },
