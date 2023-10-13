@@ -130,8 +130,16 @@ export default function Home() {
               Support Us
             </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Holos is developed for free. If you enjoy using Holos, please
-              consider supporting us.
+              Holos is{" "}
+              <a
+                href="https://github.com/pdelfan/holos"
+                className="underline hover:text-neutral-600 dark:hover:text-neutral-200"
+                target="_blank"
+              >
+                open-source
+              </a>{" "}
+              and developed for free. If you enjoy using Holos, please consider
+              supporting us.
             </p>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Your contribution will help maintain and run the servers, work on
@@ -148,11 +156,11 @@ export default function Home() {
       </section>
       <footer className="w-full p-3 animate-delay-1000 animate-fade-up max-w-7xl">
         <ul className="flex justify-between">
-          <li className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
+          <li className="text-sm font-medium text-neutral-400  dark:text-neutral-300">
             {new Date().getFullYear()} · Pouria Delfanazari
           </li>
           <span className="flex gap-2">
-            <li className="text-sm font-medium text-neutral-400 dark:text-neutral-300">
+            <li className="text-sm font-medium text-neutral-400 hover:text-neutral-500 dark:text-neutral-300 dark:hover:text-neutral-100">
               <Link href="mailto:helpuseholos@outlook.com">Contact Us</Link>
             </li>
           </span>
