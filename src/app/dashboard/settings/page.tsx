@@ -186,7 +186,7 @@ export default function Settings() {
         avatar_url: prev?.avatar_url ?? null,
       }));
 
-      toast.success("Updated name.");
+      toast.success("Updated name.");      
     } finally {
       stopLoading("nameUpdate");
     }
