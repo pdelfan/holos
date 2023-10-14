@@ -1,6 +1,6 @@
 "use client";
 
-import AddButton from "@/components/actions/addButton/AddButton";
+import FloatingActionButton from "@/components/actions/floatingActionButton/FloatingActionButton";
 import WishlistGrid from "@/components/contentDisplay/wishlistGrid/WishlistGrid";
 import Modal from "@/components/feedback/modal/Modal";
 import SearchBar from "@/components/search/searchBar/SearchBar";
@@ -14,15 +14,13 @@ import {
 } from "@/store/store";
 import { useAtom } from "jotai";
 import { useState } from "react";
+import useSearch from "@/hooks/useSearch";
 
 export default function Wishlist() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [wishlistSearch, setWishlistSearch] = useState("");
   const [viewFilter, setViewFilter] = useAtom(viewFilterAtom);
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
-  const handleSearch = (searchTerm: string) => {
-    setWishlistSearch(searchTerm);
-  };
+  const { searchTerm, handleSearch } = useSearch();
 
   return (
     <>
@@ -52,7 +50,7 @@ export default function Wishlist() {
         </div>
       </section>
       <WishlistGrid
-        search={wishlistSearch}
+        search={searchTerm}
         sortFilter={sortFilter}
         viewFilter={viewFilter}
       />
@@ -63,7 +61,9 @@ export default function Wishlist() {
               <WishlistForm onClose={() => setShowAddModal(false)} />
             </Modal>
           )}
-          <AddButton onClick={() => setShowAddModal(!showAddModal)} />
+          <FloatingActionButton
+            onClick={() => setShowAddModal(!showAddModal)}
+          />
         </div>
       </div>
     </>

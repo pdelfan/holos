@@ -12,9 +12,8 @@ function SearchBar(props: Props) {
   const [search, setSearch] = useState("");
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedSearch = e.target.value;
-    setSearch(updatedSearch);
-    onChange(updatedSearch);
+    setSearch(e.target.value);
+    onChange(e.target.value);
   };
 
   return (
