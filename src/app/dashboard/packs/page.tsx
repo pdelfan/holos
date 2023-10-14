@@ -1,22 +1,21 @@
 "use client";
 
-import AddButton from "@/components/actions/addButton/AddButton";
+import FloatingActionButton from "@/components/actions/floatingActionButton/FloatingActionButton";
 import PackGrid from "@/components/contentDisplay/packGrid/PackGrid";
 import Modal from "@/components/feedback/modal/Modal";
 import PackForm from "@/components/forms/packForm/PackForm";
 import Select from "@/components/forms/select/Select";
 import SearchBar from "@/components/search/searchBar/SearchBar";
+import useSearch from "@/hooks/useSearch";
 import { sortFilterAtom, sortFilterOptions } from "@/store/store";
 import { useAtom } from "jotai";
 import { useState } from "react";
 
 export default function Packs() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [packSearch, setPackSearch] = useState("");
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
-  const handleSearch = (searchTerm: string) => {
-    setPackSearch(searchTerm);
-  };
+  const { searchTerm, handleSearch } = useSearch();
+
   return (
     <>
       <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
@@ -35,7 +34,7 @@ export default function Packs() {
           />
         </div>
       </section>
-      <PackGrid search={packSearch} sortFilter={sortFilter} />
+      <PackGrid search={searchTerm} sortFilter={sortFilter} />
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (
@@ -43,7 +42,9 @@ export default function Packs() {
               <PackForm onClose={() => setShowAddModal(false)} />
             </Modal>
           )}
-          <AddButton onClick={() => setShowAddModal(!showAddModal)} />
+          <FloatingActionButton
+            onClick={() => setShowAddModal(!showAddModal)}
+          />
         </div>
       </div>
     </>
