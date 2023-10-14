@@ -30,7 +30,7 @@ export default function Wishlist() {
       <section className="flex flex-wrap gap-3 justify-between items-center mt-3">
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar
-            placeholder="Search for a website"
+            placeholder="Search for a website or item"
             onChange={handleSearch}
           />
         </div>

@@ -45,7 +45,12 @@ export default function WishlistGrid(props: Props) {
             {!isLoading &&
               wishlist &&
               sortWishlist(wishlist, sortFilter.text)
-                .filter((item) => item.url.includes(search))
+                .filter(
+                  (item) =>
+                    item.url.includes(search) ||
+                    item?.title?.includes(search) ||
+                    item?.title?.toLocaleLowerCase().includes(search)
+                )
                 .map((item) => (
                   <WishlistCard
                     key={item.id}
