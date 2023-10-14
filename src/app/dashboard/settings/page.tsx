@@ -268,11 +268,28 @@ export default function Settings() {
 
   return (
     <>
-      {userData && currency && (
-        <>
-          <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
             Settings
           </h1>
+      {!userData && !currency && (
+        <>        
+          <div className="flex flex-col gap-2 mt-8">
+            <div className="flex flex-col justify-center gap-2">
+              <div className="bg-gray-200 grow h-24 w-24 rounded-full animate-pulse dark:bg-neutral-400 mb-3 mx-auto" />
+              <div className="flex flex-col gap-4">
+                {Array.from(Array(6), (_, i) => (
+                  <div
+                    key={i}
+                    className="bg-gray-200 w-full sm:w-1/2 h-52 rounded-lg animate-pulse dark:bg-neutral-400 mx-auto"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+      {userData && currency && (
+        <>
           <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
             <div className="flex flex-col items-center gap-2">
               <Avatar
