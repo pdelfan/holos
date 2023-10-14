@@ -1,6 +1,6 @@
 "use client";
 
-import AddButton from "@/components/actions/addButton/AddButton";
+import FloatingActionButton from "@/components/actions/floatingActionButton/FloatingActionButton";
 import TripGrid from "@/components/contentDisplay/TripGrid/TripGrid";
 import Modal from "@/components/feedback/modal/Modal";
 import SearchBar from "@/components/search/searchBar/SearchBar";
@@ -9,14 +9,13 @@ import TripForm from "@/components/forms/tripForm/TripForm";
 import { sortFilterAtom, sortFilterOptions } from "@/store/store";
 import { useAtom } from "jotai";
 import { useState } from "react";
+import useSearch from "@/hooks/useSearch";
 
 export default function Trips() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [tripSearch, setTripSearch] = useState("");
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
-  const handleSearch = (searchTerm: string) => {
-    setTripSearch(searchTerm);
-  };
+  const { searchTerm, handleSearch } = useSearch();
+
   return (
     <>
       <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
@@ -35,7 +34,7 @@ export default function Trips() {
           />
         </div>
       </section>
-      <TripGrid search={tripSearch} sortFilter={sortFilter} />
+      <TripGrid search={searchTerm} sortFilter={sortFilter} />
       <div className="fixed bottom-12 right-0 sm:bottom-0">
         <div className="relative">
           {showAddModal && (
@@ -43,7 +42,7 @@ export default function Trips() {
               <TripForm onClose={() => setShowAddModal(false)} />
             </Modal>
           )}
-          <AddButton onClick={() => setShowAddModal(!showAddModal)} />
+          <FloatingActionButton onClick={() => setShowAddModal(!showAddModal)} />
         </div>
       </div>
     </>

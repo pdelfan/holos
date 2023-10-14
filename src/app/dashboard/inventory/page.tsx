@@ -1,6 +1,6 @@
 "use client";
 
-import AddButton from "@/components/actions/addButton/AddButton";
+import FloatingActionButton from "@/components/actions/floatingActionButton/FloatingActionButton";
 import InventoryGrid from "@/components/contentDisplay/inventoryGrid/InventoryGrid";
 import InventoryForm from "@/components/forms/inventoryForm/InventoryForm";
 import Modal from "@/components/feedback/modal/Modal";
@@ -14,15 +14,13 @@ import {
 } from "@/store/store";
 import { useAtom } from "jotai";
 import { useState } from "react";
+import useSearch from "@/hooks/useSearch";
 
 export default function Inventory() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [inventorySearch, setInventorySearch] = useState("");
   const [seasonFilter, setSeasonFilter] = useAtom(seasonFilterAtom);
   const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
-  const handleSearch = (searchTerm: string) => {
-    setInventorySearch(searchTerm);
-  };
+  const { searchTerm, handleSearch } = useSearch();
 
   return (
     <>
@@ -49,7 +47,7 @@ export default function Inventory() {
         </div>
       </section>
       <InventoryGrid
-        search={inventorySearch}
+        search={searchTerm}
         seasonFilter={seasonFilter}
         sortFilter={sortFilter}
       />
@@ -60,7 +58,7 @@ export default function Inventory() {
               <InventoryForm onClose={() => setShowAddModal(false)} />
             </Modal>
           )}
-          <AddButton onClick={() => setShowAddModal(!showAddModal)} />
+          <FloatingActionButton onClick={() => setShowAddModal(!showAddModal)} />
         </div>
       </div>
     </>

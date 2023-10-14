@@ -5,7 +5,7 @@ interface Props {
   onClick: () => void;
 }
 
-function AddButton(props: Props) {
+export default function FloatingActionButton(props: Props) {
   const { onClick } = props;
   return (
     <button
@@ -16,5 +16,3 @@ function AddButton(props: Props) {
     </button>
   );
 }
-
-export default AddButton;

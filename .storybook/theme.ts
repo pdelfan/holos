@@ -4,7 +4,7 @@ export default create({
   base: "light",
   brandTitle: "Holos",
   brandImage:
-    "https://raw.githubusercontent.com/pdelfan/holos/dev/public/holos.svg",
+    "https://raw.githubusercontent.com/pdelfan/holos/main/public/holos.svg",
 
   // Typography
   fontBase: '"Inter", sans-serif',
@@ -15,10 +15,7 @@ export default create({
   colorSecondary: "#FF6D0E",
 
   // UI
-  barBg: '#EDEDED',
+  barBg: "#EDEDED",
   inputBorderRadius: 9,
   appBorderRadius: 9,
-
-
-
 });
