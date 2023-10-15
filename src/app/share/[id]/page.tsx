@@ -34,7 +34,7 @@ export default function SharedPack(props: Props) {
   const [packStats, setPackStats] = useState<PackStats[]>([]);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
-  const { user, error, avatar, preferredCurrency } = useGetPublicUser({
+  const { user, avatar, preferredCurrency } = useGetPublicUser({
     shareID: params.id,
   });
   const currencySymbol = getCurrencySymbol(preferredCurrency);
@@ -147,28 +147,27 @@ export default function SharedPack(props: Props) {
     <>
       {isLoadingPackData && <PackSkeleton />}
 
-      {(!isLoadingPackData && pack && !pack.is_public) ||
-        (error && (
-          <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
-            <Image
-              src={FallingIcon}
-              alt="A person falling"
-              width={80}
-              height={80}
-            />
-            <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1 dark:text-neutral-100">
-              The pack you are looking for could not be found.
-            </h1>
-            <Link
-              className="mt-6 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text dark:bg-neutral-700 dark:text-neutral-200 hover:brightness-95"
-              href={`${process.env.NEXT_PUBLIC_SITE_URL}`}
-            >
-              Return Home
-            </Link>
-          </section>
-        ))}
+      {!isLoadingPackData && !pack && (
+        <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
+          <Image
+            src={FallingIcon}
+            alt="A person falling"
+            width={80}
+            height={80}
+          />
+          <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1 dark:text-neutral-100">
+            The pack you are looking for could not be found.
+          </h1>
+          <Link
+            className="mt-6 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text dark:bg-neutral-700 dark:text-neutral-200 hover:brightness-95"
+            href={`${process.env.NEXT_PUBLIC_SITE_URL}`}
+          >
+            Return Home
+          </Link>
+        </section>
+      )}
 
-      {!isLoadingPackData && pack && pack.is_public && (
+      {user && pack && pack.is_public && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
