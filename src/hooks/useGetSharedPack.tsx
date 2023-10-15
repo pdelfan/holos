@@ -17,7 +17,12 @@ export default function useGetSharedPack(props: Props) {
         .from("pack")
         .select("*")
         .match({ share_id: shareID });
-      setPack(data ? data[0] : null);
+
+      if (data && data[0].is_public) {
+        setPack(data[0]);
+      } else {
+        setPack(null);
+      }
     };
     getPack();
   }, [shareID, setPack, supabase]);
