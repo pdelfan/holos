@@ -269,10 +269,10 @@ export default function Settings() {
   return (
     <>
       <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
-            Settings
-          </h1>
+        Settings
+      </h1>
       {!userData && !currency && (
-        <>        
+        <>
           <div className="flex flex-col gap-2 mt-8">
             <div className="flex flex-col justify-center gap-2">
               <div className="bg-gray-200 grow h-24 w-24 rounded-full animate-pulse dark:bg-neutral-400 mb-3 mx-auto" />
@@ -280,7 +280,7 @@ export default function Settings() {
                 {Array.from(Array(6), (_, i) => (
                   <div
                     key={i}
-                    className="bg-gray-200 w-full sm:w-1/2 h-52 rounded-lg animate-pulse dark:bg-neutral-400 mx-auto"
+                    className="bg-gray-200 w-full max-w-sm h-52 rounded-lg animate-pulse dark:bg-neutral-400 mx-auto"
                   />
                 ))}
               </div>
