@@ -25,8 +25,14 @@ export default function TripGrid(props: Props) {
   const [showModal, setShowModal] = useState(false);
   const [currentTrip, setCurrentTrip] = useState<TripItem | null>(null);
   const [trips, setTrips] = useAtom(tripsAtom);
-  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
-    itemPerPage: 18,
+  const {
+    pageIndex,
+    setPageIndex,
+    totalPages,
+    error,
+    isLoading,
+    isValidating,
+  } = useFetchDB({
     table: "trip",
     setData: setTrips,
   });
@@ -42,8 +48,9 @@ export default function TripGrid(props: Props) {
 
   return (
     <>
-      {isLoading && <TripGridSkeleton />}
-      {!isLoading && (
+      {isLoading || isValidating ? (
+        <TripGridSkeleton />
+      ) : (
         <>
           <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-4 mt-10 animate-fade">
             {trips &&
@@ -69,7 +76,7 @@ export default function TripGrid(props: Props) {
               </h3>
             </div>
           )}
-          {!isLoading && error && (
+          {error && (
             <div className="flex h-full items-center">
               <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
                 Could not get trip items
@@ -83,17 +90,17 @@ export default function TripGrid(props: Props) {
               onChange={setPageIndex}
             />
           )}
-        </>
-      )}
 
-      {showModal && currentTrip && (
-        <Modal>
-          <EditTripForm
-            tripItem={currentTrip}
-            onDelete={() => onDeleteTrip(currentTrip.id)}
-            onClose={() => setShowModal(false)}
-          />
-        </Modal>
+          {showModal && currentTrip && (
+            <Modal>
+              <EditTripForm
+                tripItem={currentTrip}
+                onDelete={() => onDeleteTrip(currentTrip.id)}
+                onClose={() => setShowModal(false)}
+              />
+            </Modal>
+          )}
+        </>
       )}
     </>
   );
