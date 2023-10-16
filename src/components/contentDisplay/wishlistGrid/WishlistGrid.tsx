@@ -10,6 +10,7 @@ import { wishlistAtom } from "@/store/store";
 import { sortWishlist } from "@/utils/filterUtils";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
+import Result from "../result/Result";
 
 interface Props {
   search: string;
@@ -66,19 +67,11 @@ export default function WishlistGrid(props: Props) {
                   />
                 ))}
           </section>
-          {wishlist && wishlist.length === 0 && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                No trips found
-              </h3>
-            </div>
+          {wishlist.length === 0 && (
+            <Result status="info">No wishlist items found</Result>
           )}
           {error && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                Could not get wishlist items
-              </h3>
-            </div>
+            <Result status="error">Could not get wishlist items</Result>
           )}
           {totalPages > 1 && (
             <Pagination
