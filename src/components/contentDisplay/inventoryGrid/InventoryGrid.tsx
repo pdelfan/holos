@@ -29,8 +29,14 @@ export default function InventoryGrid(props: Props) {
     useState<InventoryItem | null>(null);
   const { currency } = useGetPreferredCurrency({});
   const [inventory, setInventory] = useAtom(inventoryAtom);
-  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
-    itemPerPage: 18,
+  const {
+    pageIndex,
+    setPageIndex,
+    totalPages,
+    error,
+    isLoading,
+    isValidating,
+  } = useFetchDB({
     table: "inventory",
     setData: setInventory,
   });
@@ -46,11 +52,12 @@ export default function InventoryGrid(props: Props) {
 
   return (
     <>
-      {isLoading && <InventoryGridSkeleton />}
-      {!isLoading && (
+      {isLoading || isValidating ? (
+        <InventoryGridSkeleton />
+      ) : (
         <>
           <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
-            {inventory &&
+            {inventory ? (
               sortInventory(inventory, sortFilter.text)
                 .filter((item) =>
                   item.title.toLowerCase().includes(search.toLowerCase())
@@ -69,22 +76,15 @@ export default function InventoryGrid(props: Props) {
                       setShowModal(true);
                     }}
                   />
-                ))}
+                ))
+            ) : (
+              <div className="flex h-full items-center">
+                <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
+                  {error ? "Could not get inventory items" : "No items found"}
+                </h3>
+              </div>
+            )}
           </section>
-          {!isLoading && !error && inventory && inventory.length === 0 && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                No items found
-              </h3>
-            </div>
-          )}
-          {!isLoading && error && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                Could not get inventory items
-              </h3>
-            </div>
-          )}
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}

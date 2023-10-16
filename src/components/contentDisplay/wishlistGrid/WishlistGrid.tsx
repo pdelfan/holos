@@ -21,8 +21,14 @@ export default function WishlistGrid(props: Props) {
   const { search, viewFilter, sortFilter } = props;
   const supabase = createClientComponentClient<Database>();
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
-  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
-    itemPerPage: 18,
+  const {
+    pageIndex,
+    setPageIndex,
+    totalPages,
+    error,
+    isLoading,
+    isValidating,
+  } = useFetchDB({
     table: "wishlist",
     setData: setWishlist,
   });
@@ -38,12 +44,12 @@ export default function WishlistGrid(props: Props) {
 
   return (
     <>
-      {isLoading && <WishlistGridSkeleton />}
-      {!isLoading && (
+      {isLoading || isValidating ? (
+        <WishlistGridSkeleton />
+      ) : (
         <>
           <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
-            {!isLoading &&
-              wishlist &&
+            {wishlist &&
               sortWishlist(wishlist, sortFilter.text)
                 .filter(
                   (item) =>
@@ -60,14 +66,14 @@ export default function WishlistGrid(props: Props) {
                   />
                 ))}
           </section>
-          {!isLoading && wishlist && wishlist.length === 0 && (
+          {wishlist && wishlist.length === 0 && (
             <div className="flex h-full items-center">
               <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
                 No trips found
               </h3>
             </div>
           )}
-          {!isLoading && error && (
+          {error && (
             <div className="flex h-full items-center">
               <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
                 Could not get wishlist items

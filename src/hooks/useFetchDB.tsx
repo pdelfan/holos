@@ -4,7 +4,7 @@ import { useState } from "react";
 import useSWR from "swr";
 
 interface Props<T> {
-  itemPerPage: number;
+  itemPerPage?: number;
   table: string;
   setData: (value: T) => void;
 }
@@ -12,7 +12,7 @@ interface Props<T> {
 export default function useFetchDB<T extends Record<string, any>>(
   props: Props<T>
 ) {
-  const { table, itemPerPage, setData } = props;
+  const { table, itemPerPage = 18, setData } = props;
   const supabase = createClientComponentClient<Database>();
   const [pageIndex, setPageIndex] = useState(0);
 
@@ -34,10 +34,11 @@ export default function useFetchDB<T extends Record<string, any>>(
     return fetchedData as unknown as T;
   };
 
-  const { data, error: fetchError } = useSWR(
-    [table, pageIndex, itemPerPage],
-    fetcher
-  );
+  const {
+    data,
+    error: fetchError,
+    isValidating,
+  } = useSWR([table, pageIndex, itemPerPage], fetcher);
 
   const countFetcher = async () => {
     const { data: user } = await supabase.auth.getSession();
@@ -65,5 +66,6 @@ export default function useFetchDB<T extends Record<string, any>>(
     setPageIndex,
     error: fetchError,
     isLoading,
+    isValidating,
   };
 }

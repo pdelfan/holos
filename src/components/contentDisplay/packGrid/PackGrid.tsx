@@ -25,8 +25,14 @@ export default function PackGrid(props: Props) {
   const [showModal, setShowModal] = useState(false);
   const [currentPack, setCurrentPack] = useState<Pack | null>(null);
   const [packs, setPacks] = useAtom(packsAtom);
-  const { pageIndex, setPageIndex, totalPages, error, isLoading } = useFetchDB({
-    itemPerPage: 18,
+  const {
+    pageIndex,
+    setPageIndex,
+    totalPages,
+    error,
+    isLoading,
+    isValidating,
+  } = useFetchDB({
     table: "pack",
     setData: setPacks,
   });
@@ -42,8 +48,9 @@ export default function PackGrid(props: Props) {
 
   return (
     <>
-      {isLoading && <PackGridSkeleton />}
-      {!isLoading && (
+      {isLoading || isValidating ? (
+        <PackGridSkeleton />
+      ) : (
         <>
           <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] gap-4 mt-10 animate-fade">
             {packs &&
@@ -62,14 +69,14 @@ export default function PackGrid(props: Props) {
                   />
                 ))}
           </section>
-          {!isLoading && packs && packs.length === 0 && (
+          {packs && packs.length === 0 && (
             <div className="flex h-full items-center">
               <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
                 No packs found
               </h3>
             </div>
           )}
-          {!isLoading && error && (
+          {error && (
             <div className="flex h-full items-center">
               <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
                 Could not get pack items
@@ -85,6 +92,7 @@ export default function PackGrid(props: Props) {
           )}
         </>
       )}
+
       {showModal && currentPack && (
         <Modal>
           <EditPackForm
