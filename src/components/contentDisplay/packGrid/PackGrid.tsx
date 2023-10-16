@@ -13,6 +13,7 @@ import PackCard from "../packCard/PackCard";
 import EditPackForm from "@/components/forms/editPackForm/EditPackForm";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
+import Result from "../result/Result";
 
 interface Props {
   search: string;
@@ -69,20 +70,8 @@ export default function PackGrid(props: Props) {
                   />
                 ))}
           </section>
-          {packs && packs.length === 0 && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                No packs found
-              </h3>
-            </div>
-          )}
-          {error && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                Could not get pack items
-              </h3>
-            </div>
-          )}
+          {packs.length === 0 && <Result status="info">No packs found</Result>}
+          {error && <Result status="error">Could not get pack items</Result>}
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}

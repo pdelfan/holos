@@ -14,6 +14,7 @@ import Modal from "@/components/feedback/modal/Modal";
 import EditInventoryForm from "@/components/forms/editInventoryForm/EditInventoryForm";
 import Pagination from "@/components/navigational/pagination/Pagination";
 import useFetchDB from "@/hooks/useFetchDB";
+import Result from "../result/Result";
 
 interface Props {
   search: string;
@@ -57,7 +58,7 @@ export default function InventoryGrid(props: Props) {
       ) : (
         <>
           <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] gap-4 mt-10 animate-fade">
-            {inventory ? (
+            {inventory &&
               sortInventory(inventory, sortFilter.text)
                 .filter((item) =>
                   item.title.toLowerCase().includes(search.toLowerCase())
@@ -76,15 +77,14 @@ export default function InventoryGrid(props: Props) {
                       setShowModal(true);
                     }}
                   />
-                ))
-            ) : (
-              <div className="flex h-full items-center">
-                <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                  {error ? "Could not get inventory items" : "No items found"}
-                </h3>
-              </div>
-            )}
+                ))}
           </section>
+          {inventory.length === 0 && (
+            <Result status="info">No inventory items found</Result>
+          )}
+          {error && (
+            <Result status="error">Could not get inventory items</Result>
+          )}
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}

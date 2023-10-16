@@ -13,6 +13,7 @@ import EditTripForm from "@/components/forms/editTripForm/EditTripForm";
 import Modal from "@/components/feedback/modal/Modal";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
+import Result from "../result/Result";
 
 interface Props {
   search: string;
@@ -69,20 +70,8 @@ export default function TripGrid(props: Props) {
                   />
                 ))}
           </section>
-          {trips.length === 0 && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                No trips found
-              </h3>
-            </div>
-          )}
-          {error && (
-            <div className="flex h-full items-center">
-              <h3 className="text-gray text-lg text-center basis-full dark:text-neutral-400">
-                Could not get trip items
-              </h3>
-            </div>
-          )}
+          {trips.length === 0 && <Result status="info">No trips found</Result>}
+          {error && <Result status="error">Could not get trip items </Result>}
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}
