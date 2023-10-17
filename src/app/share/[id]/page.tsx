@@ -88,7 +88,7 @@ export default function SharedPack(props: Props) {
     <>
       {isLoadingPackData && <PackSkeleton />}
 
-      {!isLoadingPackData && !pack && (
+      {!isLoadingPackData && pack?.is_public && !pack && (
         <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
           <Image
             src={FallingIcon}

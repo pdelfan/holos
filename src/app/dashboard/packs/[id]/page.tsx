@@ -155,6 +155,7 @@ export default function Pack(props: Props) {
   return (
     <>
       {isLoadingPackData && <PackSkeleton />}
+
       {!isLoadingPackData && !pack && (
         <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
           <Image
