@@ -85,25 +85,9 @@ export default function Pack(props: Props) {
         (a, b) => a.position - b.position
       );
 
-      // find group and update groups
-      setPackData((prev) => {
-        if (!prev) return prev;
-        const indexToUpdate = prev.findIndex((item) => item.id === active.id);
-
-        if (indexToUpdate === -1) {
-          // item not found, return the previous array
-          return prev;
-        }
-
-        return [
-          ...prev.slice(0, indexToUpdate), // items before the updated item
-          { ...prev[indexToUpdate], position: newIndex }, // updated item
-          ...prev.slice(indexToUpdate + 1), // items after the updated item
-        ];
-      });
+      setPackData(reorderedData);
 
       const changedItems = calculateChangedGroups(packData, oldIndex, newIndex);
-
       if (changedItems.length === 0) return;
 
       // remove pack_item from changed groups
@@ -128,7 +112,7 @@ export default function Pack(props: Props) {
   };
 
   useEffect(() => {
-    if (!packData) return;
+    if (!packData || !pack?.weight_unit) return;
     const updatedTotal: PackStats[] = packData.map((group) => {
       const total_weight = group.pack_item.reduce(
         (acc, item) =>
@@ -275,7 +259,6 @@ export default function Pack(props: Props) {
                       setGroupData={setPackData}
                       onUpdateGroup={setPackData}
                       onDeleteGroup={() => onDeleteGroup(group.id)}
-                      setPackStats={setPackStats}
                       currency={currency}
                       packWeightUnit={pack.weight_unit}
                     />

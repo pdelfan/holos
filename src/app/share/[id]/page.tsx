@@ -178,19 +178,17 @@ export default function SharedPack(props: Props) {
                 {pack.description}
               </h2>
             </div>
-            {user && (
-              <div className="flex flex-wrap gap-2 items-center">
-                <div className="flex flex-col flex-wrap">
-                  <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">
-                    Created by
-                  </span>
-                  <span className="font-medium text-sm dark:text-neutral-100">
-                    {user}
-                  </span>
-                </div>
-                <Avatar size="small" name={user} image={avatar} />
+            <div className="flex flex-wrap gap-2 items-center">
+              <div className="flex flex-col flex-wrap">
+                <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">
+                  Created by
+                </span>
+                <span className="font-medium text-sm dark:text-neutral-100">
+                  {user}
+                </span>
               </div>
-            )}
+              <Avatar size="small" name={user} image={avatar} />
+            </div>
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
@@ -206,8 +204,7 @@ export default function SharedPack(props: Props) {
                   viewMode={true}
                   setGroupData={setPackData}
                   onUpdateGroup={setPackData}
-                  onDeleteGroup={() => onDeleteGroup(group.id)}
-                  setPackStats={setPackStats}
+                  onDeleteGroup={() => onDeleteGroup(group.id)}                  
                   currency={currencySymbol}
                   packWeightUnit={pack.weight_unit}
                 />

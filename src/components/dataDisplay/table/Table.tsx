@@ -38,7 +38,6 @@ import { CSS } from "@dnd-kit/utilities";
 interface Props {
   onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[] | null>>;
   onDeleteGroup: () => void;
-  setPackStats: React.Dispatch<React.SetStateAction<PackStats[]>>;
   setGroupData: Dispatch<SetStateAction<[] | GroupData[] | null>>;
   viewMode?: boolean;
   group: GroupData;
@@ -107,21 +106,15 @@ function Table(props: Props) {
         (a, b) => a.position - b.position
       );
 
-      // find group and update pack_item
       setGroupData((prev) => {
         if (!prev) return prev;
-        const indexToUpdate = prev.findIndex((item) => item.id === group.id);
 
-        if (indexToUpdate === -1) {
-          // item not found, return the previous array
-          return prev;
-        }
-
-        return [
-          ...prev.slice(0, indexToUpdate), // items before the updated item
-          { ...group, pack_item: reorderedData }, // updated item
-          ...prev.slice(indexToUpdate + 1), // items after the updated item
-        ];
+        return prev.map((item) => {
+          if (item.id === group.id) {
+            return { ...item, pack_item: reorderedData };
+          }
+          return item;
+        });
       });
 
       const changedItems = calculateChangedItems(
