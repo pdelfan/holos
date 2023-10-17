@@ -3,19 +3,25 @@ import { CHART_COLOURS } from "@/utils/chartUtils";
 
 interface Props {
   data: ChartData[];
+  viewMode?: boolean;
 }
 
 function ChartSummary(props: Props) {
-  const { data } = props;
+  const { data, viewMode = false } = props;
   const chartData = data.sort((a, b) => b.weight - a.weight);
   const totalWidth = data.reduce((total, datum) => total + datum.weight, 0);
 
   return (
     <>
       {data.length === 0 && (
-        <p className="dark:text-neutral-300">
-          Add items to see a visual breakdown of your pack.
-        </p>
+        <div className="flex flex-col gap-2 grow">
+          <p className="text-neutral-400 dark:text-neutral-300">
+            {viewMode
+              ? "There are no items to display."
+              : "Add items to see a visual breakdown of your pack."}
+          </p>
+          <div className="h-6 rounded-sm  grow bg-neutral-200 dark:bg-neutral-600" />
+        </div>
       )}
       {data.length > 0 && (
         <div className="flex flex-col grow max-w-6xl">

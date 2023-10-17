@@ -108,7 +108,7 @@ export default function SharedPack(props: Props) {
         </section>
       )}
 
-      {pack && pack.is_public && user && packTotal && (
+      {pack && pack.is_public && user && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
@@ -132,8 +132,19 @@ export default function SharedPack(props: Props) {
             </div>
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
-            <ChartSummary data={chartData} />
-            <PackSummary data={packTotal} />
+            <ChartSummary data={chartData} viewMode={true} />
+            <PackSummary
+              data={
+                packTotal ?? {
+                  weight_unit: pack.weight_unit,
+                  base_weight: pack.base_weight,
+                  total_weight: pack.total_weight,
+                  currency: preferredCurrency,
+                  total_cost: pack.total_cost,
+                  total_items: pack.total_items,
+                }
+              }
+            />
           </section>
           <section className="flex flex-col gap-10 mt-12">
             {packData &&
