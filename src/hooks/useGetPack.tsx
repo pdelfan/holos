@@ -2,12 +2,7 @@ import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 
-interface Props {
-  packID: string;
-}
-
-export default function useGetPack(props: Props) {
-  const { packID } = props;
+export default function useGetPack(packID: string) {
   const supabase = createClientComponentClient<Database>();
   const [pack, setPack] = useState<Pack | null>(null);
 

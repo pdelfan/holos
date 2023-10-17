@@ -1,40 +1,45 @@
 import Image from "next/image";
 import MoreIcon from "@/assets/icons/moreIcon.svg";
 import { useRouter } from "next/navigation";
+import PackSummary from "../packSummary/PackSummary";
 
 interface Props {
   item: Pack;
-  onEdit: () => void;  
+  currency: string;
+  onEdit: () => void;
 }
 
 function PackCard(props: Props) {
-  const { item, onEdit } = props;  
+  const { item, currency, onEdit } = props;
   const router = useRouter();
-
-  const gradient = {
-    background:
-      "radial-gradient(50% 50% at 50% 50%, #000 0%, #6A6A6A 100%)",
+  const total = {
+    weight_unit: item.weight_unit,
+    base_weight: item.base_weight,
+    total_weight: item.total_weight,
+    currency: currency,
+    total_cost: item.total_cost,
+    total_items: item.total_items,
   };
 
   return (
     <article
-      className="flex flex-col relative rounded-2xl p-5 cursor-pointer hover:brightness-105"
-      style={gradient}
+      className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
       onClick={() => {
         router.push(`packs/${item.id}`);
       }}
     >
-      <div className="flex flex-col gap-1">
-        <h2 className="text-stone-100 font-medium text-lg leading-5 max-w-[80%]">
+      <div className="flex flex-col gap-1 mb-6">
+        <h2 className="text-stone-600 font-medium leading-5 dark:text-stone-300 max-w-[80%]">
           {item.title}
         </h2>
-        <h3 className="break-words overflow-clip text-stone-300 mt-2 max-w-[80%]">
+        <h3 className="break-words overflow-clip text-base text-stone-400 max-w-[80%]">
           {item.description}
         </h3>
       </div>
-      <div className="flex gap-2 absolute right-5 top-5">     
+      <PackSummary data={total} />
+      <div className="flex gap-2 absolute right-5 top-5">
         <button
-          className="bg-button p-2 rounded-full hover:bg-button-hover"
+          className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
           tabIndex={0}
           onClick={(e) => {
             e.stopPropagation();

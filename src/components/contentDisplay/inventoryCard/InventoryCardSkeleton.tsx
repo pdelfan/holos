@@ -4,7 +4,7 @@ export default function InventoryCardSkeleton() {
       <div className="bg-gray-300 rounded-t-2xl w-full h-48 animate-pulse dark:bg-neutral-400" />
       <div className="p-5">
         <div className="flex gap-2 flex-wrap items-center mb-3">
-          <div className="bg-gray-300 w-5 h-5 rounded-full animate-pulse dark:bg-neutral-600" />
+          <div className="bg-gray-300 w-5 h-5 rounded-full animate-pulse dark:bg-neutral-400" />
           <div className="bg-gray-200 grow h-3 rounded-lg animate-pulse dark:bg-neutral-400" />
         </div>
         <div className="flex flex-col gap-2">
