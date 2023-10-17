@@ -9,7 +9,6 @@ import GroupForm from "@/components/forms/groupForm/GroupForm";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
@@ -151,7 +150,7 @@ export default function Pack(props: Props) {
   return (
     <>
       {!pack && <PackSkeleton />}
-      {pack && (
+      {pack && currency && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>

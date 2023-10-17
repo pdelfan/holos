@@ -1,13 +1,12 @@
 import { Database } from "@/lib/database.types";
-import { userDataAtom } from "@/store/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function useGetUserData() {
   const supabase = createClientComponentClient<Database>();
-  const [userData, setUserData] = useAtom(userDataAtom);
+  const [userData, setUserData] = useState<UserData | null>(null);
+
   const router = useRouter();
 
   useEffect(() => {

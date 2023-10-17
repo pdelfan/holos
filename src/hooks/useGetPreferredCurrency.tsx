@@ -1,9 +1,7 @@
 import { Database } from "@/lib/database.types";
-import { currencyAtom } from "@/store/store";
 import { getCurrencySymbol } from "@/utils/currencyUtils";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useAtom } from "jotai";
-import useSWR from "swr";
+import { useEffect, useState } from "react";
 
 export default function useGetPreferredCurrency(props: {
   showAbbreviation?: boolean;
@@ -11,11 +9,10 @@ export default function useGetPreferredCurrency(props: {
   const { showAbbreviation = false } = props;
 
   const supabase = createClientComponentClient<Database>();
-  const [currency, setCurrency] = useAtom(currencyAtom);
+  const [currency, setCurrency] = useState<string | null>(null);
 
-  const { error, isLoading, isValidating } = useSWR(
-    "getPreferredCurrency",
-    async () => {
+  useEffect(() => {
+    const getCurrency = async () => {
       const { data: user } = await supabase.auth.getSession();
       if (!user.session) {
         return;
@@ -34,8 +31,10 @@ export default function useGetPreferredCurrency(props: {
       } else {
         setCurrency("USD");
       }
-    }
-  );
+    };
 
-  return { currency, setCurrency, error, isLoading, isValidating };
+    getCurrency();
+  }, [showAbbreviation, supabase]);
+
+  return { currency, setCurrency };
 }

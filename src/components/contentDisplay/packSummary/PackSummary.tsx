@@ -18,6 +18,7 @@ function PackSummary(props: Props) {
     total_cost,
     total_items,
   } = data;
+  
   return (
     <div>
       <ul className="flex flex-wrap gap-6 justify-between">
