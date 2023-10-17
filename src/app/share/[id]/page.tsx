@@ -3,11 +3,8 @@
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
-import { Database } from "@/lib/database.types";
 import { convertWeight } from "@/utils/numberUtils";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import Image from "next/image";
 import FallingIcon from "@/assets/icons/fallingIcon.svg";
 import Link from "next/link";
@@ -24,7 +21,6 @@ interface Props {
 
 export default function SharedPack(props: Props) {
   const { params } = props;
-  const supabase = createClientComponentClient<Database>();
   const { pack } = useGetSharedPack({
     shareID: params.id,
   });
@@ -38,17 +34,6 @@ export default function SharedPack(props: Props) {
     shareID: params.id,
   });
   const currencySymbol = getCurrencySymbol(preferredCurrency);
-
-  const onDeleteGroup = async (id: number) => {
-    if (!packData) return;
-    const { error } = await supabase.from("group").delete().eq("id", id);
-    if (error) {
-      toast.error("Couldn't delete this group.");
-      return;
-    }
-    setPackData(packData.filter((item) => item.id !== id));
-    setPackStats(packStats.filter((item) => item.group_id !== id));
-  };
 
   useEffect(() => {
     if (!packData) return;
@@ -204,7 +189,7 @@ export default function SharedPack(props: Props) {
                   viewMode={true}
                   setGroupData={setPackData}
                   onUpdateGroup={setPackData}
-                  onDeleteGroup={() => onDeleteGroup(group.id)}                  
+                  onDeleteGroup={() => {}}
                   currency={currencySymbol}
                   packWeightUnit={pack.weight_unit}
                 />
