@@ -20,7 +20,7 @@ function ChartSummary(props: Props) {
               ? "There are no items to display."
               : "Add items to see a visual breakdown of your pack."}
           </p>
-          <div className="h-6 rounded-sm  grow bg-neutral-200 dark:bg-neutral-600" />
+          <div className="h-6 rounded-sm max-w-6xl grow bg-neutral-200 dark:bg-neutral-600" />
         </div>
       )}
       {data.length > 0 && (
