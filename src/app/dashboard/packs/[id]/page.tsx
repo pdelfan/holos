@@ -134,7 +134,7 @@ export default function Pack(props: Props) {
     // update pack total in db if total has changed
     if (!packTotal) return;
 
-    updatePackTotals(pack.id, newPackTotal);    
+    updatePackTotals(pack.id, newPackTotal);
   }, [currency, pack, packStats, packTotal]);
 
   // update chart data
@@ -151,7 +151,7 @@ export default function Pack(props: Props) {
   return (
     <>
       {!pack && <PackSkeleton />}
-      {pack && packData && packStats && packTotal && (
+      {pack && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
@@ -183,10 +183,21 @@ export default function Pack(props: Props) {
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
-            <PackSummary data={packTotal} />
+            <PackSummary
+              data={
+                packTotal ?? {
+                  weight_unit: pack.weight_unit,
+                  base_weight: pack.base_weight,
+                  total_weight: pack.total_weight,
+                  currency: currency,
+                  total_cost: pack.total_cost,
+                  total_items: pack.total_items,
+                }
+              }
+            />
           </section>
           <section className="flex flex-col gap-10 mt-12">
-            {packData.length > 0 && (
+            {packData && (
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
@@ -215,39 +226,35 @@ export default function Pack(props: Props) {
               </DndContext>
             )}
           </section>
-
-          <section className="mt-5">
-            {!viewMode && (
-              <Button
-                bgColor="bg-button dark:bg-neutral-700"
-                textColor="text-button-text dark:text-neutral-200"
-                onClick={() => setShowAddGroupModal(!showAddGroupModal)}
-              >
-                Add Group
-              </Button>
-            )}
-
-            {showAddGroupModal && (
-              <Modal>
-                <GroupForm
-                  packID={Number(params.id)}
-                  newPosition={packStats.length}
-                  onUpdate={setPackData}
-                  onClose={() => setShowAddGroupModal(false)}
-                />
-              </Modal>
-            )}
-            {showShareModal && (
-              <Modal>
-                <ShareForm
-                  pack={pack}
-                  onClose={() => setShowShareModal(false)}
-                />
-              </Modal>
-            )}
-          </section>
         </>
       )}
+      <section className="mt-5">
+        {!viewMode && (
+          <Button
+            bgColor="bg-button dark:bg-neutral-700"
+            textColor="text-button-text dark:text-neutral-200"
+            onClick={() => setShowAddGroupModal(!showAddGroupModal)}
+          >
+            Add Group
+          </Button>
+        )}
+
+        {packStats && showAddGroupModal && (
+          <Modal>
+            <GroupForm
+              packID={Number(params.id)}
+              newPosition={packStats.length}
+              onUpdate={setPackData}
+              onClose={() => setShowAddGroupModal(false)}
+            />
+          </Modal>
+        )}
+        {pack && showShareModal && (
+          <Modal>
+            <ShareForm pack={pack} onClose={() => setShowShareModal(false)} />
+          </Modal>
+        )}
+      </section>
     </>
   );
 }

@@ -36,7 +36,10 @@ function PackCard(props: Props) {
           {item.description}
         </h3>
       </div>
-      <PackSummary data={total} />
+      <div className="mt-auto">
+        <PackSummary data={total} />
+      </div>
+
       <div className="flex gap-2 absolute right-5 top-5">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
