@@ -30,10 +30,10 @@ function PackSummary(props: Props) {
               src={BaseWeightIcon}
               alt="Base icon"
               width={20}
-              height={20}              
+              height={20}
             />
             <h5 className="text-gray font-medium dark:text-neutral-200">
-              {base_weight.toFixed(2)} {weight_unit}
+              {base_weight} {weight_unit}
             </h5>
           </span>
         </li>
@@ -49,7 +49,7 @@ function PackSummary(props: Props) {
               height={20}
             />
             <h5 className="text-gray font-medium dark:text-neutral-200">
-              {total_weight.toFixed(2)} {weight_unit}
+              {total_weight} {weight_unit}
             </h5>
           </span>
         </li>
@@ -60,8 +60,8 @@ function PackSummary(props: Props) {
           <span className="flex flex-wrap gap-1">
             <Image src={CostIcon} alt="Cost icon" className="w-[20px]" />
             <h5 className="text-gray font-medium dark:text-neutral-200">
-              {currency} 
-              {total_cost.toFixed(2)}
+              {currency}
+              {total_cost}
             </h5>
           </span>
         </li>
@@ -70,12 +70,7 @@ function PackSummary(props: Props) {
             Total items
           </h4>
           <span className="flex flex-wrap gap-1">
-            <Image
-              src={ItemsIcon}
-              alt="Items icon"
-              width={20}
-              height={20}
-            />
+            <Image src={ItemsIcon} alt="Items icon" width={20} height={20} />
             <h5 className="text-gray font-medium dark:text-neutral-200">
               {total_items}
             </h5>

@@ -3,11 +3,7 @@
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
-import { Database } from "@/lib/database.types";
-import { convertWeight } from "@/utils/numberUtils";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import Image from "next/image";
 import FallingIcon from "@/assets/icons/fallingIcon.svg";
 import Link from "next/link";
@@ -17,6 +13,11 @@ import useGetPublicUser from "@/hooks/useGetPublicUser";
 import Avatar from "@/components/dataDisplay/avatar/Avatar";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
 import { getCurrencySymbol } from "@/utils/currencyUtils";
+import {
+  calculateGroupTotals,
+  calculatePackTotal,
+  totalsAreEqual,
+} from "@/utils/packUtils";
 
 interface Props {
   params: { id: string };
@@ -24,14 +25,14 @@ interface Props {
 
 export default function SharedPack(props: Props) {
   const { params } = props;
-  const supabase = createClientComponentClient<Database>();
   const { pack } = useGetSharedPack({
     shareID: params.id,
   });
   const { packData, setPackData, isLoadingPackData } = useGetSharedPackData({
     packID: pack?.id.toString() ?? "",
   });
-  const [packStats, setPackStats] = useState<PackStats[]>([]);
+  const [packStats, setPackStats] = useState<PackStats[] | []>([]);
+  const [packTotal, setPackTotal] = useState<PackSummary | null>(null);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
   const { user, avatar, preferredCurrency } = useGetPublicUser({
@@ -39,100 +40,40 @@ export default function SharedPack(props: Props) {
   });
   const currencySymbol = getCurrencySymbol(preferredCurrency);
 
-  const onDeleteGroup = async (id: number) => {
-    if (!packData) return;
-    const { error } = await supabase.from("group").delete().eq("id", id);
-    if (error) {
-      toast.error("Couldn't delete this group.");
-      return;
-    }
-    setPackData(packData.filter((item) => item.id !== id));
-    setPackStats(packStats.filter((item) => item.group_id !== id));
-  };
-
+  // update stats (group totals)
   useEffect(() => {
-    if (!packData) return;
-    const updatedTotal: PackStats[] = packData.map((group) => {
-      const total_weight = group.pack_item.reduce(
-        (acc, item) =>
-          acc +
-          convertWeight(
-            item.inventory.weight,
-            item.inventory.weight_unit,
-            pack?.weight_unit ?? "kg"
-          ) *
-            item.quantity,
-        0
-      );
-      const base_weight = group.pack_item
-        .filter((item) => item.type === "General")
-        .reduce(
-          (acc, item) =>
-            acc +
-            convertWeight(
-              item.inventory.weight,
-              item.inventory.weight_unit,
-              pack?.weight_unit ?? "kg"
-            ) *
-              item.quantity,
-          0
-        );
-      const price = group.pack_item.reduce(
-        (acc, item) => acc + item.inventory.price * item.quantity,
-        0
-      );
-      const quantity = group.pack_item.reduce(
-        (acc, item) => acc + item.quantity,
-        0
-      );
-
-      return {
-        group_id: group.id,
-        group_title: group.title,
-        weight_unit: pack?.weight_unit ?? "kg",
-        total_weight,
-        base_weight,
-        price,
-        quantity,
-      };
-    });
-    setPackStats(updatedTotal);
+    if (!packData || !pack?.weight_unit) return;
+    const groupTotals = calculateGroupTotals(packData, pack.weight_unit);
+    setPackStats(groupTotals);
   }, [pack?.weight_unit, packData]);
 
-  // get total base weight, total weight, total price, total quantity
-  const total: PackSummary = {
-    weight_unit: pack?.weight_unit ?? "kg",
-    currency: currencySymbol,
-    base_weight: packStats.reduce(
-      (acc, group: PackStats) =>
-        acc +
-        convertWeight(
-          group.base_weight,
-          group.weight_unit,
-          pack?.weight_unit ?? "kg"
-        ),
-      0
-    ),
-    total_weight: packStats.reduce(
-      (acc, group: PackStats) =>
-        acc +
-        convertWeight(
-          group.total_weight,
-          group.weight_unit,
-          pack?.weight_unit ?? "kg"
-        ),
-      0
-    ),
-    total_cost: packStats.reduce(
-      (acc, group: PackStats) => acc + group.price,
-      0
-    ),
-    total_items: packStats.reduce(
-      (acc, group: PackStats) => acc + group.quantity,
-      0
-    ),
-  };
+  // update overall pack total (sum of all group totals)
+  useEffect(() => {
+    if (
+      !pack?.weight_unit ||
+      packStats.length === 0 ||
+      !currencySymbol ||
+      !pack?.id
+    )
+      return;
+    const newPackTotal = calculatePackTotal(
+      packStats,
+      pack.weight_unit,
+      currencySymbol
+    );
 
+    // check if total has changed. if not, return
+    if (totalsAreEqual(packTotal, newPackTotal)) {
+      return;
+    }
+
+    setPackTotal(newPackTotal);
+
+    // update pack total in db if total has changed
+    if (!packTotal) return;
+  }, [currencySymbol, pack?.id, pack?.weight_unit, packStats, packTotal]);
+
+  // update chart data
   useEffect(() => {
     const visualizationData = packStats.map((group) => ({
       group: group.group_title,
@@ -167,7 +108,7 @@ export default function SharedPack(props: Props) {
         </section>
       )}
 
-      {user && pack && pack.is_public && (
+      {pack && pack.is_public && user && packTotal && (
         <>
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
@@ -192,7 +133,7 @@ export default function SharedPack(props: Props) {
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
-            <PackSummary data={total} />
+            <PackSummary data={packTotal} />
           </section>
           <section className="flex flex-col gap-10 mt-12">
             {packData &&
@@ -204,7 +145,7 @@ export default function SharedPack(props: Props) {
                   viewMode={true}
                   setGroupData={setPackData}
                   onUpdateGroup={setPackData}
-                  onDeleteGroup={() => onDeleteGroup(group.id)}                  
+                  onDeleteGroup={() => {}}
                   currency={currencySymbol}
                   packWeightUnit={pack.weight_unit}
                 />
