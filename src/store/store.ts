@@ -7,17 +7,7 @@ import ALphabetIcon from "@/assets/icons/alphabetIcon.svg";
 import WinterIcon from "@/assets/icons/winterIcon.svg";
 import AllIcon from "@/assets/icons/allIcon.svg";
 
-export const userDataAtom = atom<UserData | null>(null);
-
-export const currencyAtom = atom<string>("");
-
-export const packAtom = atom<Pack | null>(null);
-
 export const packsAtom = atom<Pack[] | []>([]);
-
-export const groupsAtom = atom<Group[] | []>([]);
-
-export const packStatsAtom = atom<PackStats[] | []>([]);
 
 export const tripsAtom = atom<TripItem[] | []>([]);
 
