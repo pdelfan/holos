@@ -176,7 +176,7 @@ export default function Pack(props: Props) {
         </section>
       )}
       {!isLoadingPackData && pack && currency && (
-        <>
+        <section className="animate-fade">
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
               <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
@@ -250,35 +250,38 @@ export default function Pack(props: Props) {
               </DndContext>
             )}
           </section>
-        </>
-      )}
-      <section className="mt-5">
-        {!viewMode && pack && (
-          <Button
-            bgColor="bg-button dark:bg-neutral-700"
-            textColor="text-button-text dark:text-neutral-200"
-            onClick={() => setShowAddGroupModal(!showAddGroupModal)}
-          >
-            Add Group
-          </Button>
-        )}
+          <section className="mt-5">
+            {!viewMode && pack && (
+              <Button
+                bgColor="bg-button dark:bg-neutral-700"
+                textColor="text-button-text dark:text-neutral-200"
+                onClick={() => setShowAddGroupModal(!showAddGroupModal)}
+              >
+                Add Group
+              </Button>
+            )}
 
-        {packStats && showAddGroupModal && (
-          <Modal>
-            <GroupForm
-              packID={Number(params.id)}
-              newPosition={packStats.length}
-              onUpdate={setPackData}
-              onClose={() => setShowAddGroupModal(false)}
-            />
-          </Modal>
-        )}
-        {pack && showShareModal && (
-          <Modal>
-            <ShareForm pack={pack} onClose={() => setShowShareModal(false)} />
-          </Modal>
-        )}
-      </section>
+            {packStats && showAddGroupModal && (
+              <Modal>
+                <GroupForm
+                  packID={Number(params.id)}
+                  newPosition={packStats.length}
+                  onUpdate={setPackData}
+                  onClose={() => setShowAddGroupModal(false)}
+                />
+              </Modal>
+            )}
+            {pack && showShareModal && (
+              <Modal>
+                <ShareForm
+                  pack={pack}
+                  onClose={() => setShowShareModal(false)}
+                />
+              </Modal>
+            )}
+          </section>
+        </section>
+      )}
     </>
   );
 }
