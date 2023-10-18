@@ -79,7 +79,6 @@ function Table(props: Props) {
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
-    touchAction: "none",
   };
 
   const onSort = async (changedItems: PackItemWithoutInventory[]) => {
@@ -187,7 +186,7 @@ function Table(props: Props) {
           <span className="flex items-center gap-1">
             {!viewMode && (
               <button
-                className="p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
+                className="touch-none p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
                 style={{ cursor: isDragging ? "grabbing" : "grab" }}
                 {...listeners}
                 {...attributes}
