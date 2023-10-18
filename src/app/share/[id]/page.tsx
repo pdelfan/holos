@@ -88,7 +88,7 @@ export default function SharedPack(props: Props) {
     <>
       {isLoadingPackData && <PackSkeleton />}
 
-      {!isLoadingPackData && pack?.is_public && !pack && (
+      {!isLoadingPackData && !pack?.is_public && user && preferredCurrency && (
         <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
           <Image
             src={FallingIcon}
@@ -108,62 +108,66 @@ export default function SharedPack(props: Props) {
         </section>
       )}
 
-      {pack && pack.is_public && user && (
-        <>
-          <section className="flex flex-wrap justify-between items-center gap-3">
-            <div>
-              <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
-                {pack.title}
-              </h1>
-              <h2 className="font-medium text-header-2 mt-1 max-w-2xl dark:text-neutral-400">
-                {pack.description}
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-2 items-center">
-              <div className="flex flex-col flex-wrap">
-                <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">
-                  Created by
-                </span>
-                <span className="font-medium text-sm dark:text-neutral-100">
-                  {user}
-                </span>
+      {!isLoadingPackData &&
+        pack &&
+        pack.is_public &&
+        user &&
+        preferredCurrency && (
+          <section className="animate-fade">
+            <section className="flex flex-wrap justify-between items-center gap-3">
+              <div>
+                <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+                  {pack.title}
+                </h1>
+                <h2 className="font-medium text-header-2 mt-1 max-w-2xl dark:text-neutral-400">
+                  {pack.description}
+                </h2>
               </div>
-              <Avatar size="small" name={user} image={avatar} />
-            </div>
-          </section>
-          <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
-            <ChartSummary data={chartData} viewMode={true} />
-            <PackSummary
-              data={
-                packTotal ?? {
-                  weight_unit: pack.weight_unit,
-                  base_weight: pack.base_weight,
-                  total_weight: pack.total_weight,
-                  currency: preferredCurrency,
-                  total_cost: pack.total_cost,
-                  total_items: pack.total_items,
+              <div className="flex flex-wrap gap-2 items-center">
+                <div className="flex flex-col flex-wrap">
+                  <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">
+                    Created by
+                  </span>
+                  <span className="font-medium text-sm dark:text-neutral-100">
+                    {user}
+                  </span>
+                </div>
+                <Avatar size="small" name={user} image={avatar} />
+              </div>
+            </section>
+            <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
+              <ChartSummary data={chartData} viewMode={true} />
+              <PackSummary
+                data={
+                  packTotal ?? {
+                    weight_unit: pack.weight_unit,
+                    base_weight: pack.base_weight,
+                    total_weight: pack.total_weight,
+                    currency: preferredCurrency,
+                    total_cost: pack.total_cost,
+                    total_items: pack.total_items,
+                  }
                 }
-              }
-            />
+              />
+            </section>
+            <section className="flex flex-col gap-10 mt-12">
+              {packData &&
+                packData.length > 0 &&
+                packData.map((group) => (
+                  <Table
+                    key={group.id}
+                    group={group}
+                    viewMode={true}
+                    setGroupData={setPackData}
+                    onUpdateGroup={setPackData}
+                    onDeleteGroup={() => {}}
+                    currency={currencySymbol}
+                    packWeightUnit={pack.weight_unit}
+                  />
+                ))}
+            </section>
           </section>
-          <section className="flex flex-col gap-10 mt-12">
-            {packData &&
-              packData.length > 0 &&
-              packData.map((group) => (
-                <Table
-                  key={group.id}
-                  group={group}
-                  viewMode={true}
-                  setGroupData={setPackData}
-                  onUpdateGroup={setPackData}
-                  onDeleteGroup={() => {}}
-                  currency={currencySymbol}
-                  packWeightUnit={pack.weight_unit}
-                />
-              ))}
-          </section>
-        </>
-      )}
+        )}
     </>
   );
 }
