@@ -41,7 +41,6 @@ function TableRow(props: Props) {
     transform: CSS.Translate.toString(transform),
     transition,
     filter: isDragging ? "contrast(0.9)" : "contrast(1)",
-    touchAction: "none",
   };
 
   return (
@@ -54,7 +53,7 @@ function TableRow(props: Props) {
         {!viewMode && (
           <td className="text-center pl-1 touch-none">
             <button
-              className="p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
+              className="touch-none p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
               style={{ cursor: isDragging ? "grabbing" : "grab" }}
               {...listeners}
               {...attributes}
