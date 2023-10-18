@@ -15,7 +15,7 @@ export default function AddItemRow(props: Props) {
   return (
     <>
       <tr className="border-table-rowBorder dark:bg-neutral-700">
-        <td className="text-center p-3">
+        <td className={`text-center px-3 py-1.5 sm:py-2.5 ${viewMode ? 'lg:py-6' : 'lg:py-3'}`}>
           {!viewMode && (
             <Button
               bgColor="bg-button dark:bg-neutral-500"
@@ -26,23 +26,23 @@ export default function AddItemRow(props: Props) {
             </Button>
           )}
         </td>
-        {!viewMode && <td className="py-3" />}
-        <td className="text-center p-3" />
-        <td className="text-center p-3" />
-        <td className="text-center p-3" />
-        <td className="text-center p-3" />
-        <td className="text-center p-3">
+        {!viewMode && <td className="py-2.5" />}
+        <td className="text-center px-3" />
+        <td className="text-center px-3" />
+        <td className="text-center px-3" />
+        <td className="text-center px-3" />
+        <td className="text-center px-3">
           <span className="text-sm dark:text-neutral-300">
             {currency}
             {Number.parseFloat(total.price.toFixed(2))}
           </span>
         </td>
-        <td className="text-center p-3">
+        <td className="text-center px-3">
           <span className="text-sm dark:text-neutral-300">
             {Number.parseFloat(total.weight.toFixed(2))} {weightUnit}
           </span>
         </td>
-        <td className="text-center p-3">
+        <td className="text-center px-3">
           <span className="text-sm dark:text-neutral-300">
             {total.quantity}
           </span>
