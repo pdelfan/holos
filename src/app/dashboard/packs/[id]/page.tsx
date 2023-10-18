@@ -49,7 +49,7 @@ interface Props {
 
 export default function Pack(props: Props) {
   const { params } = props;
-  const { pack } = useGetPack(params.id);
+  const { pack, isLoadingPack } = useGetPack(params.id);
   const { packData, setPackData, isLoadingPackData } = useGetPackData(
     params.id
   );
@@ -156,7 +156,7 @@ export default function Pack(props: Props) {
     <>
       {isLoadingPackData && <PackSkeleton />}
 
-      {!isLoadingPackData && !pack && (
+      {!isLoadingPackData && !isLoadingPack && !pack && (
         <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
           <Image
             src={FallingIcon}

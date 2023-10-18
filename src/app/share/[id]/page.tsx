@@ -25,7 +25,7 @@ interface Props {
 
 export default function SharedPack(props: Props) {
   const { params } = props;
-  const { pack } = useGetSharedPack({
+  const { pack, isLoadingPack } = useGetSharedPack({
     shareID: params.id,
   });
   const { packData, setPackData, isLoadingPackData } = useGetSharedPackData({
@@ -86,9 +86,9 @@ export default function SharedPack(props: Props) {
 
   return (
     <>
-      {isLoadingPackData && <PackSkeleton />}
+      {isLoadingPackData && <PackSkeleton />}      
 
-      {!isLoadingPackData && !pack?.is_public && user && preferredCurrency && (
+      {!isLoadingPackData && !isLoadingPack && !pack && (
         <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
           <Image
             src={FallingIcon}
