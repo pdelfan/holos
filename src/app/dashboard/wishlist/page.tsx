@@ -34,6 +34,11 @@ export default function Wishlist() {
             onChange={handleSearch}
           />
         </div>
+        <div>
+          <FloatingActionButton
+            onClick={() => setShowAddModal(!showAddModal)}
+          />
+        </div>
         <div className="flex gap-2 ml-auto">
           <Select
             selected={viewFilter}
@@ -54,18 +59,11 @@ export default function Wishlist() {
         sortFilter={sortFilter}
         viewFilter={viewFilter}
       />
-      <div className="fixed bottom-12 right-0 sm:bottom-0">
-        <div className="relative">
-          {showAddModal && (
-            <Modal>
-              <WishlistForm onClose={() => setShowAddModal(false)} />
-            </Modal>
-          )}
-          <FloatingActionButton
-            onClick={() => setShowAddModal(!showAddModal)}
-          />
-        </div>
-      </div>
+      {showAddModal && (
+        <Modal>
+          <WishlistForm onClose={() => setShowAddModal(false)} />
+        </Modal>
+      )}
     </>
   );
 }

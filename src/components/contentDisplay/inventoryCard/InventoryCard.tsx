@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { useCallback } from "react";
 import MoreIcon from "@/assets/icons/moreIcon.svg";
 import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
 import CostIcon from "@/assets/icons/costIcon.svg";
@@ -43,7 +42,7 @@ function InventoryCard(props: Props) {
             </h3>
           )}
         </div>
-        <div className="flex justify-between gap-4 mt-4 items-center">
+        <div className="flex justify-between gap-4 items-center">
           {item.price !== 0 && (
             <span className="flex items-center gap-1 text-sm font-medium text-stone-500 border-stone-300 dark:text-stone-400">
               <Image src={CostIcon} alt="Cost icon" className="w-4 sm:w-4" />
@@ -68,7 +67,7 @@ function InventoryCard(props: Props) {
           )}
         </div>
       </div>
-      <div className="flex gap-2 absolute right-4 top-4">
+      <div className="flex gap-2 absolute top-2 right-2">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
           tabIndex={0}

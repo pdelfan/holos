@@ -32,7 +32,7 @@ function PackCard(props: Props) {
         <h2 className="text-stone-600 font-medium leading-5 break-all dark:text-stone-300 max-w-[75%]">
           {item.title}
         </h2>
-        <h3 className="break-words overflow-clip text-base text-stone-400 max-w-[80%]">
+        <h3 className="break-all text-base text-stone-400 max-w-[80%]">
           {item.description}
         </h3>
       </div>
@@ -40,7 +40,7 @@ function PackCard(props: Props) {
         <PackSummary data={total} />
       </div>
 
-      <div className="flex gap-2 absolute right-4 top-4">
+      <div className="flex gap-2 absolute right-2 top-2">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
           tabIndex={0}
