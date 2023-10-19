@@ -68,7 +68,7 @@ function TripCard(props: Props) {
           </span>
         </li>
       </ul>
-      <div className="flex gap-2 absolute right-4 top-4">
+      <div className="flex gap-2 absolute right-2 top-2">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover"
           tabIndex={0}

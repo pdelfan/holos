@@ -25,6 +25,11 @@ export default function Trips() {
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for a trip" onChange={handleSearch} />
         </div>
+        <div>
+          <FloatingActionButton
+            onClick={() => setShowAddModal(!showAddModal)}
+          />
+        </div>
         <div className="flex ml-auto">
           <Select
             selected={sortFilter}
@@ -35,16 +40,11 @@ export default function Trips() {
         </div>
       </section>
       <TripGrid search={searchTerm} sortFilter={sortFilter} />
-      <div className="fixed bottom-12 right-0 sm:bottom-0">
-        <div className="relative">
-          {showAddModal && (
-            <Modal>
-              <TripForm onClose={() => setShowAddModal(false)} />
-            </Modal>
-          )}
-          <FloatingActionButton onClick={() => setShowAddModal(!showAddModal)} />
-        </div>
-      </div>
+      {showAddModal && (
+        <Modal>
+          <TripForm onClose={() => setShowAddModal(false)} />
+        </Modal>
+      )}
     </>
   );
 }

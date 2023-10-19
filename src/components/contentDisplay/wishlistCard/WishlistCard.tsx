@@ -24,7 +24,9 @@ function WishlistCard(props: Props) {
         {viewMode !== "Compact" && item.image_url && (
           <Image
             className={`rounded-lg ml-auto mr-auto mb-6 bg-white ${
-              viewMode === "Large" ? "h-28 w-28 sm:h-36 sm:w-36" : "h-20 w-20 sm:h-28 sm:w-28"
+              viewMode === "Large"
+                ? "h-28 w-28 sm:h-36 sm:w-36"
+                : "h-20 w-20 sm:h-28 sm:w-28"
             } object-contain`}
             src={item.image_url ?? PlaceholderImage}
             alt="Wishlist item"
@@ -34,25 +36,27 @@ function WishlistCard(props: Props) {
           />
         )}
         <div className="flex flex-col gap-1">
-          <div className="flex gap-1 flex-wrap items-center">
-            {item.logo_url && (
-              <Image
-                src={item.logo_url}
-                alt={"Website Favicon"}
-                width={20}
-                height={20}
-              />
-            )}
-            <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400 max-w-[80%]">
-              {getShortAddress(item.url)}
-            </h2>
-          </div>
+          {(item.logo_url || item.url) && (
+            <div className="flex gap-1 flex-wrap items-center">
+              {item.logo_url && (
+                <Image
+                  src={item.logo_url}
+                  alt={"Website Favicon"}
+                  width={20}
+                  height={20}
+                />
+              )}
+              <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400 max-w-[80%]">
+                {getShortAddress(item.url)}
+              </h2>
+            </div>
+          )}
 
           <h3 className="text-stone-600 font-medium leading-5 dark:text-neutral-300 max-w-[90%]">
             {item.title}
           </h3>
         </div>
-        <div className="flex gap-2 absolute right-4 top-4">
+        <div className="flex gap-2 absolute right-2 top-2">
           <button
             className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
             onClick={(e) => {
