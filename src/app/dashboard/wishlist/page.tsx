@@ -24,7 +24,7 @@ export default function Wishlist() {
 
   return (
     <>
-      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-header-1 dark:text-neutral-100">
         Wishlist
       </h1>
       <section className="flex flex-wrap gap-3 justify-between items-center mt-3">

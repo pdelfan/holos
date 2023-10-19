@@ -269,7 +269,7 @@ export default function Settings() {
 
   return (
     <>
-      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-header-1 dark:text-neutral-100">
         Settings
       </h1>
       {!userData && !currency && (

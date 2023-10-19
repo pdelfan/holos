@@ -23,13 +23,13 @@ function PackCard(props: Props) {
 
   return (
     <article
-      className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
+      className="flex flex-col relative bg-white rounded-2xl border-2 p-4 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
       onClick={() => {
         router.push(`packs/${item.id}`);
       }}
     >
       <div className="flex flex-col gap-1 mb-6">
-        <h2 className="text-stone-600 font-medium leading-5 dark:text-stone-300 max-w-[80%]">
+        <h2 className="text-stone-600 font-medium leading-5 break-all dark:text-stone-300 max-w-[75%]">
           {item.title}
         </h2>
         <h3 className="break-words overflow-clip text-base text-stone-400 max-w-[80%]">
@@ -40,7 +40,7 @@ function PackCard(props: Props) {
         <PackSummary data={total} />
       </div>
 
-      <div className="flex gap-2 absolute right-5 top-5">
+      <div className="flex gap-2 absolute right-4 top-4">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
           tabIndex={0}

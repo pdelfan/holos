@@ -20,7 +20,7 @@ function ChartSummary(props: Props) {
               ? "There are no items to display."
               : "Add items to see a visual breakdown of your pack."}
           </p>
-          <div className="h-6 rounded-sm max-w-6xl grow bg-neutral-200 dark:bg-neutral-600" />
+          <div className="h-5 sm:h-6 rounded-sm max-w-6xl grow bg-neutral-200 dark:bg-neutral-600" />
         </div>
       )}
       {data.length > 0 && (
@@ -32,7 +32,7 @@ function ChartSummary(props: Props) {
               return (
                 <div
                   key={datum.group_id}
-                  className="h-6 rounded-sm group hover:ring-2 hover:ring-gray relative dark:hover:ring-gray-500"
+                  className="h-5 sm:h-6 rounded-sm group hover:ring-2 hover:ring-gray relative dark:hover:ring-gray-500"
                   style={{
                     backgroundColor: CHART_COLOURS[index],
                     width: `${barWidth}%`,
@@ -51,10 +51,10 @@ function ChartSummary(props: Props) {
               // legend
               <div key={datum.group_id} className="flex gap-1.5 items-center">
                 <div
-                  className="h-3 w-3"
+                  className="h-2 w-2 sm:h-3 sm:w-3"
                   style={{ backgroundColor: CHART_COLOURS[index] }}
                 />
-                <span className="text-sm dark:text-neutral-200">
+                <span className="text-xs sm:text-sm dark:text-neutral-200">
                   {datum.group}
                 </span>
               </div>
