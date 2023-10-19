@@ -1,8 +1,5 @@
 "use client";
 
-import { Database } from "@/lib/database.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import toast from "react-hot-toast";
 import InventoryGridSkeleton from "./InventoryGridSkeleton";
 import { useAtom } from "jotai";
 import { inventoryAtom } from "@/store/store";
@@ -15,6 +12,7 @@ import EditInventoryForm from "@/components/forms/editInventoryForm/EditInventor
 import Pagination from "@/components/navigational/pagination/Pagination";
 import useFetchDB from "@/hooks/useFetchDB";
 import Result from "../result/Result";
+import { deleteItemFromInventory } from "@/utils/api/apiInventoryUtils";
 
 interface Props {
   search: string;
@@ -24,7 +22,6 @@ interface Props {
 
 export default function InventoryGrid(props: Props) {
   const { search, seasonFilter, sortFilter } = props;
-  const supabase = createClientComponentClient<Database>();
   const [showModal, setShowModal] = useState(false);
   const [currentInventoryItem, setCurrentInventoryItem] =
     useState<InventoryItem | null>(null);
@@ -39,21 +36,18 @@ export default function InventoryGrid(props: Props) {
     isValidating,
   } = useFetchDB({
     table: "inventory",
+    itemPerPage: 50,
     setData: setInventory,
   });
 
   const onDeleteInventoryItem = async (id: number) => {
-    const { error } = await supabase.from("inventory").delete().eq("id", id);
-    if (error) {
-      toast.error("Couldn't delete this item from inventory.");
-      return;
-    }
+    deleteItemFromInventory(id);
     setInventory(inventory.filter((item) => item.id !== id));
   };
 
   return (
     <>
-      {isLoading || isValidating ? (
+      {isLoading || isValidating || !currency ? (
         <InventoryGridSkeleton />
       ) : (
         <>

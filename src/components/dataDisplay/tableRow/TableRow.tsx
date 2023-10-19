@@ -41,7 +41,6 @@ function TableRow(props: Props) {
     transform: CSS.Translate.toString(transform),
     transition,
     filter: isDragging ? "contrast(0.9)" : "contrast(1)",
-    touchAction: "none",
   };
 
   return (
@@ -54,7 +53,7 @@ function TableRow(props: Props) {
         {!viewMode && (
           <td className="text-center pl-1 touch-none">
             <button
-              className="p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
+              className="touch-none p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
               style={{ cursor: isDragging ? "grabbing" : "grab" }}
               {...listeners}
               {...attributes}
@@ -70,30 +69,33 @@ function TableRow(props: Props) {
             </button>
           </td>
         )}
-        <td className="py-3">
+        <td className="py-1.5 sm:py-2.5 lg:py-3">
           {image && (
             <Image
-              className="border p-1 rounded-lg mx-auto min-w-[3rem] w-[3rem] h-[3.2rem] object-contain dark:border-neutral-400 bg-white"
+              className="border p-1 rounded-lg mx-auto max-w-[3rem] w-[3rem] h-[3.2rem] object-contain dark:border-neutral-400 bg-white"
               src={image}
               alt="Item image"
               height={40}
               width={40}
+              unoptimized={true}
             />
           )}
         </td>
-        <td className="text-center p-3">
+        <td className="text-center px-3">
           {title && (
-            <span className="text-sm dark:text-neutral-300">{title}</span>
+            <span className="inline-block text-sm min-w-[10rem] max-w-[18rem] max-h-[3rem] overflow-y-auto dark:text-neutral-300">
+              {title}
+            </span>
           )}
         </td>
-        <td className="text-center p-3">
+        <td className="text-center px-3">
           {description && (
-            <span className="inline-block text-sm max-w-xs dark:text-neutral-300">
+            <span className="inline-block text-sm min-w-[10rem] max-w-[18rem] max-h-[3rem] overflow-y-auto dark:text-neutral-300">
               {description}
             </span>
           )}
         </td>
-        <td className="text-center p-3">
+        <td className="text-center px-3">
           {url && (
             <button
               onClick={() => {
@@ -104,24 +106,24 @@ function TableRow(props: Props) {
             </button>
           )}
         </td>
-        <td className="p-3">{type && <Tag title={type} />}</td>
-        <td className="text-center p-3">
+        <td>{type && <Tag title={type} />}</td>
+        <td className="text-center px-3">
           <span className="text-sm dark:text-neutral-300">
             {currency}
             {price}
           </span>
         </td>
-        <td className="text-center p-3">
+        <td className="text-center px-3">
           <span className="text-sm dark:text-neutral-300">
             {weight} {weight_unit}
           </span>
         </td>
-        <td className="text-center p-3">
+        <td className="text-center px-3">
           <span className="text-sm dark:text-neutral-300">{quantity}</span>
         </td>
         {!viewMode && (
-          <td>
-            <span className="flex justify-center p-3">
+          <td className=" px-3">
+            <span className="flex justify-center">
               <button
                 onClick={() => {
                   onSelect(item);

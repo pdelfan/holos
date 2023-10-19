@@ -27,48 +27,48 @@ function TripCard(props: Props) {
       tabIndex={0}
     >
       <div className="flex flex-col flex-wrap gap-1">
-        <h2 className="text-lg text-white font-medium break-words overflow-clip leading-5 max-w-[80%]">
+        <h2 className="text-lg text-white font-medium break-all leading-5 max-w-[80%]">
           {item.title}
         </h2>
-        <h3 className="text-sm text-white font-medium break-words overflow-clip">
+        <h3 className="text-sm text-white font-medium break-all">
           {formattedDate}
         </h3>
       </div>
       <ul className="flex flex-wrap justify-between gap-2">
         <li className="flex flex-col">
-          <span className="text-sm font-semibold text-nandor-light">
+          <span className="text-xs sm:text-sm font-semibold text-nandor-light">
             Elevation
           </span>
-          <span className="text-white text-lg font-medium">
+          <span className="text-white text-sm sm:text-lg font-medium">
             {item.elevation} {item.elevation_unit}
           </span>
         </li>
         <li className="flex flex-col">
-          <span className="text-sm font-semibold text-nandor-light">
+          <span className="text-xs sm:text-sm font-semibold text-nandor-light">
             Distance
           </span>
-          <span className="text-white text-lg font-medium">
+          <span className="text-white text-sm sm:text-lg font-medium">
             {item.distance} {item.distance_unit}
           </span>
         </li>
         <li className="flex flex-col">
-          <span className="text-sm font-semibold text-nandor-light">
+          <span className="text-xs sm:text-sm font-semibold text-nandor-light">
             Base Weight
           </span>
-          <span className="text-white text-lg font-medium">
+          <span className="text-white text-sm sm:text-lg font-medium">
             {item.base_weight} {item.weight_unit}
           </span>
         </li>
         <li className="flex flex-col">
-          <span className="text-sm font-semibold text-nandor-light">
+          <span className="text-xs sm:text-sm font-semibold text-nandor-light">
             Total weight
           </span>
-          <span className="text-white text-lg font-medium">
+          <span className="text-white text-sm sm:text-lg font-medium">
             {item.total_weight} {item.weight_unit}
           </span>
         </li>
       </ul>
-      <div className="flex gap-2 absolute right-5 top-5">
+      <div className="flex gap-2 absolute right-4 top-4">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover"
           tabIndex={0}

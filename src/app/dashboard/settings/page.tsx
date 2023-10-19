@@ -42,6 +42,7 @@ export default function Settings() {
   const [avatar, setAvatar] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!currency) return;
     setPreferredCurrency(currency);
   }, [currency]);
 
@@ -268,7 +269,7 @@ export default function Settings() {
 
   return (
     <>
-      <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+      <h1 className="text-2xl sm:text-3xl font-semibold text-header-1 dark:text-neutral-100">
         Settings
       </h1>
       {!userData && !currency && (
@@ -288,7 +289,7 @@ export default function Settings() {
           </div>
         </>
       )}
-      {userData && currency && (
+      {userData && currency && preferredCurrency && (
         <>
           <section className="flex flex-col flex-wrap gap-12 justify-center items-center mt-8">
             <div className="flex flex-col items-center gap-2">
@@ -415,7 +416,7 @@ export default function Settings() {
                 <span className="block mb-3">
                   <FormSelect
                     label="Currency"
-                    initialValue={currency}
+                    initialValue={preferredCurrency}
                     options={Object.keys(CURRENCIES)}
                     onChange={setPreferredCurrency}
                   />

@@ -3,12 +3,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 import useSWR from "swr";
 
-interface Props {
-  packID: string;
-}
-
-export default function useGetPackData(props: Props) {
-  const { packID } = props;
+export default function useGetPackData(packID: string) {
   const supabase = createClientComponentClient<Database>();
   const [packData, setPackData] = useState<GroupData[] | null>(null);
 

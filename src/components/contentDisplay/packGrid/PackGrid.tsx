@@ -14,6 +14,7 @@ import EditPackForm from "@/components/forms/editPackForm/EditPackForm";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 import Result from "../result/Result";
+import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
 
 interface Props {
   search: string;
@@ -25,6 +26,7 @@ export default function PackGrid(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const [showModal, setShowModal] = useState(false);
   const [currentPack, setCurrentPack] = useState<Pack | null>(null);
+  const { currency } = useGetPreferredCurrency({});
   const [packs, setPacks] = useAtom(packsAtom);
   const {
     pageIndex,
@@ -49,11 +51,11 @@ export default function PackGrid(props: Props) {
 
   return (
     <>
-      {isLoading || isValidating ? (
+      {isLoading || isValidating || !currency ? (
         <PackGridSkeleton />
       ) : (
         <>
-          <section className="grid grid-cols-[repeat(auto-fill,minmax(16rem,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(24rem,1fr))] gap-4 mt-10 animate-fade">
+          <section className="grid grid-cols-[repeat(auto-fill,minmax(1fr,1fr))] sm:grid-cols-[repeat(auto-fill,minmax(30rem,1fr))] gap-4 mt-10 animate-fade">
             {packs &&
               sortPacks(packs, sortFilter.text)
                 .filter((item) =>
@@ -63,6 +65,7 @@ export default function PackGrid(props: Props) {
                   <PackCard
                     key={item.id}
                     item={item}
+                    currency={currency}
                     onEdit={() => {
                       setCurrentPack(item);
                       setShowModal(true);

@@ -35,7 +35,7 @@ function Avatar(props: Props) {
             >
               <span
                 className={`${
-                  size === "small" ? "text-sm" : "text-3xl"
+                  size === "small" ? "text-sm" : "text-2xl sm:text-3xl"
                 } text-amber-50`}
               >
                 {formatUsername(name)}

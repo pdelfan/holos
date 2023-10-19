@@ -6,13 +6,12 @@ import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
 import Modal from "@/components/feedback/modal/Modal";
 import GroupForm from "@/components/forms/groupForm/GroupForm";
+import Image from "next/image";
+import FallingIcon from "@/assets/icons/fallingIcon.svg";
+import Link from "next/link";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
-import { Database } from "@/lib/database.types";
-import { convertWeight } from "@/utils/numberUtils";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
@@ -33,6 +32,16 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { calculateChangedGroups } from "@/utils/dndUtils";
+import {
+  calculateGroupTotals,
+  calculatePackTotal,
+  totalsAreEqual,
+} from "@/utils/packUtils";
+import {
+  deleteGroup,
+  updateGroupPositions,
+  updatePackTotals,
+} from "@/utils/api/apiPackUtils";
 
 interface Props {
   params: { id: string };
@@ -40,16 +49,16 @@ interface Props {
 
 export default function Pack(props: Props) {
   const { params } = props;
-  const supabase = createClientComponentClient<Database>();
-  const { pack } = useGetPack({
-    packID: params.id,
-  });
+  const { pack, isLoadingPack } = useGetPack(params.id);
+  const { packData, setPackData, isLoadingPackData } = useGetPackData(
+    params.id
+  );
   const { currency } = useGetPreferredCurrency({});
   const [viewMode, setViewMode] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
-  const { packData, setPackData } = useGetPackData({ packID: params.id });
-  const [packStats, setPackStats] = useState<PackStats[]>([]);
+  const [packStats, setPackStats] = useState<PackStats[] | []>([]);
+  const [packTotal, setPackTotal] = useState<PackSummary | null>(null);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
 
   const sensors = useSensors(
@@ -60,12 +69,7 @@ export default function Pack(props: Props) {
   );
 
   const onSort = async (chagnedGroups: Group[]) => {
-    const { error } = await supabase.from("group").upsert(chagnedGroups);
-
-    if (error) {
-      toast.error("Couldn't update new positions.");
-      return;
-    }
+    updateGroupPositions(chagnedGroups);
   };
 
   const handleDragEnd = (event: any) => {
@@ -102,94 +106,42 @@ export default function Pack(props: Props) {
 
   const onDeleteGroup = async (id: number) => {
     if (!packData) return;
-    const { error } = await supabase.from("group").delete().eq("id", id);
-    if (error) {
-      toast.error("Couldn't delete this group.");
-      return;
-    }
+    deleteGroup(id, packData);
     setPackData(packData.filter((item) => item.id !== id));
     setPackStats(packStats.filter((item) => item.group_id !== id));
   };
 
+  // update stats (group totals)
   useEffect(() => {
     if (!packData || !pack?.weight_unit) return;
-    const updatedTotal: PackStats[] = packData.map((group) => {
-      const total_weight = group.pack_item.reduce(
-        (acc, item) =>
-          acc +
-          convertWeight(
-            item.inventory.weight,
-            item.inventory.weight_unit,
-            pack?.weight_unit ?? "kg"
-          ) *
-            item.quantity,
-        0
-      );
-      const base_weight = group.pack_item
-        .filter((item) => item.type === "General")
-        .reduce(
-          (acc, item) =>
-            acc +
-            convertWeight(
-              item.inventory.weight,
-              item.inventory.weight_unit,
-              pack?.weight_unit ?? "kg"
-            ) *
-              item.quantity,
-          0
-        );
-      const price = group.pack_item.reduce(
-        (acc, item) => acc + item.inventory.price * item.quantity,
-        0
-      );
-      const quantity = group.pack_item.reduce(
-        (acc, item) => acc + item.quantity,
-        0
-      );
-
-      return {
-        group_id: group.id,
-        group_title: group.title,
-        weight_unit: pack?.weight_unit ?? "kg",
-        total_weight,
-        base_weight,
-        price,
-        quantity,
-      };
-    });
-    setPackStats(updatedTotal);
+    const groupTotals = calculateGroupTotals(packData, pack.weight_unit);
+    setPackStats(groupTotals);
   }, [pack?.weight_unit, packData]);
 
-  // get total base weight, total weight, total price, total quantity
-  const total: PackSummary = useMemo(() => {
-    return {
-      weight_unit: pack?.weight_unit ?? "kg",
-      currency: currency,
-      base_weight: packStats.reduce(
-        (acc, group) =>
-          acc +
-          convertWeight(
-            group.base_weight,
-            group.weight_unit,
-            pack?.weight_unit ?? "kg"
-          ),
-        0
-      ),
-      total_weight: packStats.reduce(
-        (acc, group) =>
-          acc +
-          convertWeight(
-            group.total_weight,
-            group.weight_unit,
-            pack?.weight_unit ?? "kg"
-          ),
-        0
-      ),
-      total_cost: packStats.reduce((acc, group) => acc + group.price, 0),
-      total_items: packStats.reduce((acc, group) => acc + group.quantity, 0),
-    };
-  }, [pack, packStats, currency]);
+  // update overall pack total (sum of all group totals)
+  useEffect(() => {
+    if (!pack?.weight_unit || packStats.length === 0 || !currency || !pack?.id)
+      return;
+    const newPackTotal = calculatePackTotal(
+      packStats,
+      pack.weight_unit,
+      currency
+    );
 
+    // check if total has changed. if not, return
+    if (totalsAreEqual(packTotal, newPackTotal)) {
+      return;
+    }
+
+    setPackTotal(newPackTotal);
+
+    // update pack total in db if total has changed
+    if (!packTotal) return;
+
+    updatePackTotals(pack.id, newPackTotal);
+  }, [currency, pack, packStats, packTotal]);
+
+  // update chart data
   useEffect(() => {
     const visualizationData = packStats.map((group) => ({
       group: group.group_title,
@@ -202,12 +154,32 @@ export default function Pack(props: Props) {
 
   return (
     <>
-      {!pack && <PackSkeleton />}
-      {pack && packData && packStats && (
-        <>
+      {isLoadingPackData && <PackSkeleton />}
+
+      {!isLoadingPackData && !isLoadingPack && !pack && (
+        <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
+          <Image
+            src={FallingIcon}
+            alt="A person falling"
+            width={80}
+            height={80}
+          />
+          <h1 className="text-header-2 text-center text-lg sm:text-xl font-medium mt-1 dark:text-neutral-100">
+            The pack you are looking for could not be found.
+          </h1>
+          <Link
+            className="mt-6 px-4 py-2 rounded-full font-medium text-sm bg-button text-button-text dark:bg-neutral-700 dark:text-neutral-200 hover:brightness-95"
+            href={`${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/packs`}
+          >
+            Return Home
+          </Link>
+        </section>
+      )}
+      {!isLoadingPackData && pack && currency && (
+        <section className="animate-fade">
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
-              <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-header-1 dark:text-neutral-100">
                 {pack.title}
               </h1>
               <h2 className="font-medium text-header-2 mt-1 max-w-2xl dark:text-neutral-400">
@@ -235,10 +207,21 @@ export default function Pack(props: Props) {
           </section>
           <section className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-5">
             <ChartSummary data={chartData} />
-            <PackSummary data={total} />
+            <PackSummary
+              data={
+                packTotal ?? {
+                  weight_unit: pack.weight_unit,
+                  base_weight: pack.base_weight,
+                  total_weight: pack.total_weight,
+                  currency: currency,
+                  total_cost: pack.total_cost,
+                  total_items: pack.total_items,
+                }
+              }
+            />
           </section>
           <section className="flex flex-col gap-10 mt-12">
-            {packData.length > 0 && (
+            {packData && (
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
@@ -267,9 +250,8 @@ export default function Pack(props: Props) {
               </DndContext>
             )}
           </section>
-
           <section className="mt-5">
-            {!viewMode && (
+            {!viewMode && pack && (
               <Button
                 bgColor="bg-button dark:bg-neutral-700"
                 textColor="text-button-text dark:text-neutral-200"
@@ -279,7 +261,7 @@ export default function Pack(props: Props) {
               </Button>
             )}
 
-            {showAddGroupModal && (
+            {packStats && showAddGroupModal && (
               <Modal>
                 <GroupForm
                   packID={Number(params.id)}
@@ -289,7 +271,7 @@ export default function Pack(props: Props) {
                 />
               </Modal>
             )}
-            {showShareModal && (
+            {pack && showShareModal && (
               <Modal>
                 <ShareForm
                   pack={pack}
@@ -298,7 +280,7 @@ export default function Pack(props: Props) {
               </Modal>
             )}
           </section>
-        </>
+        </section>
       )}
     </>
   );

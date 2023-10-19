@@ -10,8 +10,10 @@ export default function useGetSharedPack(props: Props) {
   const { shareID } = props;
   const supabase = createClientComponentClient<Database>();
   const [pack, setPack] = useState<Pack | null>(null);
+  const [isLoadingPack, setIsLoadingPack] = useState(true);
 
   useEffect(() => {
+    setIsLoadingPack(true);
     const getPack = async () => {
       const { data } = await supabase
         .from("pack")
@@ -23,9 +25,10 @@ export default function useGetSharedPack(props: Props) {
       } else {
         setPack(null);
       }
+      setIsLoadingPack(false);
     };
     getPack();
   }, [shareID, setPack, supabase]);
 
-  return { pack, setPack };
+  return { pack, setPack, isLoadingPack };
 }
