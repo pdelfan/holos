@@ -13,13 +13,9 @@ interface Props {
 function InventoryCard(props: Props) {
   const { item, currency, onEdit } = props;
 
-  const imageLoader = useCallback(({ src }: { src: string }) => {
-    return src;
-  }, []);
-
   return (
     <article
-      className="flex flex-col relative bg-white rounded-2xl border-2 p-5 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
+      className="flex flex-col relative bg-white rounded-2xl border-2 p-4 cursor-pointer hover:border-neutral-300 dark:bg-stone-800 dark:border-neutral-700 dark:hover:border-neutral-600"
       onClick={() => {
         if (!item.url) return;
         window.open(item.url, "_blank");
@@ -27,12 +23,12 @@ function InventoryCard(props: Props) {
     >
       {item.image_url && (
         <Image
-          className="rounded-lg ml-auto mr-auto mb-6 h-28 w-28 object-contain bg-white"
+          className="rounded-lg ml-auto mr-auto mb-6 h-20 w-20 sm:h-28 sm:w-28 object-contain bg-white"
           src={item.image_url}
           alt="Item image"
           width={80}
           height={80}
-          loader={imageLoader}
+          unoptimized={true}
         />
       )}
 
@@ -50,9 +46,11 @@ function InventoryCard(props: Props) {
         <div className="flex justify-between gap-4 mt-4 items-center">
           {item.price !== 0 && (
             <span className="flex items-center gap-1 text-sm font-medium text-stone-500 border-stone-300 dark:text-stone-400">
-              <Image src={CostIcon} alt="Cost icon" width={20} height={20} />
-              {currency} 
-              {item.price}
+              <Image src={CostIcon} alt="Cost icon" className="w-4 sm:w-4" />
+              <h4 className="text-gray font-medium text-sm sm:text-base dark:text-neutral-200">
+                {currency}
+                {item.price}
+              </h4>
             </span>
           )}
           {item.weight !== 0 && (
@@ -60,15 +58,17 @@ function InventoryCard(props: Props) {
               <Image
                 src={TotalWeightIcon}
                 alt="Weight icon"
-                width={20}
                 height={20}
+                className="w-4 sm:w-auto"
               />
-              {item.weight} {item.weight_unit}
+              <h4 className="text-gray font-medium text-sm sm:text-base dark:text-neutral-200">
+                {item.weight} {item.weight_unit}
+              </h4>
             </span>
           )}
         </div>
       </div>
-      <div className="flex gap-2 absolute right-5 top-5">
+      <div className="flex gap-2 absolute right-4 top-4">
         <button
           className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
           tabIndex={0}

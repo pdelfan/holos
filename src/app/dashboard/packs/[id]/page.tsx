@@ -179,7 +179,7 @@ export default function Pack(props: Props) {
         <section className="animate-fade">
           <section className="flex flex-wrap justify-between items-center gap-3">
             <div>
-              <h1 className="text-3xl font-semibold text-header-1 dark:text-neutral-100">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-header-1 dark:text-neutral-100">
                 {pack.title}
               </h1>
               <h2 className="font-medium text-header-2 mt-1 max-w-2xl dark:text-neutral-400">

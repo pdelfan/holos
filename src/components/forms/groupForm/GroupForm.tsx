@@ -93,7 +93,7 @@ export default function GroupForm(props: Props) {
           <div className="flex-1">
             <div className="flex-1">
               <FormSelect
-                label="Total Weight Unit"
+                label="Weight Unit"
                 options={["g", "kg", "lb", "oz"]}
                 onChange={setWeightUnit}
               />

@@ -85,7 +85,7 @@ export default function EditGroupForm(props: Props) {
           <div className="flex-1">
             <div className="flex-1">
               <FormSelect
-                label="Total Weight Unit"
+                label="Weight Unit"
                 initialValue={weightUnit}
                 options={["g", "kg", "lb", "oz"]}
                 onChange={setWeightUnit}
