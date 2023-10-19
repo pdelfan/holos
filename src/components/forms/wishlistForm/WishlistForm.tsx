@@ -165,8 +165,7 @@ export default function WishlistForm(props: Props) {
         <div className="flex flex-wrap gap-3 mt-10">
           <div className="flex-auto sm:flex-1">
             <Label>Title</Label>
-            <Input
-              autoFocus
+            <Input              
               required
               type="text"
               maxLength={80}
@@ -178,8 +177,7 @@ export default function WishlistForm(props: Props) {
           </div>
           <div className="flex-auto sm:flex-1">
             <Label>Image URL</Label>
-            <Input
-              autoFocus
+            <Input              
               id="image_url"
               name="image_url"
               type="url"
@@ -191,8 +189,7 @@ export default function WishlistForm(props: Props) {
           </div>
           <div className="flex-auto sm:flex-1">
             <Label>Website Address</Label>
-            <Input
-              autoFocus
+            <Input              
               id="manual_url"
               name="manual_url"
               type="url"
