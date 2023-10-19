@@ -171,7 +171,7 @@ export default function EditTripForm(props: Props) {
         </div>
 
         <div className="flex flex-wrap justify-between gap-3">
-          <div className="flex-1">
+          <div className="flex-auto sm:flex-1">
             <Label>Base Weight</Label>
             <Input
               required
@@ -185,7 +185,7 @@ export default function EditTripForm(props: Props) {
               }}
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-auto sm:flex-1">
             <Label>Total Weight</Label>
             <Input
               required
@@ -199,7 +199,7 @@ export default function EditTripForm(props: Props) {
               }}
             />
           </div>
-          <div className="flex-1">
+          <div className="flex-auto sm:flex-1">
             <FormSelect
               label="Unit"
               initialValue={weightUnit}

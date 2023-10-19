@@ -25,6 +25,11 @@ export default function Packs() {
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for a pack" onChange={handleSearch} />
         </div>
+        <div>
+          <FloatingActionButton
+            onClick={() => setShowAddModal(!showAddModal)}
+          />
+        </div>
         <div className="flex ml-auto">
           <Select
             selected={sortFilter}
@@ -35,18 +40,11 @@ export default function Packs() {
         </div>
       </section>
       <PackGrid search={searchTerm} sortFilter={sortFilter} />
-      <div className="fixed bottom-12 right-0 sm:bottom-0">
-        <div className="relative">
-          {showAddModal && (
-            <Modal>
-              <PackForm onClose={() => setShowAddModal(false)} />
-            </Modal>
-          )}
-          <FloatingActionButton
-            onClick={() => setShowAddModal(!showAddModal)}
-          />
-        </div>
-      </div>
+      {showAddModal && (
+        <Modal>
+          <PackForm onClose={() => setShowAddModal(false)} />
+        </Modal>
+      )}
     </>
   );
 }
