@@ -36,6 +36,7 @@ export default function InventoryGrid(props: Props) {
     isValidating,
   } = useFetchDB({
     table: "inventory",
+    itemPerPage: 50,
     setData: setInventory,
   });
 

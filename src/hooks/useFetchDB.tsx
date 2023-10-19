@@ -12,7 +12,7 @@ interface Props<T> {
 export default function useFetchDB<T extends Record<string, any>>(
   props: Props<T>
 ) {
-  const { table, itemPerPage = 18, setData } = props;
+  const { table, itemPerPage = 30, setData } = props;
   const supabase = createClientComponentClient<Database>();
   const [pageIndex, setPageIndex] = useState(0);
 
