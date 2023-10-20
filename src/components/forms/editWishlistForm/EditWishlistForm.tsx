@@ -6,7 +6,6 @@ import { Database } from "@/lib/database.types";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
-import { getSiteMetadata } from "@/utils/linkUtils";
 import { useSetAtom } from "jotai";
 import { wishlistAtom } from "@/store/store";
 
@@ -18,66 +17,13 @@ interface Props {
 
 export default function EditWishlistForm(props: Props) {
   const { wishlistItem, onClose, onDelete } = props;
-  const [url, setUrl] = useState("");
-  const [manualURL, setManualURL] = useState(wishlistItem.url);
+  const [url, setUrl] = useState(wishlistItem.url);
   const [title, setTitle] = useState(wishlistItem.title);
   const [imageURL, setImageURL] = useState(wishlistItem.image_url);
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
   const setWishlist = useSetAtom(wishlistAtom);
-
-  const onAddBookmark = async (e: FormEvent) => {
-    e.preventDefault(); // prevent refresh
-    const { data: user } = await supabase.auth.getSession();
-    if (!user.session) {
-      onClose();
-      return;
-    }
-
-    setError(false);
-    setLoading(true);
-
-    try {
-      const metadata: Metadata | Error = await getSiteMetadata(url);
-      if (
-        metadata instanceof Error ||
-        !metadata.title ||
-        metadata.title.includes("404") ||
-        metadata.title.includes("Error") ||
-        metadata.title.includes("Denied") ||
-        !metadata.image
-      ) {
-        setError(true);
-        return;
-      }
-      const { data, error } = await supabase
-        .from("wishlist")
-        .insert([
-          {
-            url: url,
-            title: metadata.title ?? null,
-            logo_url: metadata.logo ?? null,
-            image_url: metadata.image ?? null,
-            user_id: user.session.user.id,
-          },
-        ])
-        .select();
-
-      if (error) {
-        toast.error("Couldn't add item to wishlist.");
-        return;
-      }
-
-      onClose();
-      setWishlist((wishlist) => [...wishlist, data[0]]);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const onUpdateWishlistItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -93,7 +39,7 @@ export default function EditWishlistForm(props: Props) {
       const { data, error } = await supabase
         .from("wishlist")
         .update({
-          url: manualURL ?? null,
+          url: url ?? null,
           title: title,
           image_url: imageURL ?? null,
         })
@@ -155,8 +101,8 @@ export default function EditWishlistForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Website address"
-              value={manualURL}
-              onChange={(e) => setManualURL(e.target.value)}
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
             />
           </div>
           <div className="flex flex-wrap flex-auto gap-3 justify-between">
