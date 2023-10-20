@@ -11,6 +11,9 @@ import { sortWishlist } from "@/utils/filterUtils";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 import Result from "../result/Result";
+import { useState } from "react";
+import Modal from "@/components/feedback/modal/Modal";
+import EditWishlistForm from "@/components/forms/editWishlistForm/EditWishlistForm";
 
 interface Props {
   search: string;
@@ -21,6 +24,9 @@ interface Props {
 export default function WishlistGrid(props: Props) {
   const { search, viewFilter, sortFilter } = props;
   const supabase = createClientComponentClient<Database>();
+  const [showModal, setShowModal] = useState(false);
+  const [currentWishlistItem, setCurrentWishlistItem] =
+    useState<WishlistItem | null>(null);
   const [wishlist, setWishlist] = useAtom(wishlistAtom);
   const {
     pageIndex,
@@ -34,7 +40,7 @@ export default function WishlistGrid(props: Props) {
     setData: setWishlist,
   });
 
-  const onDeleteBookmark = async (id: number) => {
+  const onDeleteWishlistItem = async (id: number) => {
     const { error } = await supabase.from("wishlist").delete().eq("id", id);
     if (error) {
       toast.error("Couldn't delete this item from wishlist.");
@@ -63,7 +69,10 @@ export default function WishlistGrid(props: Props) {
                     key={item.id}
                     item={item}
                     viewMode={viewFilter.text}
-                    onDelete={() => onDeleteBookmark(item.id)}
+                    onEdit={() => {
+                      setCurrentWishlistItem(item);
+                      setShowModal(true);
+                    }}
                   />
                 ))}
           </section>
@@ -81,6 +90,15 @@ export default function WishlistGrid(props: Props) {
             />
           )}
         </>
+      )}
+      {showModal && currentWishlistItem && (
+        <Modal>
+          <EditWishlistForm
+            wishlistItem={currentWishlistItem}
+            onDelete={() => onDeleteWishlistItem(currentWishlistItem.id)}
+            onClose={() => setShowModal(false)}
+          />
+        </Modal>
       )}
     </>
   );
