@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {  
+module.exports = {
   plugins: [require("tailwindcss-animated")],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -27,7 +27,7 @@ module.exports = {
           hover: "#E6E6E6",
         },
         table: {
-          head: "#DCDCDC",
+          head: "#DDDDDD",
           row: "#FAFAFA",
           headBorder: "#B0B0B0",
           rowBorder: "#DDDDDD",
