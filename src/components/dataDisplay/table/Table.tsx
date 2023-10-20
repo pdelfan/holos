@@ -202,7 +202,7 @@ function Table(props: Props) {
               </button>
             )}
 
-            <h3 className="font-medium text-lg dark:text-neutral-200">
+            <h3 className="font-medium text-base sm:text-lg dark:text-neutral-200">
               {group.title}
             </h3>
           </span>
@@ -234,7 +234,7 @@ function Table(props: Props) {
             </div>
           )}
         </div>
-        <div className="relative overflow-auto rounded-xl border-2 bg-white dark:border-neutral-600">
+        <div className="relative overflow-auto rounded-xl border-2 border-table-rowBorder bg-white dark:border-neutral-600">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
