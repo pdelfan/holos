@@ -79,8 +79,7 @@ export default function InventoryForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <Label>Title</Label>
-            <Input
-              autoFocus
+            <Input              
               required
               maxLength={80}
               type="text"

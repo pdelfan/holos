@@ -1,17 +1,16 @@
 import Image from "next/image";
 import PlaceholderImage from "@/assets/images/imagePlaceholder.png";
 import { getShortAddress } from "@/utils/linkUtils";
-import { useCallback } from "react";
-import DeleteIcon from "@/assets/icons/deleteIcon.svg";
+import MoreIcon from "@/assets/icons/moreIcon.svg";
 
 interface Props {
   item: WishlistItem;
   viewMode: string;
-  onDelete: () => void;
+  onEdit: () => void;  
 }
 
 function WishlistCard(props: Props) {
-  const { item, viewMode, onDelete } = props;
+  const { item, viewMode, onEdit } = props;
 
   return (
     <>
@@ -56,15 +55,16 @@ function WishlistCard(props: Props) {
             {item.title}
           </h3>
         </div>
-        <div className="flex gap-2 absolute right-2 top-2">
+        <div className="flex gap-2 absolute top-2 right-2">
           <button
             className="bg-button p-2 rounded-full hover:bg-button-hover dark:bg-stone-300 dark:hover:bg-neutral-200"
+            tabIndex={0}
             onClick={(e) => {
               e.stopPropagation();
-              onDelete();
+              onEdit();
             }}
           >
-            <Image src={DeleteIcon} alt="Dots icon" width={20} height={20} />
+            <Image src={MoreIcon} alt="Dots icon" width={20} height={20} />
           </button>
         </div>
       </article>

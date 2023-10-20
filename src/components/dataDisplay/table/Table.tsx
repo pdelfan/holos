@@ -19,6 +19,7 @@ import Image from "next/image";
 import DragIcon from "@/assets/icons/dragIcon.svg";
 import {
   DndContext,
+  DragOverlay,
   closestCenter,
   KeyboardSensor,
   PointerSensor,
@@ -202,7 +203,7 @@ function Table(props: Props) {
               </button>
             )}
 
-            <h3 className="font-medium text-lg dark:text-neutral-200">
+            <h3 className="font-medium text-base sm:text-lg dark:text-neutral-200">
               {group.title}
             </h3>
           </span>
@@ -234,7 +235,7 @@ function Table(props: Props) {
             </div>
           )}
         </div>
-        <div className="relative overflow-auto rounded-xl border-2 bg-white dark:border-neutral-600">
+        <div className="relative overflow-auto rounded-xl border-2 border-table-rowBorder bg-white dark:border-neutral-600">
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
@@ -246,7 +247,12 @@ function Table(props: Props) {
               strategy={verticalListSortingStrategy}
             >
               {isExpanded && (
-                <table className="border-collapse table-auto w-full bg-white dark:bg-neutral-800">
+                <table
+                  className="border-collapse table-auto w-full bg-white dark:bg-neutral-800"
+                  style={{
+                    filter: isDragging ? "contrast(0.9)" : "contrast(1)",
+                  }}
+                >
                   <thead className="bg-table-head dark:bg-neutral-900">
                     <tr className=" rounded-xl">
                       {!viewMode && <th className="p-2" />}

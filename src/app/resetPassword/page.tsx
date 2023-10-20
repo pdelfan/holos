@@ -57,8 +57,7 @@ export default function UpdatePassword() {
         }}
       >
         <Label htmlFor="email">Email</Label>
-        <input
-          autoFocus
+        <input          
           required
           type="email"
           name="email"
