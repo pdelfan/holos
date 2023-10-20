@@ -27,7 +27,7 @@ function InventoryCard(props: Props) {
           alt="Item image"
           width={80}
           height={80}
-          unoptimized={true}
+          
         />
       )}
 

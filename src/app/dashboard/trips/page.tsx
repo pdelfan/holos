@@ -25,11 +25,8 @@ export default function Trips() {
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for a trip" onChange={handleSearch} />
         </div>
-        <div>
-          <FloatingActionButton
-            onClick={() => setShowAddModal(!showAddModal)}
-          />
-        </div>
+        <FloatingActionButton onClick={() => setShowAddModal(!showAddModal)} />
+
         <div className="flex ml-auto">
           <Select
             selected={sortFilter}

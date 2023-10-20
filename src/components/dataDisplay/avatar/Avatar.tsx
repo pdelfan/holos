@@ -25,7 +25,7 @@ function Avatar(props: Props) {
               alt="Avatar image"
               width={size === "small" ? 35 : 96}
               height={size === "small" ? 35 : 96}      
-              unoptimized        
+              unoptimized={true}      
             />
           )}
           {!image && (

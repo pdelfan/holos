@@ -33,12 +33,9 @@ export default function Wishlist() {
             placeholder="Search for a website or item"
             onChange={handleSearch}
           />
-        </div>
-        <div>
-          <FloatingActionButton
-            onClick={() => setShowAddModal(!showAddModal)}
-          />
-        </div>
+        </div>        
+        <FloatingActionButton onClick={() => setShowAddModal(!showAddModal)} />
+        
         <div className="flex gap-2 ml-auto">
           <Select
             selected={viewFilter}
