@@ -132,8 +132,7 @@ export default function ItemForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <Label>Search</Label>
-            <Input
-              autoFocus
+            <Input              
               maxLength={80}
               type="text"
               placeholder="Search inventory for an item"

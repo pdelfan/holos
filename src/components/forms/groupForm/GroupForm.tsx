@@ -80,8 +80,7 @@ export default function GroupForm(props: Props) {
         <div className="flex flex-wrap gap-3">
           <div className="flex-1">
             <Label>Title</Label>
-            <Input
-              autoFocus
+            <Input              
               required
               type="text"
               placeholder="Title of this group"

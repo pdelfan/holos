@@ -1,5 +1,4 @@
-interface Props {
-  autoFocus?: boolean;
+interface Props {  
   required?: boolean;
   id?: string;
   type: string;

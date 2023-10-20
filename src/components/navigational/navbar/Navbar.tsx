@@ -14,7 +14,7 @@ function Navbar() {
       <ul className="hidden items-center sm:flex">
         {tabs.map((tab) => (
           <NavItem
-            key={tab.id}
+            key={tab.id}            
             isActive={pathname.includes(tab.id)}
             title={tab.title}
             href={tab.href}

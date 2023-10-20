@@ -22,7 +22,7 @@ function NavItem(props: Props) {
         <motion.div
           layoutId={motionID}
           className="absolute inset-0 bg-orange rounded-full"
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.25 }}          
         />
       )}
       <Link href={href} className={selectedClass}>
