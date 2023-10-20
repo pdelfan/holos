@@ -155,7 +155,7 @@ export default function Home() {
         </div>
       </section>
       <footer className="w-full p-3 animate-delay-1000 animate-fade-up max-w-7xl">
-        <ul className="flex justify-between">
+        <ul className="flex flex-wrap gap-2 justify-between">
           <li className="text-sm font-medium text-neutral-400  dark:text-neutral-300">
             {new Date().getFullYear()} · Pouria Delfanazari
           </li>
