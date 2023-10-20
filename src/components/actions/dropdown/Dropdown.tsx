@@ -19,7 +19,10 @@ export default function Dropdown(props: Props) {
   return (
     <div className="relative">
       <span ref={ref}>
-        <DropdownButton onClick={() => setIsOpen(!isOpen)}>
+        <DropdownButton
+          aria-expanded={isOpen}
+          onClick={() => setIsOpen(!isOpen)}
+        >
           {button}
         </DropdownButton>
       </span>

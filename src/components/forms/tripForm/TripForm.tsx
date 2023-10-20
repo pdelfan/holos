@@ -80,8 +80,7 @@ export default function TripForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <Label>Title</Label>
-            <Input
-              autoFocus
+            <Input              
               required
               type="text"
               maxLength={60}

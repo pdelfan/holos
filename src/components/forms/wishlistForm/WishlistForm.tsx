@@ -117,12 +117,11 @@ export default function WishlistForm(props: Props) {
   return (
     <div
       ref={ref}
-      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border-2 border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200 dark:bg-neutral-700 dark:border-neutral-600"
+      className="z-50 fixed overflow-auto top-[50%] left-[50%] max-h-[75vh] w-[90vw] max-w-[35rem] translate-x-[-50%] translate-y-[-50%] bg-white rounded-xl border-2 border-solid border-slate-200 shadow-md p-4 focus:outline-none animate-fade animate-duration-200 dark:bg-neutral-700 dark:border-neutral-600"
     >
       <form onSubmit={onAddBookmark}>
         <Label>Website Address (automatically get product info)</Label>
         <Input
-          autoFocus
           required
           id="url"
           name="url"
@@ -165,7 +164,7 @@ export default function WishlistForm(props: Props) {
         <div className="flex flex-wrap gap-3 mt-10">
           <div className="flex-auto sm:flex-1">
             <Label>Title</Label>
-            <Input              
+            <Input
               required
               type="text"
               maxLength={80}
@@ -177,7 +176,7 @@ export default function WishlistForm(props: Props) {
           </div>
           <div className="flex-auto sm:flex-1">
             <Label>Image URL</Label>
-            <Input              
+            <Input
               id="image_url"
               name="image_url"
               type="url"
@@ -189,7 +188,7 @@ export default function WishlistForm(props: Props) {
           </div>
           <div className="flex-auto sm:flex-1">
             <Label>Website Address</Label>
-            <Input              
+            <Input
               id="manual_url"
               name="manual_url"
               type="url"

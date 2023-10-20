@@ -60,8 +60,7 @@ export default function SignIn() {
       >
         <span>
           <Label htmlFor="email">Email</Label>
-          <Input
-            autoFocus
+          <Input            
             required
             type="email"
             name="email"
