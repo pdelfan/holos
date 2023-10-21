@@ -32,7 +32,7 @@ function ChartSummary(props: Props) {
               return (
                 <div
                   key={datum.group_id}
-                  className="h-5 sm:h-6 rounded-sm group hover:ring-2 hover:ring-gray relative dark:hover:ring-gray-500"
+                  className="h-5 sm:h-6 rounded-sm group hover:ring-2 relative dark:hover:ring-sky-400"
                   style={{
                     backgroundColor: CHART_COLOURS[index],
                     width: `${barWidth}%`,
