@@ -102,7 +102,7 @@ export default function Settings() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(user?.email, {
-        redirectTo: `${location.origin}/updatePassword`,
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/updatePassword`,
       });
 
       if (error) {
@@ -536,7 +536,7 @@ export default function Settings() {
                     <Button
                       onClick={() => {
                         router.push(
-                          `${location.origin}/auth/deleteUser?user=${user?.id}`
+                          `${process.env.NEXT_PUBLIC_SITE_URL}/auth/deleteUser?user=${user?.id}`
                         );
                       }}
                       bgColor="bg-red-500"
