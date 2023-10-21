@@ -199,6 +199,7 @@ export default function ItemForm(props: Props) {
                   alt="Item image"
                   width={40}
                   height={40}
+                  unoptimized={true}
                 />
               )}
               <span className="dark:text-neutral-200">
