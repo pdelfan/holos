@@ -21,7 +21,7 @@ export default function UpdatePassword() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${location.origin}/updatePassword`,
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/updatePassword`,
       });
 
       if (error) {
