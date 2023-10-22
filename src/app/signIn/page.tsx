@@ -13,7 +13,6 @@ import Label from "@/components/inputs/label/Label";
 export default function SignIn() {
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

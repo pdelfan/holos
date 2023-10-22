@@ -49,9 +49,9 @@ interface Props {
 
 export default function Pack(props: Props) {
   const { params } = props;
-  const { pack, isLoadingPack } = useGetPack(params.id);
+  const { pack, isLoadingPack } = useGetPack({ id: params.id });
   const { packData, setPackData, isLoadingPackData } = useGetPackData(
-    params.id
+    {id: params.id}
   );
   const { currency } = useGetPreferredCurrency({});
   const [viewMode, setViewMode] = useState(false);

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Avatar from "@/components/dataDisplay/avatar/Avatar";
 import Button from "@/components/actions/button/Button";
-import useGetUser from "@/hooks/useGetUser";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
@@ -32,10 +31,11 @@ export default function Settings() {
   const [loading, setLoading] = useState<LoadingState>({});
   const [newEmail, setNewEmail] = useState("");
   const [resetSuccess, setResetSuccess] = useState(false);
-  const { currency } = useGetPreferredCurrency({ showAbbreviation: true });
+  const { currency, setCurrency } = useGetPreferredCurrency({
+    showAbbreviation: true,
+  });
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [preferredCurrency, setPreferredCurrency] = useState("");
-  const { user } = useGetUser();
   const router = useRouter();
   const { userData, setUserData } = useGetUserData();
   const [username, setUsername] = useState(userData?.name);
@@ -55,7 +55,7 @@ export default function Settings() {
   };
 
   const onUpdateEmail = async () => {
-    if (newEmail === user?.email) {
+    if (newEmail === userData?.email) {
       toast.error("New email cannot be the same as your current email.");
       return;
     }
@@ -88,7 +88,7 @@ export default function Settings() {
   };
 
   const onResetPassword = async () => {
-    if (!user?.email) return;
+    if (!userData?.email) return;
 
     const {
       data: { session },
@@ -101,9 +101,12 @@ export default function Settings() {
     startLoading("passwordReset");
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(user?.email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/updatePassword`,
-      });
+      const { error } = await supabase.auth.resetPasswordForEmail(
+        userData?.email,
+        {
+          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/updatePassword`,
+        }
+      );
 
       if (error) {
         toast.error(error.message);
@@ -117,7 +120,7 @@ export default function Settings() {
   };
 
   const onUpdatePreferredCurrency = async () => {
-    if (!user) return;
+    if (!userData) return;
     if (preferredCurrency === currency) {
       toast.error(
         "New preferred currency cannot be the same as your current preferred currency."
@@ -146,6 +149,7 @@ export default function Settings() {
         return;
       }
 
+      setCurrency(preferredCurrency);
       toast.success("Updated preferred currency.");
     } finally {
       stopLoading("currencyUpdate");
@@ -153,7 +157,7 @@ export default function Settings() {
   };
 
   const onUpdateName = async () => {
-    if (!user) return;
+    if (!userData) return;
     if (username === userData?.name) {
       toast.error("New name cannot be the same as your current name.");
       return;
@@ -194,7 +198,7 @@ export default function Settings() {
   };
 
   const onUpdateAvatar = async () => {
-    if (!user || !avatar) return;
+    if (!userData || !avatar) return;
     if (avatar === userData?.avatar_url) {
       toast.error("New avatar cannot be the same as your current avatar.");
       return;
@@ -233,7 +237,7 @@ export default function Settings() {
   };
 
   const onRemoveAvatar = async () => {
-    if (!user) return;
+    if (!userData) return;
 
     const {
       data: { session },
@@ -536,7 +540,7 @@ export default function Settings() {
                     <Button
                       onClick={() => {
                         router.push(
-                          `${process.env.NEXT_PUBLIC_SITE_URL}/auth/deleteUser?user=${user?.id}`
+                          `${process.env.NEXT_PUBLIC_SITE_URL}/auth/deleteUser?user=${userData?.id}`
                         );
                       }}
                       bgColor="bg-red-500"
