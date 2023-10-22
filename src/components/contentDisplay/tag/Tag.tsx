@@ -1,7 +1,5 @@
+import { getTagColour, getTagIcon } from "@/utils/packUtils";
 import Image from "next/image";
-import WearableIcon from "@/assets/icons/clothingIcon.svg";
-import ConsumableIcon from "@/assets/icons/consumableIcon.svg";
-import GeneralIcon from "@/assets/icons/itemsIcon.svg";
 
 interface Props {
   title: string;
@@ -10,30 +8,8 @@ interface Props {
 function Tag(props: Props) {
   const { title } = props;
 
-  const formatColour = (title: string) => {
-    switch (title) {
-      case "Wearable":
-        return "bg-lime-300";
-      case "Consumable":
-        return "bg-pink-300";
-      default:
-        return "bg-stone-200";
-    }
-  };
-
-  const formatIcon = (title: string) => {
-    switch (title) {
-      case "Wearable":
-        return WearableIcon;
-      case "Consumable":
-        return ConsumableIcon;
-      default:
-        return GeneralIcon;
-    }
-  };
-
-  const selectedColour = formatColour(title);
-  const selectedIcon = formatIcon(title);
+  const selectedColour = getTagColour(title);
+  const selectedIcon = getTagIcon(title);
 
   return (
     <div

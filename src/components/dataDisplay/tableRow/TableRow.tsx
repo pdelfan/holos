@@ -51,7 +51,7 @@ function TableRow(props: Props) {
         style={style}
       >
         {!viewMode && (
-          <td className="text-center pl-1 touch-none">
+          <td className="text-center px-3 touch-none">
             <button
               className="touch-none p-2 hover:bg-button-hover rounded-lg dark:hover:bg-neutral-700"
               style={{ cursor: isDragging ? "grabbing" : "grab" }}

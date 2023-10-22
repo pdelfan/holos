@@ -142,8 +142,11 @@ export default function Home() {
               supporting us.
             </p>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Your contribution will help maintain and run the servers, work on
-              new features, and improve your experience.
+              Your contribution will help us maintain and run the servers, work
+              on new features, and improve your experience.
+            </p>
+            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
+              Stay tuned for more information on how you can support us.
             </p>
             <Image
               className="animate-fade-up mt-12 mx-auto"

@@ -139,7 +139,7 @@ export default function Settings() {
       const { error } = await supabase
         .from("user")
         .update({ preferred_currency: preferredCurrency })
-        .eq("id", user.id);
+        .eq("id", session.user.id);
 
       if (error) {
         toast.error(error.message);
@@ -173,7 +173,7 @@ export default function Settings() {
       const { data, error } = await supabase
         .from("user")
         .update({ name: username })
-        .eq("id", user.id)
+        .eq("id", session.user.id)
         .select("name");
 
       if (error) {
@@ -214,7 +214,7 @@ export default function Settings() {
       const { error } = await supabase
         .from("user")
         .update({ avatar_url: avatar })
-        .eq("id", user.id);
+        .eq("id", session.user.id);
 
       if (error) {
         toast.error(error.message);
@@ -249,7 +249,7 @@ export default function Settings() {
       const { error } = await supabase
         .from("user")
         .update({ avatar_url: null })
-        .eq("id", user.id);
+        .eq("id", session.user.id);
 
       if (error) {
         toast.error(error.message);
