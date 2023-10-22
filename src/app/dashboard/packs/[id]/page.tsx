@@ -1,13 +1,16 @@
 "use client";
-import Button from "@/components/actions/button/Button";
+
 import ShareIcon from "@/assets/icons/shareIcon.svg";
+import ViewIcon from "@/assets/icons/viewIcon.svg";
+import EditIcon from "@/assets/icons/editIcon.svg";
+import FallingIcon from "@/assets/icons/fallingIcon.svg";
+import Button from "@/components/actions/button/Button";
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
 import Modal from "@/components/feedback/modal/Modal";
 import GroupForm from "@/components/forms/groupForm/GroupForm";
 import Image from "next/image";
-import FallingIcon from "@/assets/icons/fallingIcon.svg";
 import Link from "next/link";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
@@ -15,23 +18,7 @@ import { useEffect, useState } from "react";
 import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
-import ViewIcon from "@/assets/icons/viewIcon.svg";
-import EditIcon from "@/assets/icons/editIcon.svg";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { calculateChangedGroups } from "@/utils/dndUtils";
+
 import {
   calculateGroupTotals,
   calculatePackTotal,
@@ -42,6 +29,8 @@ import {
   updateGroupPositions,
   updatePackTotals,
 } from "@/utils/api/apiPackUtils";
+import useDND from "@/hooks/useDND";
+import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
   params: { id: string };
@@ -50,9 +39,9 @@ interface Props {
 export default function Pack(props: Props) {
   const { params } = props;
   const { pack, isLoadingPack } = useGetPack({ id: params.id });
-  const { packData, setPackData, isLoadingPackData } = useGetPackData(
-    {id: params.id}
-  );
+  const { packData, setPackData, isLoadingPackData } = useGetPackData({
+    id: params.id,
+  });
   const { currency } = useGetPreferredCurrency({});
   const [viewMode, setViewMode] = useState(false);
   const [showAddGroupModal, setShowAddGroupModal] = useState(false);
@@ -60,13 +49,14 @@ export default function Pack(props: Props) {
   const [packStats, setPackStats] = useState<PackStats[] | []>([]);
   const [packTotal, setPackTotal] = useState<PackSummary | null>(null);
   const [chartData, setChartData] = useState<ChartData[] | []>([]);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const {
+    sensors,
+    DndContext,
+    closestCenter,
+    arrayMove,
+    SortableContext,
+    verticalListSortingStrategy,
+  } = useDND();
 
   const onSort = async (chagnedGroups: Group[]) => {
     updateGroupPositions(chagnedGroups);
@@ -91,7 +81,7 @@ export default function Pack(props: Props) {
 
       setPackData(reorderedData);
 
-      const changedItems = calculateChangedGroups(packData, oldIndex, newIndex);
+      const changedItems = calculateChangedItems(packData, oldIndex, newIndex);
       if (changedItems.length === 0) return;
 
       // remove pack_item from changed groups

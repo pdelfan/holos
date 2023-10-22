@@ -4,6 +4,14 @@ import toast from "react-hot-toast";
 
 const supabase = createClientComponentClient<Database>();
 
+export const deletePack = async (id: number) => {
+  const { error } = await supabase.from("pack").delete().eq("id", id);
+  if (error) {
+    toast.error("Couldn't delete this pack.");
+    return;
+  }
+};
+
 export const updateGroupPositions = async (chagnedGroups: Group[]) => {
   const { error } = await supabase.from("group").upsert(chagnedGroups);
   if (error) {
