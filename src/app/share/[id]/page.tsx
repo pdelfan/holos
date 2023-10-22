@@ -7,8 +7,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import FallingIcon from "@/assets/icons/fallingIcon.svg";
 import Link from "next/link";
-import useGetSharedPack from "@/hooks/useGetSharedPack";
-import useGetSharedPackData from "@/hooks/useGetSharedPackData";
 import useGetPublicUser from "@/hooks/useGetPublicUser";
 import Avatar from "@/components/dataDisplay/avatar/Avatar";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
@@ -18,6 +16,8 @@ import {
   calculatePackTotal,
   totalsAreEqual,
 } from "@/utils/packUtils";
+import useGetPack from "@/hooks/useGetPack";
+import useGetPackData from "@/hooks/useGetPackData";
 
 interface Props {
   params: { id: string };
@@ -25,11 +25,13 @@ interface Props {
 
 export default function SharedPack(props: Props) {
   const { params } = props;
-  const { pack, isLoadingPack } = useGetSharedPack({
-    shareID: params.id,
+  const { pack, isLoadingPack } = useGetPack({
+    id: params.id,
+    isShared: true,
   });
-  const { packData, setPackData, isLoadingPackData } = useGetSharedPackData({
-    packID: pack?.id.toString() ?? "",
+  const { packData, setPackData, isLoadingPackData } = useGetPackData({
+    id: pack?.id.toString() ?? "",
+    isShared: true,
   });
   const [packStats, setPackStats] = useState<PackStats[] | []>([]);
   const [packTotal, setPackTotal] = useState<PackSummary | null>(null);
@@ -86,7 +88,7 @@ export default function SharedPack(props: Props) {
 
   return (
     <>
-      {isLoadingPackData && <PackSkeleton />}      
+      {isLoadingPackData && <PackSkeleton />}
 
       {!isLoadingPackData && !isLoadingPack && !pack && (
         <section className="flex flex-col items-center justify-center p-3 h-[85svh]">
