@@ -19,7 +19,6 @@ import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
 
-import { calculateChangedItems } from "@/utils/DNDUtils";
 import {
   calculateGroupTotals,
   calculatePackTotal,
@@ -31,6 +30,7 @@ import {
   updatePackTotals,
 } from "@/utils/api/apiPackUtils";
 import useDND from "@/hooks/useDND";
+import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
   params: { id: string };
