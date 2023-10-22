@@ -14,10 +14,10 @@ import ExpandMoreIcon from "@/assets/icons/expandMoreIcon.svg";
 import ExpandLessIcon from "@/assets/icons/expandLessIcon.svg";
 import Image from "next/image";
 import DragIcon from "@/assets/icons/dragIcon.svg";
-import { calculateChangedItems } from "@/utils/DNDUtils";
 import { CSS } from "@dnd-kit/utilities";
 import useDND from "@/hooks/useDND";
 import { deleteItem, updateChangedItems } from "@/utils/api/apiTableUtils";
+import { calculateChangedItems } from "@/utils/dndUtils";
 
 interface Props {
   onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[] | null>>;
