@@ -132,7 +132,7 @@ export default function ItemForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <Label>Search</Label>
-            <Input              
+            <Input
               maxLength={80}
               type="text"
               placeholder="Search inventory for an item"
@@ -176,6 +176,7 @@ export default function ItemForm(props: Props) {
                             alt="Item image"
                             width={30}
                             height={30}
+                            unoptimized={true}
                           />
                         )}
                         <span className="text-left">{item.title}</span>
@@ -198,6 +199,7 @@ export default function ItemForm(props: Props) {
                   alt="Item image"
                   width={40}
                   height={40}
+                  unoptimized={true}
                 />
               )}
               <span className="dark:text-neutral-200">

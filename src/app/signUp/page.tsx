@@ -26,7 +26,7 @@ export default function SignUp() {
         email,
         password,
         options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
         },
       });
 
@@ -53,8 +53,8 @@ export default function SignUp() {
         Welcome to Holos
       </h1>
       <h2 className="text-sm font-medium text-gray-500 dark:text-neutral-400">
-        After you have signed up, check your email for a verification link to
-        complete your registration.
+        After you have signed up, check your inbox (or spam folder) for a
+        verification link to complete your registration.
       </h2>
       <form
         className="text-sm font-medium text-gray-400 mt-5"
@@ -65,7 +65,7 @@ export default function SignUp() {
       >
         <span>
           <Label htmlFor="email">Email</Label>
-          <Input            
+          <Input
             required
             type="email"
             name="email"
@@ -101,7 +101,7 @@ export default function SignUp() {
         )}
         {success && (
           <small className="block text-green-600 font-medium mt-1 animate-fade dark:text-green-500">
-            Check your email ({email}) to verify your account!
+            Check your inbox (or spam folder) to verify your account!
           </small>
         )}
         <button

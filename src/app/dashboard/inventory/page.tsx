@@ -31,11 +31,8 @@ export default function Inventory() {
         <div className="flex-1 max-w-lg basis-auto">
           <SearchBar placeholder="Search for an item" onChange={handleSearch} />
         </div>
-        <div>
-          <FloatingActionButton
-            onClick={() => setShowAddModal(!showAddModal)}
-          />
-        </div>
+        <FloatingActionButton onClick={() => setShowAddModal(!showAddModal)} />
+
         <div className="flex gap-2 ml-auto">
           <Select
             selected={seasonFilter}

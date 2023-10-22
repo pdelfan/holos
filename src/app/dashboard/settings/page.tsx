@@ -102,7 +102,7 @@ export default function Settings() {
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(user?.email, {
-        redirectTo: `${location.origin}/updatePassword`,
+        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/updatePassword`,
       });
 
       if (error) {
@@ -139,7 +139,7 @@ export default function Settings() {
       const { error } = await supabase
         .from("user")
         .update({ preferred_currency: preferredCurrency })
-        .eq("id", user.id);
+        .eq("id", session.user.id);
 
       if (error) {
         toast.error(error.message);
@@ -173,7 +173,7 @@ export default function Settings() {
       const { data, error } = await supabase
         .from("user")
         .update({ name: username })
-        .eq("id", user.id)
+        .eq("id", session.user.id)
         .select("name");
 
       if (error) {
@@ -214,7 +214,7 @@ export default function Settings() {
       const { error } = await supabase
         .from("user")
         .update({ avatar_url: avatar })
-        .eq("id", user.id);
+        .eq("id", session.user.id);
 
       if (error) {
         toast.error(error.message);
@@ -249,7 +249,7 @@ export default function Settings() {
       const { error } = await supabase
         .from("user")
         .update({ avatar_url: null })
-        .eq("id", user.id);
+        .eq("id", session.user.id);
 
       if (error) {
         toast.error(error.message);
@@ -536,7 +536,7 @@ export default function Settings() {
                     <Button
                       onClick={() => {
                         router.push(
-                          `${location.origin}/auth/deleteUser?user=${user?.id}`
+                          `${process.env.NEXT_PUBLIC_SITE_URL}/auth/deleteUser?user=${user?.id}`
                         );
                       }}
                       bgColor="bg-red-500"
