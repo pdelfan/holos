@@ -1,9 +1,6 @@
 "use client";
 
 import WishlistCard from "@/components/contentDisplay/wishlistCard/WishlistCard";
-import { Database } from "@/lib/database.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import toast from "react-hot-toast";
 import WishlistGridSkeleton from "./WishListGridSkeleton";
 import { useAtom } from "jotai";
 import { wishlistAtom } from "@/store/store";
@@ -14,6 +11,7 @@ import Result from "../result/Result";
 import { useState } from "react";
 import Modal from "@/components/feedback/modal/Modal";
 import EditWishlistForm from "@/components/forms/editWishlistForm/EditWishlistForm";
+import { deleteWishlistItem } from "@/utils/api/apiWishlistUtils";
 
 interface Props {
   search: string;
@@ -23,7 +21,6 @@ interface Props {
 
 export default function WishlistGrid(props: Props) {
   const { search, viewFilter, sortFilter } = props;
-  const supabase = createClientComponentClient<Database>();
   const [showModal, setShowModal] = useState(false);
   const [currentWishlistItem, setCurrentWishlistItem] =
     useState<WishlistItem | null>(null);
@@ -41,11 +38,7 @@ export default function WishlistGrid(props: Props) {
   });
 
   const onDeleteWishlistItem = async (id: number) => {
-    const { error } = await supabase.from("wishlist").delete().eq("id", id);
-    if (error) {
-      toast.error("Couldn't delete this item from wishlist.");
-      return;
-    }
+    deleteWishlistItem(id);
     setWishlist(wishlist.filter((item) => item.id !== id));
   };
 

@@ -1,5 +1,5 @@
-import { getTagColour, getTagIcon } from "@/utils/packUtils";
 import Image from "next/image";
+import { getTagColour, getTagIcon } from "@/utils/packUtils";
 
 interface Props {
   title: string;

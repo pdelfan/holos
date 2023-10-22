@@ -5,9 +5,6 @@ import DeleteIcon from "@/assets/icons/deleteIcon.svg";
 import EditGroupForm from "@/components/forms/editGroupForm/EditGroupForm";
 import Modal from "@/components/feedback/modal/Modal";
 import TableRow from "../tableRow/TableRow";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/lib/database.types";
-import toast from "react-hot-toast";
 import Dropdown from "@/components/actions/dropdown/Dropdown";
 import DropdownItem from "@/components/actions/dropdown/DropdownItem";
 import { convertWeight } from "@/utils/numberUtils";
@@ -17,24 +14,10 @@ import ExpandMoreIcon from "@/assets/icons/expandMoreIcon.svg";
 import ExpandLessIcon from "@/assets/icons/expandLessIcon.svg";
 import Image from "next/image";
 import DragIcon from "@/assets/icons/dragIcon.svg";
-import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { calculateChangedItems } from "@/utils/dndUtils";
+import { calculateChangedItems } from "@/utils/DNDUtils";
 import { CSS } from "@dnd-kit/utilities";
+import useDND from "@/hooks/useDND";
+import { deleteItem, updateChangedItems } from "@/utils/api/apiTableUtils";
 
 interface Props {
   onUpdateGroup: Dispatch<SetStateAction<[] | GroupData[] | null>>;
@@ -55,18 +38,21 @@ function Table(props: Props) {
     group,
     currency,
   } = props;
-  const supabase = createClientComponentClient<Database>();
   const [showEditGroupModal, setShowEditGroupModal] = useState(false);
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showEditItemModal, setShowEditItemModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<PackItem | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+
+  const {
+    sensors,
+    DndContext,
+    useSortable,
+    closestCenter,
+    arrayMove,
+    SortableContext,
+    verticalListSortingStrategy,
+  } = useDND();
 
   const {
     attributes,
@@ -83,12 +69,7 @@ function Table(props: Props) {
   };
 
   const onSort = async (changedItems: PackItemWithoutInventory[]) => {
-    const { error } = await supabase.from("pack_item").upsert(changedItems);
-
-    if (error) {
-      toast.error("Couldn't update new positions.");
-      return;
-    }
+    updateChangedItems(changedItems);
   };
 
   const handleDragEnd = (event: any) => {
@@ -155,11 +136,7 @@ function Table(props: Props) {
   };
 
   const onDeleteItem = async (id: number) => {
-    const { error } = await supabase.from("pack_item").delete().eq("id", id);
-    if (error) {
-      toast.error("Couldn't delete this item.");
-      return;
-    }
+    deleteItem(id);
 
     // remove item from group's pack_item
     setGroupData((prev) => {

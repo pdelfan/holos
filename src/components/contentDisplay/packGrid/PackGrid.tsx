@@ -1,8 +1,5 @@
 "use client";
 
-import { Database } from "@/lib/database.types";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import toast from "react-hot-toast";
 import { useAtom } from "jotai";
 import { packsAtom } from "@/store/store";
 import { sortPacks } from "@/utils/filterUtils";
@@ -15,6 +12,7 @@ import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 import Result from "../result/Result";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
+import { deletePack } from "@/utils/api/apiPackUtils";
 
 interface Props {
   search: string;
@@ -23,7 +21,6 @@ interface Props {
 
 export default function PackGrid(props: Props) {
   const { search, sortFilter } = props;
-  const supabase = createClientComponentClient<Database>();
   const [showModal, setShowModal] = useState(false);
   const [currentPack, setCurrentPack] = useState<Pack | null>(null);
   const { currency } = useGetPreferredCurrency({});
@@ -41,11 +38,7 @@ export default function PackGrid(props: Props) {
   });
 
   const onDeletePack = async (id: number) => {
-    const { error } = await supabase.from("pack").delete().eq("id", id);
-    if (error) {
-      toast.error("Couldn't delete this pack.");
-      return;
-    }
+    deletePack(id);
     setPacks(packs.filter((item) => item.id !== id));
   };
 
