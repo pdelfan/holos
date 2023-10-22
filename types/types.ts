@@ -161,3 +161,9 @@ interface UserData {
   email: string;
   id: string;
 }
+
+interface Error {
+  name: string;
+  status: number | undefined;
+  message: string;
+}

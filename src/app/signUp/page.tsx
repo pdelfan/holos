@@ -11,7 +11,6 @@ import Label from "@/components/inputs/label/Label";
 
 export default function SignUp() {
   const supabase = createClientComponentClient<Database>();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,7 +25,7 @@ export default function SignUp() {
         email,
         password,
         options: {
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+          emailRedirectTo: `${location.origin}/auth/callback`,
         },
       });
 
@@ -53,8 +52,8 @@ export default function SignUp() {
         Welcome to Holos
       </h1>
       <h2 className="text-sm font-medium text-gray-500 dark:text-neutral-400">
-        After you have signed up, check your inbox (or spam folder) for a
-        verification link to complete your registration.
+        After you have signed up, check your email for a verification link to
+        complete your registration.
       </h2>
       <form
         className="text-sm font-medium text-gray-400 mt-5"
@@ -101,7 +100,7 @@ export default function SignUp() {
         )}
         {success && (
           <small className="block text-green-600 font-medium mt-1 animate-fade dark:text-green-500">
-            Check your inbox (or spam folder) to verify your account!
+            Check your email ({email}) to verify your account!
           </small>
         )}
         <button
