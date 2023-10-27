@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import useGetPack from "@/hooks/useGetPack";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import useGetPackData from "@/hooks/useGetPackData";
 import ShareForm from "@/components/forms/shareForm/ShareForm";
 import PackSkeleton from "@/components/dataDisplay/packSkeleton/PackSkeleton";
@@ -28,7 +28,7 @@ import {
   deleteGroup,
   updateGroupPositions,
   updatePackTotals,
-} from "@/utils/api/apiPackUtils";
+} from "@/utils/api/packAPI";
 import useDND from "@/hooks/useDND";
 import { calculateChangedItems } from "@/utils/dndUtils";
 
@@ -102,11 +102,14 @@ export default function Pack(props: Props) {
   };
 
   // update stats (group totals)
-  useEffect(() => {
-    if (!packData || !pack?.weight_unit) return;
-    const groupTotals = calculateGroupTotals(packData, pack.weight_unit);
-    setPackStats(groupTotals);
+  const groupTotals = useMemo(() => {
+    if (!packData || !pack?.weight_unit) return [];
+    return calculateGroupTotals(packData, pack.weight_unit);
   }, [pack?.weight_unit, packData]);
+
+  useEffect(() => {
+    setPackStats(groupTotals);
+  }, [groupTotals]);
 
   // update overall pack total (sum of all group totals)
   useEffect(() => {
@@ -132,15 +135,19 @@ export default function Pack(props: Props) {
   }, [currency, pack, packStats, packTotal]);
 
   // update chart data
+  const visualizationData = useMemo(
+    () =>
+      packStats.map((group) => ({
+        group: group.group_title,
+        group_id: group.group_id,
+        weight: parseFloat(group.total_weight.toFixed(2)),
+        weight_unit: group.weight_unit,
+      })),
+    [packStats]
+  );
   useEffect(() => {
-    const visualizationData = packStats.map((group) => ({
-      group: group.group_title,
-      group_id: group.group_id,
-      weight: parseFloat(group.total_weight.toFixed(2)),
-      weight_unit: group.weight_unit,
-    }));
     setChartData(visualizationData);
-  }, [packStats]);
+  }, [visualizationData]);
 
   return (
     <>
