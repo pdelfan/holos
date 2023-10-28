@@ -7,13 +7,12 @@ import PackForm from "@/components/forms/packForm/PackForm";
 import Select from "@/components/forms/select/Select";
 import SearchBar from "@/components/search/searchBar/SearchBar";
 import useSearch from "@/hooks/useSearch";
-import { sortFilterAtom, sortFilterOptions } from "@/store/store";
-import { useAtom } from "jotai";
+import { sortFilterOptions } from "@/utils/filterUtils";
 import { useState } from "react";
 
 export default function Packs() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
+  const [sortFilter, setSortFilter] = useState(sortFilterOptions[0]);
   const { searchTerm, handleSearch } = useSearch();
 
   return (

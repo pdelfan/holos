@@ -6,20 +6,14 @@ import InventoryForm from "@/components/forms/inventoryForm/InventoryForm";
 import Modal from "@/components/feedback/modal/Modal";
 import SearchBar from "@/components/search/searchBar/SearchBar";
 import Select from "@/components/forms/select/Select";
-import {
-  seasonFilterAtom,
-  seasonFilterOptions,
-  sortFilterAtom,
-  sortFilterOptions,
-} from "@/store/store";
-import { useAtom } from "jotai";
+import { seasonFilterOptions, sortFilterOptions } from "@/utils/filterUtils";
 import { useState } from "react";
 import useSearch from "@/hooks/useSearch";
 
 export default function Inventory() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [seasonFilter, setSeasonFilter] = useAtom(seasonFilterAtom);
-  const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
+  const [seasonFilter, setSeasonFilter] = useState(seasonFilterOptions[0]);
+  const [sortFilter, setSortFilter] = useState(sortFilterOptions[0]);
   const { searchTerm, handleSearch } = useSearch();
 
   return (
