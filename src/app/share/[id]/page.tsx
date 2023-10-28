@@ -3,7 +3,7 @@
 import PackSummary from "@/components/contentDisplay/packSummary/PackSummary";
 import ChartSummary from "@/components/dataDisplay/chartSummary/ChartSummary";
 import Table from "@/components/dataDisplay/table/Table";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import FallingIcon from "@/assets/icons/fallingIcon.svg";
 import Link from "next/link";
@@ -43,11 +43,14 @@ export default function SharedPack(props: Props) {
   const currencySymbol = getCurrencySymbol(preferredCurrency);
 
   // update stats (group totals)
-  useEffect(() => {
-    if (!packData || !pack?.weight_unit) return;
-    const groupTotals = calculateGroupTotals(packData, pack.weight_unit);
-    setPackStats(groupTotals);
+  const groupTotals = useMemo(() => {
+    if (!packData || !pack?.weight_unit) return [];
+    return calculateGroupTotals(packData, pack.weight_unit);
   }, [pack?.weight_unit, packData]);
+
+  useEffect(() => {
+    setPackStats(groupTotals);
+  }, [groupTotals]);
 
   // update overall pack total (sum of all group totals)
   useEffect(() => {
@@ -76,15 +79,19 @@ export default function SharedPack(props: Props) {
   }, [currencySymbol, pack?.id, pack?.weight_unit, packStats, packTotal]);
 
   // update chart data
+  const visualizationData = useMemo(
+    () =>
+      packStats.map((group) => ({
+        group: group.group_title,
+        group_id: group.group_id,
+        weight: parseFloat(group.total_weight.toFixed(2)),
+        weight_unit: group.weight_unit,
+      })),
+    [packStats]
+  );
   useEffect(() => {
-    const visualizationData = packStats.map((group) => ({
-      group: group.group_title,
-      group_id: group.group_id,
-      weight: parseFloat(group.total_weight.toFixed(2)),
-      weight_unit: group.weight_unit,
-    }));
     setChartData(visualizationData);
-  }, [packStats]);
+  }, [visualizationData]);
 
   return (
     <>

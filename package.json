@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "@dnd-kit/sortable": "^7.0.2",
-    "@supabase/auth-helpers-nextjs": "^0.7.3",
-    "@supabase/supabase-js": "^2.27.0",
+    "@supabase/auth-helpers-nextjs": "^0.8.2",
+    "@supabase/supabase-js": "^2.38.4",
     "@types/node": "20.4.2",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -51,7 +51,7 @@
     "@swc-jotai/react-refresh": "^0.0.8",
     "eslint-plugin-storybook": "^0.6.15",
     "storybook": "^7.4.6",
-    "supabase": "^1.99.5",
+    "supabase": "^1.106.1",
     "tailwindcss-animated": "^1.0.1"
   }
 }

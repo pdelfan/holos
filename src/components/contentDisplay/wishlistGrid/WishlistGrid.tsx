@@ -11,7 +11,7 @@ import Result from "../result/Result";
 import { useState } from "react";
 import Modal from "@/components/feedback/modal/Modal";
 import EditWishlistForm from "@/components/forms/editWishlistForm/EditWishlistForm";
-import { deleteWishlistItem } from "@/utils/api/apiWishlistUtils";
+import { deleteWishlistItem } from "@/utils/api/wishlistAPI";
 
 interface Props {
   search: string;

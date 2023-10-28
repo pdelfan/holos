@@ -12,7 +12,7 @@ import EditInventoryForm from "@/components/forms/editInventoryForm/EditInventor
 import Pagination from "@/components/navigational/pagination/Pagination";
 import useFetchDB from "@/hooks/useFetchDB";
 import Result from "../result/Result";
-import { deleteItemFromInventory } from "@/utils/api/apiInventoryUtils";
+import { deleteItemFromInventory } from "@/utils/api/inventoryAPI";
 
 interface Props {
   search: string;

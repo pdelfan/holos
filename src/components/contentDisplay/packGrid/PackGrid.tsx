@@ -12,7 +12,7 @@ import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 import Result from "../result/Result";
 import useGetPreferredCurrency from "@/hooks/useGetPreferredCurrency";
-import { deletePack } from "@/utils/api/apiPackUtils";
+import { deletePack } from "@/utils/api/packAPI";
 
 interface Props {
   search: string;

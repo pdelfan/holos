@@ -11,7 +11,7 @@ import Modal from "@/components/feedback/modal/Modal";
 import useFetchDB from "@/hooks/useFetchDB";
 import Pagination from "@/components/navigational/pagination/Pagination";
 import Result from "../result/Result";
-import { deleteTripItem } from "@/utils/api/apiTripUtils";
+import { deleteTripItem } from "@/utils/api/tripAPI";
 
 interface Props {
   search: string;
