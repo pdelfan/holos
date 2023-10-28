@@ -6,20 +6,14 @@ import Modal from "@/components/feedback/modal/Modal";
 import SearchBar from "@/components/search/searchBar/SearchBar";
 import Select from "@/components/forms/select/Select";
 import WishlistForm from "@/components/forms/wishlistForm/WishlistForm";
-import {
-  viewFilterOptions,
-  sortFilterOptions,
-  viewFilterAtom,
-  sortFilterAtom,
-} from "@/store/store";
-import { useAtom } from "jotai";
 import { useState } from "react";
 import useSearch from "@/hooks/useSearch";
+import { sortFilterOptions, viewFilterOptions } from "@/utils/filterUtils";
 
 export default function Wishlist() {
   const [showAddModal, setShowAddModal] = useState(false);
-  const [viewFilter, setViewFilter] = useAtom(viewFilterAtom);
-  const [sortFilter, setSortFilter] = useAtom(sortFilterAtom);
+  const [viewFilter, setViewFilter] = useState(viewFilterOptions[0]);
+  const [sortFilter, setSortFilter] = useState(sortFilterOptions[0]);
   const { searchTerm, handleSearch } = useSearch();
 
   return (
