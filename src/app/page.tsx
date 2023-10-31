@@ -127,7 +127,7 @@ export default function Home() {
           </div>
           <div className="bg-[#F7F7F7] p-6 rounded-xl flex-1 min-w-[49%] dark:bg-neutral-800">
             <h3 className="font-semibold text-2xl text-header-1 dark:text-neutral-200">
-              Support Us
+              About
             </h3>
             <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
               Holos is{" "}
@@ -138,15 +138,8 @@ export default function Home() {
               >
                 open-source
               </a>{" "}
-              and developed for free. If you enjoy using Holos, please consider
-              supporting us.
-            </p>
-            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Your contribution will help us maintain and run the servers, work
-              on new features, and improve your experience.
-            </p>
-            <p className="font-medium  text-md text-header-2 mt-3 dark:text-neutral-400">
-              Stay tuned for more information on how you can support us.
+              and developed for free. If you like to support us, stay tuned for
+              more information.
             </p>
             <Image
               className="animate-fade-up mt-12 mx-auto"
