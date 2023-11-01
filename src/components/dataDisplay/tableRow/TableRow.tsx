@@ -76,8 +76,7 @@ function TableRow(props: Props) {
               src={image}
               alt="Item image"
               height={40}
-              width={40}
-              unoptimized={true}
+              width={40}              
             />
           )}
         </td>

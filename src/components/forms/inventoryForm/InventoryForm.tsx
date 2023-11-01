@@ -1,5 +1,5 @@
 import useOutsideSelect from "@/hooks/useOutsideSelect";
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
@@ -11,6 +11,12 @@ import Label from "@/components/inputs/label/Label";
 import { inventoryAtom } from "@/store/store";
 import { useSetAtom } from "jotai";
 
+type Action = "addItem" | "uploadImage";
+
+interface LoadingState {
+  [key: string]: boolean;
+}
+
 interface Props {
   onClose: () => void;
 }
@@ -19,7 +25,7 @@ export default function InventoryForm(props: Props) {
   const { onClose } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<LoadingState>({});
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<number>(0);
@@ -28,7 +34,17 @@ export default function InventoryForm(props: Props) {
   const [season, setSeason] = useState<string>("3-Season");
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [url, setURL] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [inputKey, setInputKey] = useState<string | null>(null);
   const setInventory = useSetAtom(inventoryAtom);
+
+  const startLoading = (action: Action) => {
+    setLoading((prev) => ({ ...prev, [action]: true }));
+  };
+
+  const stopLoading = (action: Action) => {
+    setLoading((prev) => ({ ...prev, [action]: false }));
+  };
 
   const onAddItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -38,9 +54,12 @@ export default function InventoryForm(props: Props) {
       return;
     }
 
-    setLoading(true);
+    startLoading("addItem");
 
     try {
+      if (image) {
+      }
+
       const { data, error } = await supabase
         .from("inventory")
         .insert([
@@ -66,8 +85,47 @@ export default function InventoryForm(props: Props) {
       onClose();
       setInventory((prev) => [...prev, data[0]]);
     } finally {
-      setLoading(false);
+      stopLoading("addItem");
     }
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    // size is more than 5MB
+    if (e.target.files[0].size > 5242880) {
+      toast.error(
+        "Image uploaded is too large. Please upload an image less than 5MB."
+      );
+      setImage(null);
+      setInputKey(Date.now().toString());
+      return;
+    }
+
+    const image = e.target.files[0];
+    setImage(image);
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    startLoading("uploadImage");
+    const response = await fetch("/api/imgur", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    if (!data.success) {
+      toast.error("Couldn't upload image.");
+      return;
+    }
+    setImageURL(data.data.link);
+    stopLoading("uploadImage");
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+    setImageURL(null);
+    setInputKey(Date.now().toString());
   };
 
   return (
@@ -79,7 +137,7 @@ export default function InventoryForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <Label>Title</Label>
-            <Input              
+            <Input
               required
               maxLength={80}
               type="text"
@@ -144,13 +202,13 @@ export default function InventoryForm(props: Props) {
           </div>
         </div>
 
-        <div className="flex flex-wrap justify-between gap-3">
+        <div className="flex flex-col flex-wrap justify-between gap-8">
           <div className="flex-1">
             <Label>Item URL</Label>
             <Input
               type="url"
               placeholder="https://"
-              aria-label="Image URL"
+              aria-label="Item URL"
               value={url ?? ""}
               onChange={(e) => {
                 setURL(e.target.value);
@@ -158,16 +216,24 @@ export default function InventoryForm(props: Props) {
             />
           </div>
           <div className="flex-1">
-            <Label>Image URL</Label>
-            <Input
-              type="url"
-              placeholder="https://"
-              aria-label="Image URL"
-              value={imageURL ?? ""}
-              onChange={(e) => {
-                setImageURL(e.target.value);
-              }}
-            />
+            <Label>
+              Image{" "}
+              {loading["uploadImage"] &&
+                "(Uploading image, it may take a while...)"}
+            </Label>
+            <div className="flex flex-wrap gap-3">
+              <Input
+                type="file"
+                key={inputKey || ""}
+                accept=".png, .jpg, .jpeg, .gif"
+                aria-label="Image"
+                onChange={handleImageChange}
+                disabled={loading["uploadImage"]}
+              />
+              {image && !loading["uploadImage"] && (
+                <Button onClick={handleRemoveImage}>Remove Image</Button>
+              )}
+            </div>
           </div>
         </div>
 
@@ -179,10 +245,10 @@ export default function InventoryForm(props: Props) {
             type="submit"
             bgColor="bg-zinc-600 dark:bg-zinc-800"
             textColor="text-gray-100"
-            aria-disabled={loading}
-            disabled={loading}
+            aria-disabled={loading["addItem"] || loading["uploadImage"]}
+            disabled={loading["addItem"] || loading["uploadImage"]}
           >
-            {loading ? "Adding Item..." : "Add Item"}
+            {loading["addItem"] ? "Adding Item..." : "Add Item"}
           </Button>
         </div>
       </form>

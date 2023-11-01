@@ -175,8 +175,7 @@ export default function ItemForm(props: Props) {
                             src={item.image_url}
                             alt="Item image"
                             width={30}
-                            height={30}
-                            unoptimized={true}
+                            height={30}                            
                           />
                         )}
                         <span className="text-left">{item.title}</span>
@@ -198,8 +197,7 @@ export default function ItemForm(props: Props) {
                   src={selectedItem.image_url}
                   alt="Item image"
                   width={40}
-                  height={40}
-                  unoptimized={true}
+                  height={40}                  
                 />
               )}
               <span className="dark:text-neutral-200">

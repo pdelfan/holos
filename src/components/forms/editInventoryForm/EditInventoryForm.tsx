@@ -11,6 +11,12 @@ import Label from "@/components/inputs/label/Label";
 import { useSetAtom } from "jotai";
 import { inventoryAtom } from "@/store/store";
 
+type Action = "updateItem" | "uploadImage";
+
+interface LoadingState {
+  [key: string]: boolean;
+}
+
 interface Props {
   inventoryItem: InventoryItem;
   onDelete: () => void;
@@ -21,7 +27,7 @@ export default function EditInventoryForm(props: Props) {
   const { onClose, onDelete, inventoryItem } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState<LoadingState>({});
   const [title, setTitle] = useState(inventoryItem.title);
   const [description, setDescription] = useState(inventoryItem.description);
   const [price, setPrice] = useState<number>(inventoryItem.price ?? 0);
@@ -33,8 +39,18 @@ export default function EditInventoryForm(props: Props) {
   const [imageURL, setImageURL] = useState<string | null>(
     inventoryItem.image_url
   );
+  const [image, setImage] = useState<File | null>(null);
+  const [inputKey, setInputKey] = useState<string | null>(null);
   const [url, setURL] = useState<string | null>(inventoryItem.url);
   const setInventory = useSetAtom(inventoryAtom);
+
+  const startLoading = (action: Action) => {
+    setLoading((prev) => ({ ...prev, [action]: true }));
+  };
+
+  const stopLoading = (action: Action) => {
+    setLoading((prev) => ({ ...prev, [action]: false }));
+  };
 
   const onUpdateInventoryItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
@@ -54,7 +70,7 @@ export default function EditInventoryForm(props: Props) {
       return;
     }
 
-    setLoading(true);
+    startLoading("updateItem");
 
     try {
       const { data, error } = await supabase
@@ -83,8 +99,47 @@ export default function EditInventoryForm(props: Props) {
         return prev;
       });
     } finally {
-      setLoading(false);
+      stopLoading("updateItem");
     }
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    // check if size is more than 5MB
+    if (e.target.files[0].size > 5242880) {
+      toast.error(
+        "Image uploaded is too large. Please upload an image less than 5MB."
+      );
+      setImage(null);
+      setInputKey(Date.now().toString());
+      return;
+    }
+
+    const image = e.target.files[0];
+    setImage(image);
+
+    const formData = new FormData();
+    formData.append("image", image);
+
+    startLoading("uploadImage");
+
+    const response = await fetch("/api/imgur", {
+      method: "POST",
+      body: formData,
+    });
+    const data = await response.json();
+    if (!data.success) {
+      toast.error("Couldn't upload image.");
+      return;
+    }
+    setImageURL(data.data.link);
+    stopLoading("uploadImage");
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+    setImageURL(null);
+    setInputKey(Date.now().toString());
   };
 
   return (
@@ -96,7 +151,7 @@ export default function EditInventoryForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <Label>Title</Label>
-            <Input              
+            <Input
               required
               type="text"
               maxLength={80}
@@ -163,30 +218,36 @@ export default function EditInventoryForm(props: Props) {
           </div>
         </div>
 
-        <div className="flex flex-wrap justify-between gap-3">
-          <div className="flex-1">
-            <Label>Item URL</Label>
+        <div className="flex-1">
+          <Label>Item URL</Label>
+          <Input
+            type="url"
+            placeholder="https://"
+            aria-label="Image"
+            value={url ?? ""}
+            onChange={(e) => {
+              setURL(e.target.value);
+            }}
+          />
+        </div>
+        <div className="flex-1">
+          <Label>
+            Image{" "}
+            {loading["uploadImage"] &&
+              "(Uploading image, it may take a while...)"}
+          </Label>
+          <div className="flex flex-wrap gap-3">
             <Input
-              type="url"
-              placeholder="https://"
-              aria-label="Image URL"
-              value={url ?? ""}
-              onChange={(e) => {
-                setURL(e.target.value);
-              }}
+              type="file"
+              key={inputKey || ""}
+              accept=".png, .jpg, .jpeg, .gif"
+              aria-label="Image"
+              onChange={handleImageChange}
+              disabled={loading["uploadImage"]}
             />
-          </div>
-          <div className="flex-1">
-            <Label>Image URL</Label>
-            <Input
-              type="url"
-              placeholder="https://"
-              aria-label="Image URL"
-              value={imageURL ?? ""}
-              onChange={(e) => {
-                setImageURL(e.target.value);
-              }}
-            />
+            {(image || imageURL) && !loading["uploadImage"] && (
+              <Button onClick={handleRemoveImage}>Remove Image</Button>
+            )}
           </div>
         </div>
 
@@ -211,9 +272,9 @@ export default function EditInventoryForm(props: Props) {
               bgColor="bg-zinc-600 dark:bg-zinc-800"
               textColor="text-gray-100"
               aria-disabled={loading}
-              disabled={loading}
+              disabled={loading["updateItem"] || loading["uploadImage"]}
             >
-              {loading ? "Updating Item..." : "Update Item"}
+              {loading["updateItem"] ? "Updating Item..." : "Update Item"}
             </Button>
           </div>
         </div>
