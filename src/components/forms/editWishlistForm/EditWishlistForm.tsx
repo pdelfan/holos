@@ -17,9 +17,11 @@ interface Props {
 
 export default function EditWishlistForm(props: Props) {
   const { wishlistItem, onClose, onDelete } = props;
-  const [url, setUrl] = useState(wishlistItem.url);
-  const [title, setTitle] = useState(wishlistItem.title);
-  const [imageURL, setImageURL] = useState(wishlistItem.image_url);
+  const [formData, setFormData] = useState<WishlistForm>({
+    url: wishlistItem.url,
+    title: wishlistItem.title ?? "",
+    imageURL: wishlistItem.image_url ?? "",
+  });
   const [loading, setLoading] = useState(false);
   const ref = useOutsideSelect({ callback: () => onClose() });
   const supabase = createClientComponentClient<Database>();
@@ -39,9 +41,9 @@ export default function EditWishlistForm(props: Props) {
       const { data, error } = await supabase
         .from("wishlist")
         .update({
-          url: url ?? null,
-          title: title,
-          image_url: imageURL ?? null,
+          url: formData.url ?? null,
+          title: formData.title,
+          image_url: formData.imageURL ?? null,
         })
         .match({ id: wishlistItem.id, user_id: user.session.user.id })
         .select();
@@ -77,8 +79,10 @@ export default function EditWishlistForm(props: Props) {
               maxLength={80}
               placeholder="Title"
               aria-label="Title"
-              value={title ?? ""}
-              onChange={(e) => setTitle(e.target.value)}
+              value={formData.title ?? ""}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
             />
           </div>
           <div className="flex-auto">
@@ -89,8 +93,10 @@ export default function EditWishlistForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Image URL"
-              value={imageURL ?? ""}
-              onChange={(e) => setImageURL(e.target.value)}
+              value={formData.imageURL ?? ""}
+              onChange={(e) =>
+                setFormData({ ...formData, imageURL: e.target.value })
+              }
             />
           </div>
           <div className="flex-auto">
@@ -101,8 +107,10 @@ export default function EditWishlistForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Website address"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              value={formData.url}
+              onChange={(e) =>
+                setFormData({ ...formData, url: e.target.value })
+              }
             />
           </div>
           <div className="flex flex-wrap flex-auto gap-3 justify-between">
