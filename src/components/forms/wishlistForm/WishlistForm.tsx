@@ -16,10 +16,12 @@ interface Props {
 
 export default function WishlistForm(props: Props) {
   const { onClose } = props;
-  const [url, setUrl] = useState("");
-  const [manualURL, setManualURL] = useState("");
-  const [title, setTitle] = useState("");
-  const [imageURL, setImageURL] = useState("");
+  const [formData, setFormData] = useState<WishlistForm>({
+    url: "",
+    title: "",
+    imageURL: "",
+    manualURL: "",
+  });
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingManual, setLoadingManual] = useState(false);
@@ -39,7 +41,7 @@ export default function WishlistForm(props: Props) {
     setLoading(true);
 
     try {
-      const metadata: Metadata | Error = await getSiteMetadata(url);
+      const metadata: Metadata | Error = await getSiteMetadata(formData.url);
       if (
         metadata instanceof Error ||
         !metadata.title ||
@@ -55,7 +57,7 @@ export default function WishlistForm(props: Props) {
         .from("wishlist")
         .insert([
           {
-            url: url,
+            url: formData.url,
             title: metadata.title ?? null,
             logo_url: metadata.logo ?? null,
             image_url: metadata.image ?? null,
@@ -93,10 +95,10 @@ export default function WishlistForm(props: Props) {
         .from("wishlist")
         .insert([
           {
-            url: manualURL ?? null,
-            title: title,
+            url: formData.manualURL ?? "",
+            title: formData.title,
             logo_url: null,
-            image_url: imageURL ?? null,
+            image_url: formData.imageURL ?? "",
             user_id: user.session.user.id,
           },
         ])
@@ -128,10 +130,10 @@ export default function WishlistForm(props: Props) {
           type="url"
           placeholder="https://"
           aria-label="Website address"
-          value={url}
+          value={formData.url}
           onChange={(e) => {
             setError(false);
-            setUrl(e.target.value);
+            setFormData({ ...formData, url: e.target.value });
           }}
         />
 
@@ -170,8 +172,10 @@ export default function WishlistForm(props: Props) {
               maxLength={80}
               placeholder="Title"
               aria-label="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
             />
           </div>
           <div className="flex-auto sm:flex-1">
@@ -182,8 +186,10 @@ export default function WishlistForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Image URL"
-              value={imageURL}
-              onChange={(e) => setImageURL(e.target.value)}
+              value={formData.imageURL}
+              onChange={(e) =>
+                setFormData({ ...formData, imageURL: e.target.value })
+              }
             />
           </div>
           <div className="flex-auto sm:flex-1">
@@ -194,8 +200,10 @@ export default function WishlistForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Website address"
-              value={manualURL}
-              onChange={(e) => setManualURL(e.target.value)}
+              value={formData.manualURL}
+              onChange={(e) =>
+                setFormData({ ...formData, manualURL: e.target.value })
+              }
             />
           </div>
         </div>

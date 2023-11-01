@@ -1,5 +1,5 @@
 import useOutsideSelect from "@/hooks/useOutsideSelect";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import FormSelect from "../formSelect/FormSelect";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/lib/database.types";
@@ -25,18 +25,20 @@ export default function InventoryForm(props: Props) {
   const { onClose } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
-  const [loading, setLoading] = useState<LoadingState>({});
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState<number>(0);
-  const [weight, setWeight] = useState<number>(0);
-  const [weightUnit, setWeightUnit] = useState<string>("g");
-  const [season, setSeason] = useState<string>("3-Season");
-  const [imageURL, setImageURL] = useState<string | null>(null);
-  const [url, setURL] = useState<string | null>(null);
-  const [image, setImage] = useState<File | null>(null);
-  const [inputKey, setInputKey] = useState<string | null>(null);
   const setInventory = useSetAtom(inventoryAtom);
+  const [loading, setLoading] = useState<LoadingState>({});
+  const [inputKey, setInputKey] = useState<string | null>(null);
+  const [formData, setFormData] = useState<InventoryForm>({
+    title: "",
+    description: "",
+    price: 0,
+    weight: 0,
+    weightUnit: "g",
+    season: "3-Season",
+    image_url: null,
+    url: null,
+    image: null,
+  });
 
   const startLoading = (action: Action) => {
     setLoading((prev) => ({ ...prev, [action]: true }));
@@ -57,21 +59,21 @@ export default function InventoryForm(props: Props) {
     startLoading("addItem");
 
     try {
-      if (image) {
+      if (formData.image) {
       }
 
       const { data, error } = await supabase
         .from("inventory")
         .insert([
           {
-            title: title,
-            description: description ?? "",
-            image_url: imageURL === "" ? null : imageURL,
-            url: url === "" ? null : url,
-            price: price,
-            weight: weight ?? 0,
-            weight_unit: weightUnit,
-            season: season,
+            title: formData.title,
+            description: formData.description ?? "",
+            image_url: formData.image_url === "" ? null : formData.image_url,
+            url: formData.url === "" ? null : formData.url,
+            price: formData.price,
+            weight: formData.weight ?? 0,
+            weight_unit: formData.weightUnit,
+            season: formData.season,
             user_id: user.session.user.id,
           },
         ])
@@ -97,13 +99,13 @@ export default function InventoryForm(props: Props) {
       toast.error(
         "Image uploaded is too large. Please upload an image less than 5MB."
       );
-      setImage(null);
+      setFormData((prev) => ({ ...prev, image: null }));
       setInputKey(Date.now().toString());
       return;
     }
 
     const image = e.target.files[0];
-    setImage(image);
+    setFormData((prev) => ({ ...prev, image }));
 
     const formData = new FormData();
     formData.append("image", image);
@@ -118,13 +120,13 @@ export default function InventoryForm(props: Props) {
       toast.error("Couldn't upload image.");
       return;
     }
-    setImageURL(data.data.link);
+    setFormData((prev) => ({ ...prev, image_url: data.data.link }));
     stopLoading("uploadImage");
   };
 
   const handleRemoveImage = () => {
-    setImage(null);
-    setImageURL(null);
+    setFormData((prev) => ({ ...prev, image: null }));
+    setFormData((prev) => ({ ...prev, image_url: null }));
     setInputKey(Date.now().toString());
   };
 
@@ -143,8 +145,10 @@ export default function InventoryForm(props: Props) {
               type="text"
               placeholder="Title"
               aria-label="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
             />
           </div>
           <div className="flex-auto">
@@ -153,8 +157,10 @@ export default function InventoryForm(props: Props) {
               placeholder="Description"
               aria-label="Description"
               maxLength={120}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
             />
           </div>
         </div>
@@ -169,15 +175,25 @@ export default function InventoryForm(props: Props) {
                 step="0.01"
                 placeholder="0"
                 aria-label="Price of the item"
-                value={price}
-                onChange={(e) => setPrice(parseFloat(e.target.value))}
+                value={formData.price}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    price: parseFloat(e.target.value),
+                  })
+                }
               />
             </div>
             <div>
               <FormSelect
                 label="Season"
                 options={["3-Season", "Winter"]}
-                onChange={setSeason}
+                onChange={(newSeason) => {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    season: newSeason,
+                  }));
+                }}
               />
             </div>
             <div className="flex-1">
@@ -188,15 +204,25 @@ export default function InventoryForm(props: Props) {
                 step="0.01"
                 placeholder="0"
                 aria-label="Weight of the item"
-                value={weight}
-                onChange={(e) => setWeight(parseFloat(e.target.value))}
+                value={formData.weight}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    weight: parseFloat(e.target.value),
+                  })
+                }
               />
             </div>
             <div className="flex-2">
               <FormSelect
                 label="Unit"
                 options={["g", "kg", "lb", "oz"]}
-                onChange={setWeightUnit}
+                onChange={(newUnit) => {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    weightUnit: newUnit,
+                  }));
+                }}
               />
             </div>
           </div>
@@ -209,9 +235,9 @@ export default function InventoryForm(props: Props) {
               type="url"
               placeholder="https://"
               aria-label="Item URL"
-              value={url ?? ""}
+              value={formData.url ?? ""}
               onChange={(e) => {
-                setURL(e.target.value);
+                setFormData({ ...formData, url: e.target.value });
               }}
             />
           </div>
@@ -230,7 +256,7 @@ export default function InventoryForm(props: Props) {
                 onChange={handleImageChange}
                 disabled={loading["uploadImage"]}
               />
-              {image && !loading["uploadImage"] && (
+              {formData.image && !loading["uploadImage"] && (
                 <Button onClick={handleRemoveImage}>Remove Image</Button>
               )}
             </div>

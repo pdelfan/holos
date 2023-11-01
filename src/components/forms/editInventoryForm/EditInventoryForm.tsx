@@ -17,6 +17,18 @@ interface LoadingState {
   [key: string]: boolean;
 }
 
+interface FormData {
+  title: string;
+  description: string;
+  price: number;
+  weight: number;
+  weightUnit: string;
+  season: string;
+  image_url: string | null;
+  url: string | null;
+  image: File | null;
+}
+
 interface Props {
   inventoryItem: InventoryItem;
   onDelete: () => void;
@@ -27,22 +39,20 @@ export default function EditInventoryForm(props: Props) {
   const { onClose, onDelete, inventoryItem } = props;
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
-  const [loading, setLoading] = useState<LoadingState>({});
-  const [title, setTitle] = useState(inventoryItem.title);
-  const [description, setDescription] = useState(inventoryItem.description);
-  const [price, setPrice] = useState<number>(inventoryItem.price ?? 0);
-  const [weight, setWeight] = useState<number>(inventoryItem.weight ?? 0);
-  const [weightUnit, setWeightUnit] = useState<string>(
-    inventoryItem.weight_unit
-  );
-  const [season, setSeason] = useState<Season | string>(inventoryItem.season);
-  const [imageURL, setImageURL] = useState<string | null>(
-    inventoryItem.image_url
-  );
-  const [image, setImage] = useState<File | null>(null);
-  const [inputKey, setInputKey] = useState<string | null>(null);
-  const [url, setURL] = useState<string | null>(inventoryItem.url);
   const setInventory = useSetAtom(inventoryAtom);
+  const [loading, setLoading] = useState<LoadingState>({});
+  const [inputKey, setInputKey] = useState<string | null>(null);
+  const [formData, setFormData] = useState<InventoryForm>({
+    title: inventoryItem.title,
+    description: inventoryItem.description ?? "",
+    price: inventoryItem.price ?? 0,
+    weight: inventoryItem.weight ?? 0,
+    weightUnit: inventoryItem.weight_unit,
+    season: inventoryItem.season,
+    image_url: inventoryItem.image_url,
+    url: inventoryItem.url,
+    image: null,
+  });
 
   const startLoading = (action: Action) => {
     setLoading((prev) => ({ ...prev, [action]: true }));
@@ -55,16 +65,17 @@ export default function EditInventoryForm(props: Props) {
   const onUpdateInventoryItem = async (e: FormEvent) => {
     e.preventDefault(); // prevent refresh
     const { data: user } = await supabase.auth.getSession();
+
     if (
       !user.session ||
-      (title === inventoryItem.title &&
-        description === inventoryItem.description &&
-        price === inventoryItem.price &&
-        season === inventoryItem.season &&
-        weight === inventoryItem.weight &&
-        weightUnit === inventoryItem.weight_unit &&
-        url === inventoryItem.url &&
-        imageURL === inventoryItem.image_url)
+      (formData.title === inventoryItem.title &&
+        formData.description === inventoryItem.description &&
+        formData.price === inventoryItem.price &&
+        formData.season === inventoryItem.season &&
+        formData.weight === inventoryItem.weight &&
+        formData.weightUnit === inventoryItem.weight_unit &&
+        formData.url === inventoryItem.url &&
+        formData.image_url === inventoryItem.image_url)
     ) {
       onClose();
       return;
@@ -76,14 +87,14 @@ export default function EditInventoryForm(props: Props) {
       const { data, error } = await supabase
         .from("inventory")
         .update({
-          title: title,
-          description: description ?? "",
-          image_url: imageURL === "" ? null : imageURL,
-          url: url === "" ? null : url,
-          price: Number.parseFloat(price.toFixed(2)),
-          weight: Number.parseFloat(weight.toFixed(2)) ?? 0,
-          weight_unit: weightUnit,
-          season: season,
+          title: formData.title,
+          description: formData.description ?? "",
+          image_url: formData.image_url === "" ? null : formData.image_url,
+          url: formData.url === "" ? null : formData.url,
+          price: Number.parseFloat(formData.price.toFixed(2)),
+          weight: Number.parseFloat(formData.weight.toFixed(2)) ?? 0,
+          weight_unit: formData.weightUnit,
+          season: formData.season,
         })
         .match({ id: inventoryItem.id, user_id: user.session.user.id })
         .select();
@@ -110,13 +121,13 @@ export default function EditInventoryForm(props: Props) {
       toast.error(
         "Image uploaded is too large. Please upload an image less than 5MB."
       );
-      setImage(null);
+      setFormData((prev) => ({ ...prev, image: null }));
       setInputKey(Date.now().toString());
       return;
     }
 
     const image = e.target.files[0];
-    setImage(image);
+    setFormData((prev) => ({ ...prev, image }));
 
     const formData = new FormData();
     formData.append("image", image);
@@ -132,13 +143,13 @@ export default function EditInventoryForm(props: Props) {
       toast.error("Couldn't upload image.");
       return;
     }
-    setImageURL(data.data.link);
+    setFormData((prev) => ({ ...prev, image_url: data.data.link }));
     stopLoading("uploadImage");
   };
 
   const handleRemoveImage = () => {
-    setImage(null);
-    setImageURL(null);
+    setFormData((prev) => ({ ...prev, image: null }));
+    setFormData((prev) => ({ ...prev, image_url: null }));
     setInputKey(Date.now().toString());
   };
 
@@ -157,8 +168,10 @@ export default function EditInventoryForm(props: Props) {
               maxLength={80}
               placeholder="Title"
               aria-label="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
             />
           </div>
           <div className="flex-auto">
@@ -167,8 +180,10 @@ export default function EditInventoryForm(props: Props) {
               placeholder="Description"
               aria-label="Description"
               maxLength={120}
-              value={description ?? ""}
-              onChange={(e) => setDescription(e.target.value)}
+              value={formData.description ?? ""}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
             />
           </div>
         </div>
@@ -183,16 +198,26 @@ export default function EditInventoryForm(props: Props) {
                 step="0.01"
                 placeholder="0"
                 aria-label="Price of the item"
-                value={price}
-                onChange={(e) => setPrice(parseFloat(e.target.value))}
+                value={formData.price}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    price: parseFloat(e.target.value),
+                  })
+                }
               />
             </div>
             <div>
               <FormSelect
-                initialValue={season}
+                initialValue={formData.season}
                 label="Season"
                 options={["3-Season", "Winter"]}
-                onChange={setSeason}
+                onChange={(newSeason) => {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    season: newSeason,
+                  }));
+                }}
               />
             </div>
             <div className="flex-1">
@@ -203,16 +228,26 @@ export default function EditInventoryForm(props: Props) {
                 step="0.01"
                 placeholder="0"
                 aria-label="Weight of the item"
-                value={weight}
-                onChange={(e) => setWeight(parseFloat(e.target.value))}
+                value={formData.weight}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    weight: parseFloat(e.target.value),
+                  })
+                }
               />
             </div>
             <div className="flex-2">
               <FormSelect
                 label="Unit"
-                initialValue={weightUnit}
+                initialValue={formData.weightUnit}
                 options={["kg", "g", "lb", "oz"]}
-                onChange={setWeightUnit}
+                onChange={(newUnit) => {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    weightUnit: newUnit,
+                  }));
+                }}
               />
             </div>
           </div>
@@ -224,9 +259,9 @@ export default function EditInventoryForm(props: Props) {
             type="url"
             placeholder="https://"
             aria-label="Image"
-            value={url ?? ""}
+            value={formData.url ?? ""}
             onChange={(e) => {
-              setURL(e.target.value);
+              setFormData({ ...formData, url: e.target.value });
             }}
           />
         </div>
@@ -245,9 +280,10 @@ export default function EditInventoryForm(props: Props) {
               onChange={handleImageChange}
               disabled={loading["uploadImage"]}
             />
-            {(image || imageURL) && !loading["uploadImage"] && (
-              <Button onClick={handleRemoveImage}>Remove Image</Button>
-            )}
+            {(formData.image || formData.image_url) &&
+              !loading["uploadImage"] && (
+                <Button onClick={handleRemoveImage}>Remove Image</Button>
+              )}
           </div>
         </div>
 

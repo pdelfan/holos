@@ -2,6 +2,8 @@ import Image from "next/image";
 import MoreIcon from "@/assets/icons/moreIcon.svg";
 import TotalWeightIcon from "@/assets/icons/totalWeight.svg";
 import CostIcon from "@/assets/icons/costIcon.svg";
+import { getImgurThumbnail } from "@/utils/linkUtils";
+import { imgurLoader } from "@/utils/imgUtils";
 
 interface Props {
   item: InventoryItem;
@@ -26,7 +28,8 @@ function InventoryCard(props: Props) {
           src={item.image_url}
           alt="Item image"
           width={80}
-          height={80}          
+          height={80}
+          loader={imgurLoader}
         />
       )}
 
