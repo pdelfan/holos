@@ -29,3 +29,12 @@ export async function getSiteMetadata(url: string) {
     return error;
   }
 }
+
+export function getImgurThumbnail(
+  url: string,
+  size: "s" | "b" | "t" | "m" | "l" | "h"
+): string {
+  const urlParts = url.split(".");
+  urlParts[urlParts.length - 2] += size;
+  return urlParts.join(".");
+}

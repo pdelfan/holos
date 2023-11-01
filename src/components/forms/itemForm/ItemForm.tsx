@@ -15,6 +15,7 @@ import useDebounce from "@/hooks/useDebounce";
 import Button from "@/components/actions/button/Button";
 import Input from "@/components/inputs/Input/Input";
 import Label from "@/components/inputs/label/Label";
+import { imgurLoader } from "@/utils/imgUtils";
 
 interface Props {
   onClose: () => void;
@@ -175,7 +176,8 @@ export default function ItemForm(props: Props) {
                             src={item.image_url}
                             alt="Item image"
                             width={30}
-                            height={30}                            
+                            height={30}
+                            loader={imgurLoader}
                           />
                         )}
                         <span className="text-left">{item.title}</span>
@@ -197,7 +199,7 @@ export default function ItemForm(props: Props) {
                   src={selectedItem.image_url}
                   alt="Item image"
                   width={40}
-                  height={40}                  
+                  height={40}
                 />
               )}
               <span className="dark:text-neutral-200">
