@@ -6,6 +6,7 @@ import EditIcon from "@/assets/icons/editIcon.svg";
 import DragIcon from "@/assets/icons/dragIcon.svg";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { imgurLoader } from "@/utils/imgUtils";
 
 interface Props {
   item: PackItem;
@@ -77,7 +78,7 @@ function TableRow(props: Props) {
               alt="Item image"
               height={40}
               width={40}
-              unoptimized={true}
+              loader={imgurLoader}
             />
           )}
         </td>

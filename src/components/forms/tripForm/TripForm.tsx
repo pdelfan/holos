@@ -19,15 +19,17 @@ export default function TripForm(props: Props) {
   const supabase = createClientComponentClient<Database>();
   const ref = useOutsideSelect({ callback: () => onClose() });
   const [loading, setLoading] = useState(false);
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState<string>("");
-  const [elevation, setElevation] = useState<number>(0);
-  const [elevationUnit, setElevationUnit] = useState<string>("m");
-  const [distance, setDistance] = useState<number>(0);
-  const [distanceUnit, setDistanceUnit] = useState<string>("km");
-  const [baseWeight, setBaseWeight] = useState<number>(0);
-  const [totalWeight, setTotalWeight] = useState<number>(0);
-  const [weightUnit, setWeightUnit] = useState<string>("kg");
+  const [formData, setFormData] = useState<TripForm>({
+    title: "",
+    date: "",
+    elevation: 0,
+    elevationUnit: "m",
+    distance: 0,
+    distanceUnit: "km",
+    baseWeight: 0,
+    totalWeight: 0,
+    weightUnit: "kg",
+  });
   const setTrip = useSetAtom(tripsAtom);
 
   const onAddTrip = async (e: FormEvent) => {
@@ -45,15 +47,15 @@ export default function TripForm(props: Props) {
         .from("trip")
         .insert([
           {
-            title: title,
-            date: date,
-            elevation: elevation ?? 0,
-            elevation_unit: elevationUnit,
-            distance: distance ?? 0,
-            distance_unit: distanceUnit,
-            base_weight: baseWeight ?? 0,
-            total_weight: totalWeight ?? 0,
-            weight_unit: weightUnit,
+            title: formData.title,
+            date: formData.date,
+            elevation: formData.elevation ?? 0,
+            elevation_unit: formData.elevationUnit,
+            distance: formData.distance ?? 0,
+            distance_unit: formData.distanceUnit,
+            base_weight: formData.baseWeight ?? 0,
+            total_weight: formData.totalWeight ?? 0,
+            weight_unit: formData.weightUnit,
             user_id: user.session.user.id,
           },
         ])
@@ -80,14 +82,16 @@ export default function TripForm(props: Props) {
         <div className="flex flex-wrap justify-between gap-8">
           <div className="flex-auto">
             <Label>Title</Label>
-            <Input              
+            <Input
               required
               type="text"
               maxLength={60}
               placeholder="Title"
               aria-label="Title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={formData.title}
+              onChange={(e) =>
+                setFormData({ ...formData, title: e.target.value })
+              }
             />
           </div>
           <div className="flex-auto">
@@ -97,8 +101,10 @@ export default function TripForm(props: Props) {
               type="date"
               aria-label="Date of the trip"
               max={new Date().toISOString().split("T")[0]}
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              value={formData.date}
+              onChange={(e) =>
+                setFormData({ ...formData, date: e.target.value })
+              }
             />
           </div>
         </div>
@@ -112,15 +118,25 @@ export default function TripForm(props: Props) {
                 type="number"
                 step="0.01"
                 aria-label="Elevation of the trip"
-                value={elevation}
-                onChange={(e) => setElevation(parseFloat(e.target.value))}
+                value={formData.elevation}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    elevation: parseFloat(e.target.value),
+                  })
+                }
               />
             </div>
             <div className="flex-auto">
               <FormSelect
                 label="Unit"
                 options={["m", "ft"]}
-                onChange={setElevationUnit}
+                onChange={(newUnit) => {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    elevationUnit: newUnit,
+                  }));
+                }}
               />
             </div>
           </div>
@@ -133,15 +149,25 @@ export default function TripForm(props: Props) {
                 type="number"
                 step="0.01"
                 aria-label="Elevation of the trip"
-                value={distance}
-                onChange={(e) => setDistance(parseFloat(e.target.value))}
+                value={formData.distance}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    distance: parseFloat(e.target.value),
+                  })
+                }
               />
             </div>
             <div className="flex-auto">
               <FormSelect
                 label="Unit"
                 options={["km", "mi"]}
-                onChange={setDistanceUnit}
+                onChange={(newUnit) => {
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    distanceUnit: newUnit,
+                  }));
+                }}
               />
             </div>
           </div>
@@ -156,9 +182,12 @@ export default function TripForm(props: Props) {
               step="0.01"
               placeholder="0"
               aria-label="Base Weight"
-              value={baseWeight}
+              value={formData.baseWeight}
               onChange={(e) => {
-                setBaseWeight(parseFloat(e.target.value));
+                setFormData({
+                  ...formData,
+                  baseWeight: parseFloat(e.target.value),
+                });
               }}
             />
           </div>
@@ -170,9 +199,12 @@ export default function TripForm(props: Props) {
               step="0.01"
               placeholder="0"
               aria-label="Total Weight"
-              value={totalWeight}
+              value={formData.totalWeight}
               onChange={(e) => {
-                setTotalWeight(parseFloat(e.target.value));
+                setFormData({
+                  ...formData,
+                  totalWeight: parseFloat(e.target.value),
+                });
               }}
             />
           </div>
@@ -180,7 +212,12 @@ export default function TripForm(props: Props) {
             <FormSelect
               label="Unit"
               options={["kg", "g", "lb", "oz"]}
-              onChange={setWeightUnit}
+              onChange={(newUnit) => {
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  weightUnit: newUnit,
+                }));
+              }}
             />
           </div>
         </div>

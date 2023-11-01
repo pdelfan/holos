@@ -6,7 +6,7 @@ import MoreIcon from "@/assets/icons/moreIcon.svg";
 interface Props {
   item: WishlistItem;
   viewMode: string;
-  onEdit: () => void;  
+  onEdit: () => void;
 }
 
 function WishlistCard(props: Props) {
