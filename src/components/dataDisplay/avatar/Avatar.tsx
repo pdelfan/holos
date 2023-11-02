@@ -1,6 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import AvatarSkeleton from "./AvatarSkeleton";
 import { formatUsername } from "@/utils/textUtils";
+import { imgurLoader } from "@/utils/imgUtils";
 
 interface Props {
   name: string | undefined;
@@ -24,8 +27,8 @@ function Avatar(props: Props) {
               src={image}
               alt="Avatar image"
               width={size === "small" ? 35 : 96}
-              height={size === "small" ? 35 : 96}      
-              unoptimized={true}      
+              height={size === "small" ? 35 : 96}
+              loader={imgurLoader}
             />
           )}
           {!image && (
