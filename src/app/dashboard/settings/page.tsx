@@ -118,6 +118,7 @@ export default function Settings() {
       }
 
       router.refresh();
+      setUserData((prev) => ({ ...prev!, name: data![0].name }));
       toast.success("Updated name.");
     } finally {
       stopLoading("nameUpdate");
