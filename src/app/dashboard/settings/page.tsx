@@ -32,7 +32,7 @@ export default function Settings() {
   });
   const [preferredCurrency, setPreferredCurrency] = useState("");
   const router = useRouter();
-  const { userData } = useGetUserData();
+  const { userData, setUserData } = useGetUserData();
   const [username, setUsername] = useState(userData?.name);
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [image, setImage] = useState<File | null>(null);
@@ -125,10 +125,15 @@ export default function Settings() {
   };
 
   const onUpdateAvatar = async () => {
+    if (!imageURL) {
+      toast.error("Please upload an image.");
+      return;
+    }
+
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    if (!session || !imageURL) {
+    if (!session) {
       router.push("/");
       return;
     }
@@ -145,9 +150,10 @@ export default function Settings() {
         toast.error(error.message);
         return;
       }
-      
+
       setInputKey(Date.now().toString());
       router.refresh();
+      setUserData((prev) => ({ ...prev!, avatar_url: imageURL }));
       toast.success("Updated avatar.");
     } finally {
       stopLoading("avatarUpdate");
@@ -155,12 +161,14 @@ export default function Settings() {
   };
 
   const onRemoveAvatar = async () => {
-    if (!userData) return;
+    if (!userData?.avatar_url) {
+      return;
+    }
 
     const {
       data: { session },
     } = await supabase.auth.getSession();
-    if (!session) {
+    if (!session || !userData) {
       router.push("/");
       return;
     }
@@ -179,6 +187,7 @@ export default function Settings() {
       }
 
       router.refresh();
+      setUserData((prev) => ({ ...prev!, avatar_url: null }));
       toast.success("Removed avatar.");
     } finally {
       stopLoading("avatarRemove");
@@ -214,7 +223,7 @@ export default function Settings() {
       toast.error("Couldn't upload image.");
       return;
     }
-    setImageURL(data.data.link);    
+    setImageURL(data.data.link);
     stopLoading("uploadAvatar");
   };
 
@@ -284,7 +293,9 @@ export default function Settings() {
                 }}
               >
                 <Label htmlFor="avatar">
-                  {loading["uploadAvatar"] ? "(Uploading image...)" : "Upload Image"}
+                  {loading["uploadAvatar"]
+                    ? "(Uploading image...)"
+                    : "Upload Image"}
                 </Label>
                 <Input
                   type="file"
@@ -315,10 +326,8 @@ export default function Settings() {
                     textColor="text-button-text dark:text-neutral-300"
                     type="button"
                     onClick={onRemoveAvatar}
-                    disabled={loading["avatarRemove"] || !userData?.avatar_url}
-                    aria-disabled={
-                      loading["avatarRemove"] || !userData?.avatar_url
-                    }
+                    disabled={loading["avatarRemove"]}
+                    aria-disabled={loading["avatarRemove"]}
                   >
                     {loading["avatarRemove"]
                       ? "Removing avatar..."
