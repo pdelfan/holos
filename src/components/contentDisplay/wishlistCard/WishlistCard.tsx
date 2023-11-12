@@ -35,16 +35,8 @@ function WishlistCard(props: Props) {
           />
         )}
         <div className="flex flex-col gap-1">
-          {(item.logo_url || item.url) && (
-            <div className="flex gap-1 flex-wrap items-center">
-              {item.logo_url && (
-                <Image
-                  src={item.logo_url}
-                  alt={"Website Favicon"}
-                  width={20}
-                  height={20}
-                />
-              )}
+          {(item.url) && (
+            <div className="flex gap-1 flex-wrap items-center">              
               <h2 className="break-words overflow-clip text-sm text-gray-400 dark:text-neutral-400 max-w-[80%]">
                 {getShortAddress(item.url)}
               </h2>
